@@ -1,0 +1,71 @@
+html {
+    background: #121212;
+    font-family: 'Inter', serif;
+}
+
+body {
+    margin: auto;
+    max-width: 1110px;
+    color: white;
+}
+
+.top-tracks {
+    margin-top: 70px;
+    text-align: left;
+}
+
+.top-tracks p:first-child {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.top-tracks p:last-child {
+    margin-top: 0;
+    font-size: 18px;
+    color: #cdcdcd;
+}
+
+.song-container {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.table-songs {
+    margin-top: 60px;
+}
+
+
+.song-name {
+    margin-bottom: 0;
+}
+
+.artist-album {
+    display: flex;
+    align-items: center;
+    margin-top: 0;
+    color: #cdcdcd;
+}
+
+.number {
+    margin-left: 15px;
+    margin-right: 25px;
+    width: 25px;
+
+}
+
+.song-data {
+    margin-left: 70px;
+}
+
+.text {
+    margin: 0;
+}
+
+.line {
+    border-bottom: 1px solid #535353;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
