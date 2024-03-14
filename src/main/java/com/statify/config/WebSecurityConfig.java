@@ -13,9 +13,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        http.authorizeRequests().antMatchers("/main", "/t","/a").authenticated();
+        http
+                    .authorizeRequests()
+                    .antMatchers("/").permitAll() // Allow access to the home page without authentication
+                    .anyRequest().authenticated() // Require authentication for all other requests
+                .and()
+                    .logout() // Enable logout support
+                    .logoutUrl("/logout") // Specify the logout URL
+                    .permitAll(); // Allow access to the logout page without authentication
     }
+
 
 
 }
