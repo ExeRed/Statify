@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Top Tracks</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/topTracks.css">
+</head>
+<body>
+<div class="top-tracks">
+    <p>Top Tracks</p>
+    <p>Your top tracks from last 6 month</p>
+</div>
+
+<div class="table-songs">
+    <div th:each="track, index : ${tracks}">
+        <div class="song-container">
+            <p th:text="'#' + ${index.index + 1}" class="number"></p>
+            <img th:src="${track.album.images[2].url}" alt="Album Cover" class="cover">
+
+            <div class="song-data">
+                <p th:text="${track.name}" class="song-name"></p>
+
+                <div class="artist-album">
+                    <p th:text="${track.album.artists[0].name}" class="text"><p>
+                    <p th:text="'&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;' + ${track.album.name}" class="text"></p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="line"></div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -8,7 +8,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Album {
+class Album {
 
     @JsonProperty("album_type")
     private String albumType;

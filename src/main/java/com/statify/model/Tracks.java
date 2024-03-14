@@ -1,5 +1,5 @@
 
-package com.statify;
+package com.statify.model;
 
 import java.util.HashMap;
 import java.util.List;
