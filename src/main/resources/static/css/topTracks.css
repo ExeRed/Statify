@@ -1,6 +1,6 @@
 html {
     background: #121212;
-    font-family: 'Inter', serif;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -9,8 +9,26 @@ body {
     color: white;
 }
 
-.top-tracks {
+.container1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 70px;
+}
+
+.form-time {
+    margin-right: 300px;
+    background-color: #282828;
+    color: #cdcdcd;
+    width: 200px;
+    height: 30px;
+    font-size: 16px;
+    appearance: none;
+}
+
+
+
+.top-tracks {
     text-align: left;
 }
 

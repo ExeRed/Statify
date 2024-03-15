@@ -1,8 +1,8 @@
 package com.statify.controller;
 
-import com.statify.model.Track;
+import com.statify.model.Artist;
+import com.statify.model.ArtistResponse;
 import com.statify.model.TrackResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,12 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class SpotifyTrackController {
+public class SpotifyArtistController {
 
-    @Autowired
-    private SpotifyTrackController spotifyTrackController;
 
-    @GetMapping("/topTrack")
+    @GetMapping("/topArtist")
     public String topTracks(@RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
                             OAuth2Authentication details, Model model) {
         String jwt = ((OAuth2AuthenticationDetails) details.getDetails()).getTokenValue();
@@ -34,32 +32,22 @@ public class SpotifyTrackController {
         httpHeaders.add("Authorization", "Bearer " + jwt);
         HttpEntity httpEntity = new HttpEntity(httpHeaders);
 
-        ResponseEntity<TrackResponse> response = restTemplate.exchange(
-                "https://api.spotify.com/v1/me/top/tracks?time_range=" + timePeriod + "&limit=50",
+        ResponseEntity<ArtistResponse> response = restTemplate.exchange(
+                "https://api.spotify.com/v1/me/top/artists?time_range=" + timePeriod + "&limit=50",
                 HttpMethod.GET,
                 httpEntity,
-                TrackResponse.class
+                ArtistResponse.class
         );
 
-        List<Track> songs = new ArrayList<>();
+        List<Artist> artists = new ArrayList<>();
 
         if (response.getBody() != null && response.getBody().getItems() != null) {
-            songs.addAll(response.getBody().getItems());
+            artists.addAll(response.getBody().getItems());
         }
 
-        if (timePeriod.equals("short_term")) {
-            model.addAttribute("time", "from last 4 weeks");
-        } else if (timePeriod.equals("medium_term")) {
-            model.addAttribute("time", "from last 6 months");
-        } else if (timePeriod.equals("long_term")) {
-            model.addAttribute("time", "from all time");
-        }
+        model.addAttribute("artists", artists);
 
+        return "topArtists";
 
-        model.addAttribute("tracks", songs);
-        return "topTracks";
     }
-
-
-
 }

@@ -26,44 +26,40 @@ body {
     appearance: none;
 }
 
+.cover {
+    height: 64px;
+    width: 64px;
+}
 
-
-.top-tracks {
+.top-artists {
     text-align: left;
 }
 
-.top-tracks p:first-child {
+.top-artists p:first-child {
     font-size: 36px;
     font-weight: bold;
     margin-bottom: 0;
 }
 
-.top-tracks p:last-child {
+.top-artists p:last-child {
     margin-top: 0;
     font-size: 18px;
     color: #cdcdcd;
 }
 
-.song-container {
+.artist-container {
     display: flex;
     align-items: center;
     color: white;
 }
 
-.table-songs {
+.table-artists {
     margin-top: 60px;
 }
 
 
-.song-name {
-    margin-bottom: 0;
-}
-
-.artist-album {
-    display: flex;
-    align-items: center;
-    margin-top: 0;
-    color: #cdcdcd;
+.artist-name {
+    margin-left: 70px;
 }
 
 .number {
@@ -73,9 +69,6 @@ body {
 
 }
 
-.song-data {
-    margin-left: 70px;
-}
 
 .text {
     margin: 0;
