@@ -12,14 +12,14 @@
   <div class="container1">
     <div class="top-artists">
       <p>Top Artists</p>
-      <p th:text="'Your top artists' + #{time}"></p>
+      <p th:text="'Your top artists ' + ${time}"></p>
     </div>
 
     <form action="/topArtist" method="get" >
       <select name="timePeriod" onchange="this.form.submit()" class="form-time">>
-        <option value="short_term">4 weeks</option>
-        <option value="medium_term">6 months</option>
-        <option value="long_term">lifetime</option>
+        <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
+        <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
+        <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
       </select>
     </form>
   </div>

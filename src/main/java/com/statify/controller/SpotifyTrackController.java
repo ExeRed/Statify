@@ -47,15 +47,15 @@ public class SpotifyTrackController {
             songs.addAll(response.getBody().getItems());
         }
 
-        if (timePeriod.equals("short_term")) {
-            model.addAttribute("time", "from last 4 weeks");
+        if (timePeriod.equals("long_term")) {
+            model.addAttribute("time", "of all time");
         } else if (timePeriod.equals("medium_term")) {
             model.addAttribute("time", "from last 6 months");
-        } else if (timePeriod.equals("long_term")) {
-            model.addAttribute("time", "from all time");
+        } else {
+            model.addAttribute("time", "from last 4 weeks");
         }
 
-
+        model.addAttribute("selectedOption", timePeriod);
         model.addAttribute("tracks", songs);
         return "topTracks";
     }

@@ -2,7 +2,6 @@ package com.statify.controller;
 
 import com.statify.model.Artist;
 import com.statify.model.ArtistResponse;
-import com.statify.model.TrackResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -45,6 +44,15 @@ public class SpotifyArtistController {
             artists.addAll(response.getBody().getItems());
         }
 
+        if (timePeriod.equals("long_term")) {
+            model.addAttribute("time", "of all time");
+        } else if (timePeriod.equals("medium_term")) {
+            model.addAttribute("time", "from last 6 months");
+        } else {
+            model.addAttribute("time", "from last 4 weeks");
+        }
+
+        model.addAttribute("selectedOption", timePeriod);
         model.addAttribute("artists", artists);
 
         return "topArtists";

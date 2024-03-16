@@ -11,16 +11,17 @@
     <div class="container1">
         <div class="top-tracks">
             <p>Top Tracks</p>
-            <p th:text="'Your top tracks' + #{time}"></p>
+            <p th:text="'Your top tracks ' + ${time}"></p>
         </div>
 
-        <form action="/topTrack" method="get" >
-            <select name="timePeriod" onchange="this.form.submit()" class="form-time">>
-                <option value="short_term">4 weeks</option>
-                <option value="medium_term">6 months</option>
-                <option value="long_term">lifetime</option>
+        <form action="/topTrack" method="get">
+            <select name="timePeriod" onchange="this.form.submit()" class="form-time">
+                <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
+                <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
+                <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
             </select>
         </form>
+
     </div>
 
 
