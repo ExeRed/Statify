@@ -38,8 +38,8 @@
                 <p th:text="${track.name}" class="song-name"></p>
 
                 <div class="artist-album">
-                    <p th:text="${track.album.artists[0].name}" class="text"><p>
-                    <p th:text="'&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;' + ${track.album.name}" class="text"></p>
+                    <p th:text="${track.album.artists[0].name} + '&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;'" class="text"><p>
+                    <p th:text="${track.album.name}" class="text"></p>
                 </div>
 
             </div>

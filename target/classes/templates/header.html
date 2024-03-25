@@ -15,7 +15,7 @@
 
     <nav class="navbar">
 
-        <a onclick="window.location.href='/main'" class="nav__logo">
+        <a onclick="window.location.href='/'" class="nav__logo">
             <img class="headlogo" src="../static/images/statify-logo.png" alt="">
         </a>
 
@@ -23,22 +23,30 @@
         <div class="header-elements">
 
             <div th:if="${loggedIn}" class="btn logout">
-                <form th:action="@{/logout}" method="post">
+                <form th:action="@{/logout?login}" method="post">
                     <button type="submit" class="logout-btn">
                         Sign Out
                     </button>
                 </form>
             </div>
 
+            <div th:unless="${loggedIn}" class="btn login">
+                <form th:action="@{/login}" method="post">
+                    <button type="submit" class="login-btn">
+                        Log in
+                    </button>
+                </form>
+            </div>
+
             <ul class="nav__menu">
                 <li class="nav__item">
-                    <a onclick="window.location.href='/returning'" class="nav__link">Top Songs</a>
+                    <a onclick="window.location.href='/topTrack'" class="nav__link">Top Songs</a>
                 </li>
                 <li class="nav__item">
-                    <a onclick="window.location.href='/aboutus'" class="nav__link">Top Artists</a>
+                    <a onclick="window.location.href='/topArtist'" class="nav__link">Top Artists</a>
                 </li>
                 <li class="nav__item">
-                    <a onclick="window.location.href='/blog'" class="nav__link">Top Genres</a>
+                    <a onclick="window.location.href='/topGenre'" class="nav__link">Top Genres</a>
                 </li>
             </ul>
         </div>
