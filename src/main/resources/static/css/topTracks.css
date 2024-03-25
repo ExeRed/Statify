@@ -14,6 +14,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-top: 70px;
+    margin-left: 50px;
 }
 
 .form-time {
@@ -86,4 +87,35 @@ body {
     width: 100%;
     margin-bottom: 20px;
     margin-top: 20px;
+}
+
+@media only screen and (max-width: 568px) {
+    .form-time {
+        font-size: 32px;
+        margin-right: 100px;
+    }
+
+    .top-tracks p:first-child {
+        font-size: 48px;
+    }
+
+    .top-tracks p:last-child {
+        font-size: 32px;
+    }
+
+    .number {
+        width: 30px;
+        font-size: 28px;
+    }
+
+    .song-name {
+        font-size: 28px;
+    }
+
+    .text {
+        font-size: 28px;
+    }
+
+
+
 }

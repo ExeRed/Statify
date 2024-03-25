@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Statify</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/css/header.css">
+    <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<header class="header">
+
+
+    <nav class="navbar">
+
+        <a onclick="window.location.href='/main'" class="nav__logo">
+            <img class="headlogo" src="../static/images/statify-logo.png" alt="">
+        </a>
+
+
+        <div class="header-elements">
+
+            <div th:if="${loggedIn}" class="btn logout">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-btn">
+                        Sign Out
+                    </button>
+                </form>
+            </div>
+
+            <ul class="nav__menu">
+                <li class="nav__item">
+                    <a onclick="window.location.href='/returning'" class="nav__link">Top Songs</a>
+                </li>
+                <li class="nav__item">
+                    <a onclick="window.location.href='/aboutus'" class="nav__link">Top Artists</a>
+                </li>
+                <li class="nav__item">
+                    <a onclick="window.location.href='/blog'" class="nav__link">Top Genres</a>
+                </li>
+            </ul>
+        </div>
+        <div class="hamb">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </nav>
+</header>
+
+<script src="../static/script/burger_menu.js"></script>
+
+
+</body>
+</html>
