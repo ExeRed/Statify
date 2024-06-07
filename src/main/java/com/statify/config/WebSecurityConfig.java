@@ -15,7 +15,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                     .authorizeRequests()
-                    .antMatchers("/", "/login**", "/header.html").permitAll() // Allow access to the home page without authentication
+                    .antMatchers("/", "/login**", "/header.html").permitAll() // Allow access to the pages without authentication
                     .anyRequest().authenticated() // Require authentication for all other requests
                 .and()
                     .logout() // Enable logout support

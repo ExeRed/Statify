@@ -58,11 +58,15 @@ body {
 .song-name {
     margin-bottom: 0;
     font-size: 24px;
+    width: fit-content;
+    display: flex;
+    hyphens: auto;
 }
 
 .artist-album {
     display: flex;
-    margin-top: 0;
+    align-items: center;
+    margin: 0;
     color: #cdcdcd;
 }
 
@@ -75,11 +79,16 @@ body {
 
 .song-data {
     margin-left: 70px;
-    margin-bottom: 20px;
+    margin-bottom: 20px
 }
 
-.text {
-    margin: 0;
+.separator {
+    margin-left: 10px; /* Отступы слева и справа от разделителя */
+    margin-right: 10px;
+}
+
+.artist-name, .album-name {
+    margin: 0; /* Убрать отступы по умолчанию */
     font-size: 18px;
 }
 
@@ -93,7 +102,8 @@ body {
 @media only screen and (max-width: 568px) {
     .form-time {
         font-size: 24px;
-        margin-right: 50px;
+        margin-right: 10px;
+        width: 100px;
     }
 
     .number {
@@ -116,4 +126,11 @@ body {
         margin-right: 20px;
     }
 
+    .album-name, .separator {
+        display: none;
+    }
+
+    .table-songs {
+        margin-top: 30px;
+    }
 }

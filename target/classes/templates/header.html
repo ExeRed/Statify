@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Statify</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../static/css/header.css">
     <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
@@ -22,7 +23,7 @@
 
         <div class="header-elements">
 
-            <div th:if="${loggedIn}" class="btn logout">
+            <!-- <div th:if="${loggedIn}" class="btn logout">
                 <form th:action="@{/logout?login}" method="post">
                     <button type="submit" class="logout-btn">
                         Sign Out
@@ -36,7 +37,7 @@
                         Log in
                     </button>
                 </form>
-            </div>
+            </div> -->
 
             <ul class="nav__menu">
                 <li class="nav__item">
