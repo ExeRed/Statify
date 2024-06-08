@@ -1,0 +1,94 @@
+html {
+    background: #121212;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    margin: auto;
+    max-width: 1110px;
+    color: white;
+}
+
+.container1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 70px;
+    margin-left: 60px;
+}
+
+.form-time {
+    margin-right: 300px;
+    background-color: #282828;
+    color: #cdcdcd;
+    width: 200px;
+    height: 30px;
+    font-size: 16px;
+    appearance: none;
+    margin-left: 50px;
+}
+
+.top-genres {
+    text-align: left;
+}
+
+.top-genres p:first-child {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.top-genres p:last-child {
+    margin-top: 0;
+    font-size: 18px;
+    color: #cdcdcd;
+}
+
+.genre-container {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.table-genres {
+    margin-top: 60px;
+}
+
+
+.genre-name {
+    margin-left: 30px;
+    font-size: 18px;
+}
+
+.number {
+    margin-left: 15px;
+    margin-right: 15px;
+    width: 25px;
+    font-size: 18px;
+}
+
+.line {
+    border-bottom: 1px solid #535353;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 568px) {
+    .form-time {
+        font-size: 24px;
+        margin-right: 10px;
+        width: 100px;
+    }
+
+    .number {
+        width: 30px;
+        font-size: 24px;
+        margin-right: 30px;
+    }
+
+    .artist-name {
+        font-size: 24px;
+    }
+
+}

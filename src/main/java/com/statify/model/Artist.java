@@ -10,11 +10,13 @@ public class Artist {
     private String name;
     private int popularity;
     private List<Images> images;
+    private List<Genres> genres;
 
-    public Artist(String name, int popularity, List<Images> images) {
+    public Artist(String name, int popularity, List<Images> images, List<Genres> genres) {
         this.name = name;
         this.popularity = popularity;
         this.images = images;
+        this.genres = genres;
     }
 
     public Artist() {
@@ -42,5 +44,13 @@ public class Artist {
 
     public void setImages(List<Images> images) {
         this.images = images;
+    }
+
+    public List<Genres> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genres> genres) {
+        this.genres = genres;
     }
 }
