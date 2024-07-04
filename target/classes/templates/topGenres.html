@@ -17,7 +17,7 @@
             <p th:text="'Your top genres ' + ${time}"></p>
         </div>
 
-        <form action="/topGenres" method="get" >
+        <form action="/topGenre" method="get" >
             <select name="timePeriod" onchange="this.form.submit()" class="form-time">>
                 <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
                 <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>

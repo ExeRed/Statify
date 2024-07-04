@@ -23,7 +23,7 @@ import java.util.Map;
 @Controller
 public class SpotifyGenreController {
 
-    @GetMapping("/topGenres")
+    @GetMapping("/topGenre")
     public String topTracks(@RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
                             OAuth2Authentication details, Model model) {
         String jwt = ((OAuth2AuthenticationDetails) details.getDetails()).getTokenValue();

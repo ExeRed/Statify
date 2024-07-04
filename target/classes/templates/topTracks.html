@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Top Tracks</title>
     <link rel="stylesheet" type="text/css" href="../static/css/topTracks.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/imageModel.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -26,6 +27,12 @@
                 <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
             </select>
         </form>
+
+        <div class="share-section">
+            <button type="button" class="share-btn" onclick="shareImage()">share</button>
+        </div>
+
+
 
     </div>
 
@@ -59,7 +66,17 @@
 </div>
     <div id="footer"></div>
 
-    <script src="../static/script/headerANDfooter.js"></script>
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="div-content">
+            <img class="modal-content" id="topTracksImage" th:src="'data:image/png;base64,' + ${base64EncodedImage}" />
+            <a id="downloadLink" class="download-btn" th:href="'data:image/png;base64,' + ${base64EncodedImage}" download="top_tracks.png">Download</a>
+        </div>
+    </div>
 
+
+    <script src="../static/script/headerANDfooter.js"></script>
+    <script src="../static/script/shareButton.js"></script>
 </body>
 </html>
