@@ -8,7 +8,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Album {
+public class Album {
 
     @JsonProperty("album_type")
     private String albumType;
@@ -35,6 +35,7 @@ class Album {
     @JsonProperty("images")
     private List<Images> images;
 
+
     @JsonProperty("album_type")
     public String getAlbumType() {
         return albumType;
@@ -55,10 +56,12 @@ class Album {
         this.artists = artists;
     }
 
+    @JsonProperty("images")
     public List<Images> getImages() {
         return images;
     }
 
+    @JsonProperty("images")
     public void setImages(List<Images> images) {
         this.images = images;
     }
@@ -139,10 +142,7 @@ class Album {
         return uri;
     }
 
-    @JsonProperty("uri")
     public void setUri(String uri) {
         this.uri = uri;
     }
-
-
 }

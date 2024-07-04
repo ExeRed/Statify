@@ -1,6 +1,6 @@
 html {
     background: #121212;
-    font-family: 'Inter', serif;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -9,8 +9,26 @@ body {
     color: white;
 }
 
-.top-tracks {
+.container1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 70px;
+    margin-left: 60px;
+}
+
+.form-time {
+    margin-right: 300px;
+    background-color: #282828;
+    color: #cdcdcd;
+    width: 200px;
+    height: 30px;
+    font-size: 16px;
+    appearance: none;
+    margin-left: 50px;
+}
+
+.top-tracks {
     text-align: left;
 }
 
@@ -39,12 +57,16 @@ body {
 
 .song-name {
     margin-bottom: 0;
+    font-size: 24px;
+    width: fit-content;
+    display: flex;
+    hyphens: auto;
 }
 
 .artist-album {
     display: flex;
     align-items: center;
-    margin-top: 0;
+    margin: 0;
     color: #cdcdcd;
 }
 
@@ -52,15 +74,22 @@ body {
     margin-left: 15px;
     margin-right: 25px;
     width: 25px;
-
+    font-size: 18px;
 }
 
 .song-data {
     margin-left: 70px;
+    margin-bottom: 20px
 }
 
-.text {
-    margin: 0;
+.separator {
+    margin-left: 10px; /* Отступы слева и справа от разделителя */
+    margin-right: 10px;
+}
+
+.artist-name, .album-name {
+    margin: 0; /* Убрать отступы по умолчанию */
+    font-size: 18px;
 }
 
 .line {
@@ -68,4 +97,50 @@ body {
     width: 100%;
     margin-bottom: 20px;
     margin-top: 20px;
+}
+
+@media only screen and (max-width: 568px) {
+    .line {
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .form-time {
+        font-size: 24px;
+        margin-right: 10px;
+        width: 100px;
+    }
+
+    .number {
+        width: 30px;
+        font-size: 24px;
+        margin-right: 30px;
+    }
+
+    .song-name {
+        font-size: 24px;
+    }
+
+    .text {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    .song-data {
+        margin-left: 50px;
+        margin-right: 20px;
+    }
+
+    .album-name, .separator {
+        display: none;
+    }
+
+    .table-songs {
+        margin-top: 30px;
+    }
+
+    .container1 {
+        margin-top: 30px;
+        margin-left: 25px;
+    }
 }

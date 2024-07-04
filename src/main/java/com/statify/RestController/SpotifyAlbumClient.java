@@ -1,4 +1,4 @@
-package com.statify.controller;
+package com.statify.RestController;
 
 import com.statify.model.*;
 import net.minidev.json.JSONArray;
@@ -43,8 +43,6 @@ public class SpotifyAlbumClient {
     }
 
 
-
-
     @GetMapping("/album/{authorName}")
     public SpotifyAlbum getAlbumsByAuthor(OAuth2Authentication details, @PathVariable String authorName) {
         String jwt = ((OAuth2AuthenticationDetails)details.getDetails()).getTokenValue();
@@ -82,6 +80,7 @@ public class SpotifyAlbumClient {
         if (response.getBody() != null && response.getBody().getItems() != null) {
             for (Artist artist : response.getBody().getItems()) {
                 artistNames.add(artist.getName());
+                artistNames.add(artist.getImages().toString());
             }
         }
         return artistNames;

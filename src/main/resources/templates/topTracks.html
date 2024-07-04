@@ -4,12 +4,37 @@
     <meta charset="UTF-8">
     <title>Top Tracks</title>
     <link rel="stylesheet" type="text/css" href="../static/css/topTracks.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/imageModel.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<div class="top-tracks">
-    <p>Top Tracks</p>
-    <p>Your top tracks from last 6 month</p>
-</div>
+
+    <div id="header"></div>
+
+    <div class="container1">
+        <div class="top-tracks">
+            <p>Top Tracks</p>
+            <p th:text="'Your top tracks ' + ${time}"></p>
+        </div>
+
+        <form action="/topTrack" method="get">
+            <select name="timePeriod" onchange="this.form.submit()" class="form-time">
+                <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
+                <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
+                <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
+            </select>
+        </form>
+
+        <div class="share-section">
+            <button type="button" class="share-btn" onclick="shareImage()">share</button>
+        </div>
+
+
+
+    </div>
 
 <div class="table-songs">
     <div th:each="track, index : ${tracks}">
@@ -21,8 +46,15 @@
                 <p th:text="${track.name}" class="song-name"></p>
 
                 <div class="artist-album">
-                    <p th:text="${track.album.artists[0].name}" class="text"><p>
-                    <p th:text="'&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;' + ${track.album.name}" class="text"></p>
+                    <div class="artist-name">
+                        <p th:text="${track.album.artists[0].name}"></p>
+                    </div>
+
+                    <span class="separator">|</span>
+
+                    <div class="album-name">
+                        <p th:text="${track.album.name}"></p>
+                    </div>
                 </div>
 
             </div>
@@ -32,7 +64,19 @@
 
     </div>
 </div>
+    <div id="footer"></div>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="div-content">
+            <img class="modal-content" id="topTracksImage" th:src="'data:image/png;base64,' + ${base64EncodedImage}" />
+            <a id="downloadLink" class="download-btn" th:href="'data:image/png;base64,' + ${base64EncodedImage}" download="top_tracks.png">Download</a>
+        </div>
+    </div>
 
 
+    <script src="../static/script/headerANDfooter.js"></script>
+    <script src="../static/script/shareButton.js"></script>
 </body>
 </html>

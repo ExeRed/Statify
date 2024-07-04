@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Top Artists</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/css/topArtists.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+  <div id="header"></div>
+  <div class="container1">
+    <div class="top-artists">
+      <p>Top Artists</p>
+      <p th:text="'Your top artists ' + ${time}"></p>
+    </div>
+
+    <form action="/topArtist" method="get" >
+      <select name="timePeriod" onchange="this.form.submit()" class="form-time">>
+        <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
+        <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
+        <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
+      </select>
+    </form>
+  </div>
+
+
+  <div class="table-artists">
+    <div th:each="artist, index : ${artists}">
+      <div class="artist-container">
+        <p th:text="'#' + ${index.index + 1}" class="number"></p>
+        <img th:src="${artist.images[2].url}" alt="Artists Cover" class="cover">
+
+        <p th:text="${artist.name}" class="artist-name"></p>
+      </div>
+
+      <div class="line"></div>
+
+    </div>
+  </div>
+  <div id="footer"></div>
+
+  <script src="../static/script/headerANDfooter.js"></script>
+
+</body>
+</html>

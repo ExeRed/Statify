@@ -1,0 +1,17 @@
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/controller/TestController.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/controller/SpotifyTrackController.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/model/Images.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/model/Track.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/RestController/UserInfo.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/StatifyApplication.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/config/WebSecurityConfig.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/model/Album.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/controller/SpotifyArtistController.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/model/Artist.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/model/SpotifyAlbum.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/model/TrackResponse.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/model/Tracks.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/model/SpotifyTrack.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/model/ArtistResponse.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/model/SpotifyTopTracksResponse.java
+/Users/valentinbibik/Desktop/Statify/src/main/java/com/statify/RestController/SpotifyAlbumClient.java
