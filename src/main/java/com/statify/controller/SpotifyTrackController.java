@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -31,8 +32,14 @@ public class SpotifyTrackController {
 
     @GetMapping("/topTrack")
     public String topTracks(@RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
-                            OAuth2Authentication details, Model model) {
+                            OAuth2Authentication details, Model model, HttpSession session) {
         String jwt = ((OAuth2AuthenticationDetails) details.getDetails()).getTokenValue();
+
+        Long userId = (Long) session.getAttribute("userId");
+
+        model.addAttribute("userId", userId);
+
+
 
         // Получение имени пользователя
         User currentUser = userService.getCurrentUser(jwt);

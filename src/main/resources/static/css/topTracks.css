@@ -17,6 +17,11 @@ body {
     margin-left: 60px;
 }
 
+.actions {
+    display: flex;
+    justify-content: space-between;
+}
+
 .form-time {
     margin-right: 300px;
     background-color: #282828;
@@ -26,6 +31,10 @@ body {
     font-size: 16px;
     appearance: none;
     margin-left: 50px;
+}
+
+form {
+    width: 300px;
 }
 
 .top-tracks {
@@ -99,6 +108,9 @@ body {
     margin-top: 20px;
 }
 
+
+
+
 @media only screen and (max-width: 568px) {
     .line {
         margin-bottom: 10px;
@@ -109,6 +121,11 @@ body {
         font-size: 24px;
         margin-right: 10px;
         width: 100px;
+        text-align: center;
+    }
+
+    form {
+        width: auto;
     }
 
     .number {
@@ -119,6 +136,10 @@ body {
 
     .song-name {
         font-size: 24px;
+    }
+
+    .top-tracks {
+        text-align: center;
     }
 
     .text {
@@ -139,8 +160,17 @@ body {
         margin-top: 30px;
     }
 
+    .actions {
+        width: 70%;
+    }
+
     .container1 {
-        margin-top: 30px;
-        margin-left: 25px;
+        margin-top: 0px;
+        margin-left: 0px;
+        flex-direction: column;
+    }
+
+    .download-btn {
+        display: none;
     }
 }
