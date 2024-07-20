@@ -20,20 +20,19 @@
             <p th:text="'Your top tracks ' + ${time}"></p>
         </div>
 
-        <form action="/topTrack" method="get">
-            <select name="timePeriod" onchange="this.form.submit()" class="form-time">
-                <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
-                <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
-                <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
-            </select>
-        </form>
+        <div class="actions">
+            <form action="/topTrack" method="get">
+                <select name="timePeriod" onchange="this.form.submit()" class="form-time">
+                    <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
+                    <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
+                    <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
+                </select>
+            </form>
 
-        <div class="share-section">
-            <button type="button" class="share-btn" onclick="shareImage()">share</button>
+            <div class="share-section">
+                <button type="button" class="share-btn" onclick="openModal()"></button>
+            </div>
         </div>
-
-
-
     </div>
 
 <div class="table-songs">
@@ -72,10 +71,11 @@
         <div class="div-content">
             <img class="modal-content" id="topTracksImage" th:src="'data:image/png;base64,' + ${base64EncodedImage}" />
             <a id="downloadLink" class="download-btn" th:href="'data:image/png;base64,' + ${base64EncodedImage}" download="top_tracks.png">Download</a>
+            <button class="share" onclick="shareImage()">Share or Download</button>
         </div>
     </div>
 
-
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="../static/script/headerANDfooter.js"></script>
     <script src="../static/script/shareButton.js"></script>
 </body>

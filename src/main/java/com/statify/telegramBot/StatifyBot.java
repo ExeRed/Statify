@@ -1,15 +1,37 @@
 package com.statify.telegramBot;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
+import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import javax.servlet.http.HttpSession;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+@Component
 public class StatifyBot extends TelegramLongPollingBot {
 
+    public ConcurrentHashMap<Long, Long> userChatIdMap = new ConcurrentHashMap<>();
+
+    private static final Logger logger = LoggerFactory.getLogger(StatifyBot.class);
     private final String botToken;
+
 
     public StatifyBot() throws IOException {
         Properties properties = new Properties();
@@ -32,6 +54,12 @@ public class StatifyBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        if (update.hasCallbackQuery()) {
+            long chatId = update.getMessage().getChatId();
+            long userId = update.getMessage().getFrom().getId();
+            userChatIdMap.put(userId, chatId);
+
+        }
         if (update.hasMessage()) {
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
@@ -40,6 +68,10 @@ public class StatifyBot extends TelegramLongPollingBot {
                 sendWebAppLink(chatId);
             }
         }
+    }
+
+    public Long getChatId(Long userId) {
+        return userChatIdMap.get(userId);
     }
 
     private void sendWebAppLink(long chatId) {
@@ -62,5 +94,20 @@ public class StatifyBot extends TelegramLongPollingBot {
 
     private String getWebAppUrl() {
         return "t.me/statify_sbot/statify";
+    }
+
+    public void sendImageToUser(Long chatId, File imageFile) {
+        InputFile photo = new InputFile(imageFile);
+
+        SendPhoto sendPhoto = new SendPhoto();
+        sendPhoto.setChatId(chatId.toString());
+        sendPhoto.setPhoto(photo);
+
+        try {
+            execute(sendPhoto);
+            System.out.println("Image sent successfully to chat ID: " + chatId);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }
