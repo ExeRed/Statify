@@ -1,4 +1,4 @@
-package com.statify;
+package com.statify.imageGenerator;
 
 import com.statify.model.Track;
 
@@ -12,10 +12,10 @@ import java.net.URL;
 import java.util.Base64;
 import java.util.List;
 
-public class SpotifyStatsImageGenerator {
+public class TopTracksImageGenerator {
 
     private static final int IMAGE_WIDTH = 1600; // Adjust as needed
-    private static final int IMAGE_HEIGHT =2450; // Adjust as needed
+    private static final int IMAGE_HEIGHT = 2450; // Adjust as needed
 
     public String generateBase64Image(String userName, List<Track> topTracks, String timePeriod, String format) {
         // Create a new BufferedImage object

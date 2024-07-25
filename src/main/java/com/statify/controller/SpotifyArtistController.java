@@ -1,7 +1,11 @@
 package com.statify.controller;
 
+import com.statify.imageGenerator.TopArtistsImageGenerator;
 import com.statify.model.Artist;
 import com.statify.model.ArtistResponse;
+import com.statify.model.User;
+import com.statify.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,11 +24,14 @@ import java.util.List;
 @Controller
 public class SpotifyArtistController {
 
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/topArtist")
     public String topTracks(@RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
                             OAuth2Authentication details, Model model) {
         String jwt = ((OAuth2AuthenticationDetails) details.getDetails()).getTokenValue();
+
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -40,18 +47,29 @@ public class SpotifyArtistController {
 
         List<Artist> artists = new ArrayList<>();
 
+        // Получение имени пользователя
+        User currentUser = userService.getCurrentUser(jwt);
+        String userName = currentUser.getDisplay_name();
+
         if (response.getBody() != null && response.getBody().getItems() != null) {
             artists.addAll(response.getBody().getItems());
         }
 
+        TopArtistsImageGenerator imageGenerator = new TopArtistsImageGenerator();
+        String base64EncodedImage;
+
         if (timePeriod.equals("long_term")) {
             model.addAttribute("time", "of all time");
+            base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "all time", "png");
         } else if (timePeriod.equals("medium_term")) {
             model.addAttribute("time", "from last 6 months");
+            base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 6 months", "png");
         } else {
             model.addAttribute("time", "from last 4 weeks");
+            base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 4 weeks", "png");
         }
 
+        model.addAttribute("base64EncodedImage", base64EncodedImage);
         model.addAttribute("selectedOption", timePeriod);
         model.addAttribute("artists", artists);
 
