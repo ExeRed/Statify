@@ -5,6 +5,7 @@
     <title>Top Artists</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../static/css/topArtists.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/imageModel.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -12,19 +13,28 @@
 <body>
 
   <div id="header"></div>
-  <div class="container1">
-    <div class="top-artists">
-      <p>Top Artists</p>
-      <p th:text="'Your top artists ' + ${time}"></p>
-    </div>
 
-    <form action="/topArtist" method="get" >
-      <select name="timePeriod" onchange="this.form.submit()" class="form-time">>
-        <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
-        <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
-        <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
-      </select>
-    </form>
+  <div class="container1">
+      <div class="top-artists">
+          <p>Top Artists</p>
+          <p th:text="'Your top artists ' + ${time}"></p>
+      </div>
+
+      <div class="actions">
+
+            <form action="/topArtist" method="get" >
+              <select name="timePeriod" onchange="this.form.submit()" class="form-time">>
+                <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
+                <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
+                <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
+              </select>
+            </form>
+
+          <div class="share-section">
+              <button type="button" class="share-btn" onclick="openModal()"></button>
+          </div>
+
+      </div>
   </div>
 
 
@@ -43,7 +53,17 @@
   </div>
   <div id="footer"></div>
 
-  <script src="../static/script/headerANDfooter.js"></script>
+  <!-- Modal -->
+  <div id="imageModal" class="modal">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="div-content">
+          <img class="modal-content" id="topTracksImage" th:src="'data:image/png;base64,' + ${base64EncodedImage}" />
+          <a id="downloadLink" class="download-btn" th:href="'data:image/png;base64,' + ${base64EncodedImage}" download="top_artists.png">Download</a>
+          <button class="share" onclick="shareImage()">Share or Download</button>
+      </div>
+  </div>
 
+  <script src="../static/script/headerANDfooter.js"></script>
+  <script src="../static/script/shareButton.js"></script>
 </body>
 </html>

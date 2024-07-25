@@ -11,6 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    <div id="loader" class="loader">
+        <div class="note note1"></div>
+        <div class="note note2"></div>
+        <div class="note note3"></div>
+    </div>
+
 
     <div id="header"></div>
 
@@ -75,8 +81,35 @@
         </div>
     </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="../static/script/headerANDfooter.js"></script>
     <script src="../static/script/shareButton.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var loader = document.getElementById("loader");
+
+            // Показываем анимацию загрузки
+            function showLoader() {
+                document.body.classList.add("loading");
+                loader.style.display = "flex";
+            }
+
+            // Скрываем анимацию загрузки
+            function hideLoader() {
+                document.body.classList.remove("loading");
+                loader.style.display = "none";
+            }
+
+            // Показываем анимацию загрузки при загрузке страницы
+            showLoader();
+
+            // Скрываем анимацию загрузки после полной загрузки страницы
+            window.addEventListener("load", function() {
+                hideLoader();
+            });
+
+            // Можно также скрывать анимацию вручную, вызвав hideLoader() при необходимости
+        });
+    </script>
+
 </body>
 </html>

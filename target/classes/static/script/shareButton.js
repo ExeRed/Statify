@@ -46,3 +46,4 @@ async function shareImage() {
         console.error('Sharing failed:', error);
     }
 }
+

@@ -1,6 +1,6 @@
 package com.statify.controller;
 
-import com.statify.SpotifyStatsImageGenerator;
+import com.statify.imageGenerator.TopTracksImageGenerator;
 import com.statify.model.Track;
 import com.statify.model.TrackResponse;
 import com.statify.model.User;
@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -65,7 +63,7 @@ public class SpotifyTrackController {
         }
 
         // Generate image
-        SpotifyStatsImageGenerator imageGenerator = new SpotifyStatsImageGenerator();
+        TopTracksImageGenerator imageGenerator = new TopTracksImageGenerator();
         String base64EncodedImage;
 
         if (timePeriod.equals("long_term")) {
