@@ -10,6 +10,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Controller;
@@ -27,32 +30,30 @@ public class SpotifyArtistController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private OAuth2AuthorizedClientService authorizedClientService;
+
     @GetMapping("/topArtist")
     public String topTracks(@RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
-                            OAuth2Authentication details, Model model) {
-        String jwt = ((OAuth2AuthenticationDetails) details.getDetails()).getTokenValue();
+                            OAuth2AuthenticationToken authentication, Model model) {
 
+        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                authentication.getAuthorizedClientRegistrationId(),
+                authentication.getName());
 
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", "Bearer " + jwt);
-        HttpEntity httpEntity = new HttpEntity(httpHeaders);
+        String jwt = client.getAccessToken().getTokenValue();
 
-        ResponseEntity<ArtistResponse> response = restTemplate.exchange(
-                "https://api.spotify.com/v1/me/top/artists?time_range=" + timePeriod + "&limit=50",
-                HttpMethod.GET,
-                httpEntity,
-                ArtistResponse.class
-        );
 
         List<Artist> artists = new ArrayList<>();
+
+        ArtistResponse artistResponse = userService.getTopArtists(jwt, timePeriod);
 
         // Получение имени пользователя
         User currentUser = userService.getCurrentUser(jwt);
         String userName = currentUser.getDisplay_name();
 
-        if (response.getBody() != null && response.getBody().getItems() != null) {
-            artists.addAll(response.getBody().getItems());
+        if (artistResponse != null && artistResponse.getItems() != null) {
+            artists.addAll(artistResponse.getItems());
         }
 
         TopArtistsImageGenerator imageGenerator = new TopArtistsImageGenerator();

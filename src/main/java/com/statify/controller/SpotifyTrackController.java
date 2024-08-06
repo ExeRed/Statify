@@ -10,6 +10,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Controller;
@@ -28,38 +33,29 @@ public class SpotifyTrackController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private OAuth2AuthorizedClientService authorizedClientService;
+
     @GetMapping("/topTrack")
     public String topTracks(@RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
-                            OAuth2Authentication details, Model model, HttpSession session) {
-        String jwt = ((OAuth2AuthenticationDetails) details.getDetails()).getTokenValue();
+                            OAuth2AuthenticationToken authentication, Model model) {
 
-        Long userId = (Long) session.getAttribute("userId");
+        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                authentication.getAuthorizedClientRegistrationId(),
+                authentication.getName());
 
-        model.addAttribute("userId", userId);
-
-
+        String jwt = client.getAccessToken().getTokenValue();
 
         // Получение имени пользователя
         User currentUser = userService.getCurrentUser(jwt);
         String userName = currentUser.getDisplay_name();
 
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", "Bearer " + jwt);
-        HttpEntity httpEntity = new HttpEntity(httpHeaders);
-
-        ResponseEntity<TrackResponse> response = restTemplate.exchange(
-                "https://api.spotify.com/v1/me/top/tracks?time_range=" + timePeriod + "&limit=50",
-                HttpMethod.GET,
-                httpEntity,
-                TrackResponse.class
-        );
-
-
         List<Track> songs = new ArrayList<>();
 
-        if (response.getBody() != null && response.getBody().getItems() != null) {
-            songs.addAll(response.getBody().getItems());
+        TrackResponse trackResponse = userService.getTopTracks(jwt, timePeriod);
+
+        if (trackResponse != null && trackResponse.getItems() != null) {
+            songs.addAll(trackResponse.getItems());
         }
 
         // Generate image
@@ -83,8 +79,6 @@ public class SpotifyTrackController {
         model.addAttribute("tracks", songs);
         return "topTracks";
     }
-
-
 
 
 }
