@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userNameAttributeName("id")
                 .clientName("Spotify")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUriTemplate("http://localhost:8080/login/oauth2/code/{registrationId}")
+                .redirectUriTemplate("https://statify-468bada3215e.herokuapp.com/login/oauth2/code/{registrationId}")
                 .build();
     }
 }
