@@ -21,19 +21,17 @@
       </div>
 
       <div class="actions">
-
-            <form action="/topArtist" method="get" >
-              <select name="timePeriod" onchange="this.form.submit()" class="form-time">>
-                <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
-                <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
-                <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
+          <form action="/topTrack" method="get" class="time-form">
+              <select name="timePeriod" onchange="this.form.submit()" class="form-time">
+                  <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
+                  <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
+                  <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
               </select>
-            </form>
+          </form>
 
           <div class="share-section">
               <button type="button" class="share-btn" onclick="openModal()"></button>
           </div>
-
       </div>
   </div>
 

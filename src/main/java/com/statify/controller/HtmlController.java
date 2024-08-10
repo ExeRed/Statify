@@ -1,6 +1,7 @@
 package com.statify.controller;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +14,9 @@ public class HtmlController {
     }
 
     @GetMapping("/header.html")
-    public String getHeader(Authentication authentication, Model model) {
-        if (authentication != null && authentication.isAuthenticated()) {
+    public String getHeader(OAuth2AuthenticationToken authentication, Model model) {
+        if (authentication != null) {
             model.addAttribute("loggedIn", true);
-        } else {
-            model.addAttribute("loggedIn", false);
         }
         return "header";
     }

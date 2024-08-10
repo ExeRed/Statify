@@ -19,7 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/login**", "/logout", "/oauth2/**").permitAll()
+                .antMatchers("/", "/login**", "/logout", "/oauth2/**", "/static/**", "/header.html", "/footer.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userNameAttributeName("id")
                 .clientName("Spotify")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUriTemplate("https://statify-468bada3215e.herokuapp.com/login/oauth2/code/{registrationId}")
+                .redirectUriTemplate("http://localhost:8080/login/oauth2/code/{registrationId}")
                 .build();
     }
 }
