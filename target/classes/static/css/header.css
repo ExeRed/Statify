@@ -83,7 +83,7 @@ a {
 }
 
 
-.logout-btn {
+.logout-btn, .login-btn {
     background-color: #1DB954;
     color: white;
     border: none;
@@ -98,8 +98,8 @@ a {
 
 }
 
-.logout-btn:hover {
-    background-color: #7134db;
+.logout-btn:hover, .login-btn:hover {
+    background-color: #046726;
 }
 
 .btn {
@@ -117,6 +117,16 @@ a {
         box-shadow: 0 10px 27px rgba(16, 15, 13, 0.6);
         left: -100%;
         top: 8rem;
+    }
+
+    .logout-btn {
+        background-color: #912a2c;
+    }
+
+    .logout {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .nav__menu.active {
@@ -148,7 +158,4 @@ a {
         padding: 0;
     }
 
-    .logout-btn {
-        margin-right: 60px;
-    }
 }

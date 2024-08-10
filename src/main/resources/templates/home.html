@@ -5,32 +5,99 @@
   <title>Statify</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../static/css/home.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/imageModel.css">
   <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
   <body>
-    <div id="header"></div>
+  <div id="header"></div>
 
-    <form id="logoutForm" action="/logout" method="post">
-      <button type="submit">Logout</button>
-    </form>
+  <div th:unless="${loggedIn}">
+    <div class="container1">
+      <div class="text-container">
+        <p class="hero-text">
+          <span>Discover</span> your <br>
+          &nbsp;&nbsp;&nbsp; <br>
+          &nbsp;&nbsp;&nbsp;top <span>tracks, </span><br>
+          &nbsp;&nbsp;&nbsp;top <span>artists,</span> <br>
+          &nbsp;&nbsp;&nbsp;top <span>genres</span>  <br>
+          &nbsp;&nbsp;&nbsp; <br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and many <span>more</span>
+        </p>
+      </div>
+      <img src="../static/images/phone_screens.png" alt="" class="phone_screens">
+    </div>
+  </div>
 
-    <a href="/oauth2/authorization/spotify">Login with Spotify</a>
+  <div th:if="${loggedIn}">
+    <div class="intro">
+      <p class="greeting" th:text="'Hey, ' + ${userName}"></p>
+    </div>
 
-    <h1>    Application is in development</h1>
-    <h1>    Application is in development</h1>
-    <h1>    Application is in development</h1>
-    <h1>    Application is in development</h1>
-    <h1>    Application is in development</h1>
-    <h1>    Application is in development</h1>
-    <h1>    Application is in development</h1>
-    <h1>    Application is in development</h1>
-    <h1>    Application is in development</h1>
-    <h1>    Application is in development</h1>
+    <div class="actions">
+      <form action="/" method="get" class="time-form">
+        <select name="timePeriod" onchange="this.form.submit()" class="form-time">
+          <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
+          <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
+          <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
+        </select>
+      </form>
 
-    <div id="footer"></div>
-    <script src="../static/script/headerANDfooter.js"></script>
+   <!--   <div class="share-section">
+        <button type="button" class="share-btn" onclick="openModal()"></button>
+      </div> -->
+    </div>
+
+    <div class="top-genres-text">
+      <p>Top Genres</p>
+    </div>
+
+    <div class="topGenres">
+      <div class="genres-list">
+        <div th:each="genre : ${topGenres}" th:text="${genre}" class="genre-item"></div>
+      </div>
+    </div>
+
+
+    <div class="top-artist-text">
+      <p>Top Artists</p>
+      <a class="more-btn" href="/topArtist">more</a>
+    </div>
+    <div class="topArtists">
+      <div th:each="artist : ${artists}" class="artist">
+        <div class="artists-photo">
+          <img th:src="${artist.images[0].url}" alt="Artist Photo">
+        </div>
+        <div class="artist-name" th:text="${artist.name}"></div>
+      </div>
+    </div>
+
+
+    <div class="top-track-text">
+      <p>Top Tracks</p>
+      <a class="more-btn" href="/topTrack">more</a>
+    </div>
+    <div class="topTracks">
+      <div th:each="track : ${tracks}" class="track">
+        <div class="track-image">
+          <img th:src="${track.album.images[0].url}" alt="Track Image">
+        </div>
+        <div class="track-name" th:text="${track.name}"></div>
+        <div class="track-artist" th:text="${track.artists[0].name}"></div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id="footer"></div>
+
+
+  <script src="../static/script/higlight_text.js"></script>
+  <script src="../static/script/headerANDfooter.js"></script>
 
   </body>
 </html>

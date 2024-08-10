@@ -1,4 +1,229 @@
 html {
     background: #121212;
     font-family: 'Inter', sans-serif;
+
+}
+
+body {
+    margin: auto;
+    max-width: 1110px;
+    color: white;
+}
+
+.intro {
+    display: flex;
+    justify-content: center;
+}
+
+.hero {
+    text-align: left;
+    /* Центрируем текст и изображение по горизонтали */
+}
+
+.hero-text {
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.highlighted {
+    color: green;
+}
+
+.container1 {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.phone_screens {
+    width: 60%;
+}
+
+.greeting {
+    font-size: 28px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.time-form {
+    flex-grow: 1;
+    max-width: 100%;
+    margin-right: 20px;
+}
+
+.form-time {
+    width: 20%;
+    background-color: #282828;
+    color: #cdcdcd;
+    height: 40px;
+    font-size: 16px;
+    appearance: none;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap; /* Flex-контейнер может переносить элементы */
+    justify-content: space-between;
+    align-items: center; /* Центрируем элементы вертикально */
+    justify-items: center;
+    padding: 10px; /* Отступы для внутреннего контента */
+    margin: 30px;
+}
+
+.topArtists {
+    display: flex;
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку */
+    white-space: nowrap; /* Предотвращаем перенос элементов на следующую строку */
+    padding: 5px 20px 20px;
+}
+
+.artist {
+    display: inline-block; /* Отображаем элементы в строку */
+    text-align: center; /* Центрируем текст под изображением */
+    margin-right: 15px; /* Отступ между элементами */
+}
+
+.artists-photo img {
+    width: 100px; /* Ширина изображения артиста */
+    height: 100px; /* Высота изображения артиста */
+    border-radius: 50%; /* Сглаживаем углы для круглого изображения */
+    object-fit: cover; /* Обрезаем изображение, чтобы оно не выходило за границы */
+}
+
+.artist-name {
+    margin-top: 10px; /* Отступ сверху от изображения до имени артиста */
+    font-size: 14px;
+    color: #ffffff; /* Цвет текста */
+    white-space: nowrap; /* Запрещает перенос текста на следующую строку */
+    overflow: hidden; /* Обрезает текст, если он не помещается */
+    text-overflow: ellipsis; /* Добавляет многоточие, если текст обрезан */
+    max-width: 100px; /* Максимальная ширина блока (можете настроить под ваш дизайн) */
+}
+
+.topTracks {
+    display: flex;
+    overflow-x: auto; /* Горизонтальная прокрутка */
+    white-space: nowrap; /* Запрещаем перенос элементов на следующую строку */
+    padding: 5px 20px 20px;
+}
+
+.track {
+    display: inline-block; /* Элементы в строку */
+    text-align: center; /* Центрирование текста */
+    margin-right: 15px; /* Отступ между элементами */
+}
+
+.track-image img {
+    width: 100px; /* Ширина изображения трека */
+    height: 100px; /* Высота изображения трека */
+    object-fit: cover; /* Обрезка изображения */
+    border-radius: 10px; /* Небольшие скругленные углы */
+}
+
+.track-name {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.track-artist {
+    color: #cdcdcd;
+    font-size: 12px;
+}
+
+.track-name,
+.track-artist {
+    margin-top: 10px; /* Отступ сверху от изображения до имени трека */
+    white-space: nowrap; /* Запрещает перенос текста на следующую строку */
+    overflow: hidden; /* Обрезает текст, если он не помещается */
+    text-overflow: ellipsis; /* Добавляет многоточие, если текст обрезан */
+    max-width: 100px; /* Максимальная ширина блока (можете настроить под ваш дизайн) */
+}
+
+.top-artist-text,
+.top-track-text,
+.top-genres-text {
+    display: flex; /* Используем flexbox для выравнивания содержимого */
+    justify-content: space-between; /* Размещаем элементы по краям контейнера */
+    align-items: center; /* Вертикально выравниваем элементы по центру */
+    padding: 20px 20px 5px;
+}
+
+.top-artist-text p,
+.top-track-text p,
+.top-genres-text p{
+    margin: 0; /* Убираем отступы у параграфа */
+    font-size: 18px; /* Размер шрифта для заголовка */
+    font-weight: bold; /* Жирный шрифт для заголовка */
+    color: #ffffff; /* Цвет текста */
+}
+
+.more-btn {
+    padding: 5px 10px; /* Внутренние отступы кнопки */
+    background-color: #4CAF50; /* Цвет фона кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем стандартную границу кнопки */
+    border-radius: 4px; /* Скругляем углы кнопки */
+    cursor: pointer; /* Курсор мыши в виде руки при наведении */
+    font-size: 14px; /* Размер шрифта кнопки */
+}
+
+.more-btn:hover {
+    background-color: #45a049; /* Цвет фона кнопки при наведении */
+}
+
+.topGenres {
+    border-radius: 10px; /* Слегка округленные углы */
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку */
+    white-space: nowrap; /* Запрещаем перенос строк, чтобы элементы шли в одну строку */
+    padding: 5px 20px 20px;
+}
+
+.genres-list {
+    display: flex; /* Делаем жанры флекс-элементами, чтобы они располагались в ряд */
+    gap: 15px; /* Расстояние между жанрами */
+}
+
+.genre-item {
+    padding: 8px 15px; /* Внутренние отступы для каждого жанра */
+    background-color: #3c3c3c; /* Фон каждого жанра */
+    border-radius: 5px; /* Округленные углы каждого жанра */
+    color: #ffffff; /* Цвет текста */
+    font-size: 16px; /* Размер шрифта */
+    flex-shrink: 0; /* Запрещаем сжиматься элементам, чтобы они не уменьшались */
+}
+
+
+@media only screen and (max-width: 768px) {
+    .container1 {
+        flex-direction: column;
+    }
+
+    .phone_screens {
+        width: 100%;
+    }
+
+    .actions {
+        margin: 10px 30px 15px;
+        flex-direction: column;
+    }
+
+    .form-time {
+        width: 100%;
+
+    }
+
+    .time-form {
+        width: 90%;
+
+    }
 }

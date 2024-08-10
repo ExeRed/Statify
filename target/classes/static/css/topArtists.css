@@ -9,15 +9,6 @@ body {
     color: white;
 }
 
-form {
-    width: 300px;
-}
-
-.actions {
-    display: flex;
-    justify-content: space-between;
-}
-
 .container1 {
     display: flex;
     justify-content: space-between;
@@ -26,15 +17,30 @@ form {
     margin-left: 60px;
 }
 
+.actions {
+    display: flex;
+    flex-wrap: wrap; /* Flex-контейнер может переносить элементы */
+    justify-content: space-between;
+    align-items: center; /* Центрируем элементы вертикально */
+    padding: 10px; /* Отступы для внутреннего контента */
+}
+
+.time-form {
+    flex-grow: 1;
+    max-width: 100%;
+    margin-right: 20px;
+}
+
 .form-time {
-    margin-right: 300px;
+    width: 100%;
     background-color: #282828;
     color: #cdcdcd;
-    width: 200px;
-    height: 30px;
+    height: 40px;
     font-size: 16px;
     appearance: none;
-    margin-left: 50px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
 }
 
 .cover {
@@ -91,6 +97,8 @@ form {
     margin-top: 20px;
 }
 
+
+
 @media only screen and (max-width: 568px) {
     .form-time {
         font-size: 24px;
@@ -107,10 +115,6 @@ form {
 
     .artist-name {
         font-size: 24px;
-    }
-
-    form {
-        width: auto;
     }
 
     .line {

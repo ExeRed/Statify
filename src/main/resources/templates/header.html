@@ -23,21 +23,13 @@
 
         <div class="header-elements">
 
-            <!-- <div th:if="${loggedIn}" class="btn logout">
-                <form th:action="@{/logout?login}" method="post">
-                    <button type="submit" class="logout-btn">
-                        Sign Out
-                    </button>
-                </form>
-            </div>
-
             <div th:unless="${loggedIn}" class="btn login">
-                <form th:action="@{/login}" method="post">
+                <form th:action="@{/oauth2/authorization/spotify}">
                     <button type="submit" class="login-btn">
                         Log in
                     </button>
                 </form>
-            </div> -->
+            </div>
 
             <ul class="nav__menu">
                 <li class="nav__item">
@@ -49,6 +41,13 @@
                 <li class="nav__item">
                     <a onclick="window.location.href='/topGenre'" class="nav__link">Top Genres</a>
                 </li>
+                <div th:if="${loggedIn}" class="btn logout">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="logout-btn">
+                            Sign Out
+                        </button>
+                    </form>
+                </div>
             </ul>
         </div>
         <div class="hamb">

@@ -3,6 +3,7 @@ package com.statify.controller;
 import com.statify.model.Artist;
 import com.statify.model.ArtistResponse;
 import com.statify.model.Genres;
+import com.statify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +31,9 @@ public class SpotifyGenreController {
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/topGenre")
     public String topTracks(@RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
                             OAuth2AuthenticationToken authentication, Model model) {
@@ -40,50 +44,7 @@ public class SpotifyGenreController {
 
         String jwt = client.getAccessToken().getTokenValue();
 
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", "Bearer " + jwt);
-        HttpEntity httpEntity = new HttpEntity(httpHeaders);
-
-        ResponseEntity<ArtistResponse> response = restTemplate.exchange(
-                "https://api.spotify.com/v1/me/top/artists?time_range=" + timePeriod + "&limit=50",
-                HttpMethod.GET,
-                httpEntity,
-                ArtistResponse.class
-        );
-
-        List<String> allGenres = new ArrayList<>(); // all genres, not sorted, can repeat
-
-        for (Artist artist : response.getBody().getItems()) {
-            if (artist.getGenres() != null) {
-                for (Genres genreList : artist.getGenres()) {   // Loop through each genre in the artist
-                    // Get the list of genres from the Genres object
-                    List<String> artistGenres = genreList.getGenres();
-                    // Add each genre from the artist to the allGenres list
-                    allGenres.addAll(artistGenres);
-                }
-            }
-        }
-
-        Map<String, Integer> genreCounts = new HashMap<>(); // to store genre counts
-
-        //count occurrences of each genre
-        for (String genre : allGenres) {
-            if (genreCounts.containsKey(genre)) {
-                genreCounts.put(genre, genreCounts.get(genre) + 1);
-            } else {
-                genreCounts.put(genre, 1);
-            }
-        }
-
-        List<Map.Entry<String, Integer>> sortedGenres = new ArrayList<>(genreCounts.entrySet());
-        sortedGenres.sort((a, b) -> b.getValue().compareTo(a.getValue()));
-
-        List<String> topGenresList = new ArrayList<>();
-
-        for (int i = 0; i < sortedGenres.size(); i++) {
-            topGenresList.add(sortedGenres.get(i).getKey());
-        }
+        List<String> topGenresList = userService.getTopGenres(jwt, timePeriod);
 
         if (timePeriod.equals("long_term")) {
             model.addAttribute("time", "of all time");

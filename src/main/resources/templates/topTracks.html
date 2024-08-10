@@ -27,7 +27,7 @@
         </div>
 
         <div class="actions">
-            <form action="/topTrack" method="get">
+            <form action="/topTrack" method="get" class="time-form">
                 <select name="timePeriod" onchange="this.form.submit()" class="form-time">
                     <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
                     <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
@@ -39,6 +39,7 @@
                 <button type="button" class="share-btn" onclick="openModal()"></button>
             </div>
         </div>
+
     </div>
 
 <div class="table-songs">
