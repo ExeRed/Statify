@@ -53,14 +53,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return ClientRegistration.withRegistrationId("spotify")
                 .clientId("a0afdb6374de488da6dfdd578b2b150e")
                 .clientSecret("53500a989aba491faff04a9706bed7cf")
-                .scope("user-read-private", "user-read-email", "user-top-read")
+                .scope("user-read-private", "user-read-email", "user-top-read", "user-read-recently-played")
                 .authorizationUri("https://accounts.spotify.com/authorize")
                 .tokenUri("https://accounts.spotify.com/api/token")
                 .userInfoUri("https://api.spotify.com/v1/me")
                 .userNameAttributeName("id")
                 .clientName("Spotify")
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUriTemplate("https://statify-468bada3215e.herokuapp.com/login/oauth2/code/{registrationId}")
+                .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
                 .build();
     }
 }

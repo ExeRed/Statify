@@ -88,6 +88,24 @@
         <div class="track-artist" th:text="${track.artists[0].name}"></div>
       </div>
     </div>
+
+    <div class="recently-played-text">
+      <p>Recently Played Tracks</p>
+    </div>
+    <div class="recently-played-songs">
+      <div th:each="playedTrack : ${recentlyPlayed}" class="song">
+        <div class="song-image">
+          <img th:src="${playedTrack.track.album.images[0].url}" alt="Song Image">
+        </div>
+        <div class="song-info">
+          <div class="song-name" th:text="${playedTrack.track.name}"></div>
+          <div class="song-artist" th:text="${playedTrack.track.artists[0].name}"></div>
+        </div>
+      </div>
+    </div>
+
+
+
   </div>
 
 

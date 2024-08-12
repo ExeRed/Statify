@@ -151,7 +151,8 @@ body {
 
 .top-artist-text,
 .top-track-text,
-.top-genres-text {
+.top-genres-text,
+.recently-played-text {
     display: flex; /* Используем flexbox для выравнивания содержимого */
     justify-content: space-between; /* Размещаем элементы по краям контейнера */
     align-items: center; /* Вертикально выравниваем элементы по центру */
@@ -160,7 +161,8 @@ body {
 
 .top-artist-text p,
 .top-track-text p,
-.top-genres-text p{
+.top-genres-text p,
+.recently-played-text p {
     margin: 0; /* Убираем отступы у параграфа */
     font-size: 18px; /* Размер шрифта для заголовка */
     font-weight: bold; /* Жирный шрифт для заголовка */
@@ -201,6 +203,46 @@ body {
     font-size: 16px; /* Размер шрифта */
     flex-shrink: 0; /* Запрещаем сжиматься элементам, чтобы они не уменьшались */
 }
+
+
+.recently-played-songs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.song {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #1f1f1f;
+    margin: 0 20px;
+    padding: 5px;
+}
+
+.song-image img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.song-info {
+    padding-left: 15px;
+}
+
+.song-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.song-artist {
+    font-size: 14px;
+    color: #cdcdcd;
+}
+
+
 
 
 @media only screen and (max-width: 768px) {

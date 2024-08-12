@@ -11,8 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -45,6 +48,8 @@ public class MainController {
 
             TrackResponse trackResponse = userService.getTopTracks(jwt, timePeriod);
             ArtistResponse artistResponse = userService.getTopArtists(jwt, timePeriod);
+            PlayedTrackResponse recentlyPlayedResponse = userService.getRecentlyPlayed(jwt);
+            List<PlayedTrack> recentlyPlayed = recentlyPlayedResponse.getItems();
 
             if (trackResponse != null && trackResponse.getItems() != null) {
                 songs.addAll(trackResponse.getItems());
@@ -54,7 +59,12 @@ public class MainController {
                 artists.addAll(artistResponse.getItems());
             }
 
+            if (recentlyPlayedResponse.getItems() != null) {
+                recentlyPlayed.addAll(recentlyPlayedResponse.getItems());
+            }
 
+
+            model.addAttribute("recentlyPlayed", recentlyPlayed);
             model.addAttribute("tracks", songs);
             model.addAttribute("artists", artists);
             model.addAttribute("loggedIn", true);
