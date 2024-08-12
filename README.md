@@ -1,6 +1,5 @@
 # Statify (in development)
 This app shows statistics of your Spotify account using Spotify API.
-You can test it here - https://statify-latest.onrender.com/topTrack
 
 You can get your top tracks from last 4 weeks, 6 months or lifetime:
 
