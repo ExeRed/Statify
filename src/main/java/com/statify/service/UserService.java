@@ -119,4 +119,21 @@ public class UserService {
         return  topGenresList;
     }
 
+    public PlayedTrackResponse getRecentlyPlayed(String jwt) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwt);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+
+        ResponseEntity<PlayedTrackResponse> response = restTemplate.exchange(
+                "https://api.spotify.com/v1/me/player/recently-played?limit=10",
+                HttpMethod.GET,
+                entity,
+                PlayedTrackResponse.class
+        );
+
+        return response.getBody();
+    }
+
 }
