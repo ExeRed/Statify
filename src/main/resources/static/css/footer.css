@@ -12,6 +12,11 @@ html {
 
 }
 
+.footlogo {
+    width: 115px;
+    height: 83px;
+}
+
 .text11 {
     text-align: center;
 }
@@ -39,4 +44,8 @@ html {
         text-align: left;
     }
 
+    .footlogo {
+        height: 50px;
+        width: 69px;
+    }
 }

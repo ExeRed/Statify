@@ -50,6 +50,12 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 2000;
+}
+
+.headlogo {
+    width: 115px;
+    height: 83px;
 }
 
 .nav__link {
@@ -117,6 +123,15 @@ a {
         box-shadow: 0 10px 27px rgba(16, 15, 13, 0.6);
         left: -100%;
         top: 8rem;
+    }
+
+    .navbar {
+        height: 70px;
+    }
+
+    .headlogo {
+        height: 50px;
+        width: 69px;
     }
 
     .logout-btn {

@@ -18,7 +18,7 @@
     </div>
 
 
-    <div id="header"></div>
+    <div th:replace="fragments/header :: header"></div>
 
     <div class="container1">
         <div class="top-tracks">
@@ -42,35 +42,26 @@
 
     </div>
 
-<div class="table-songs">
-    <div th:each="track, index : ${tracks}">
-        <div class="song-container">
-            <p th:text="'#' + ${index.index + 1}" class="number"></p>
-            <img th:src="${track.album.images[2].url}" alt="Album Cover" class="cover">
-
-            <div class="song-data">
-                <p th:text="${track.name}" class="song-name"></p>
-
-                <div class="artist-album">
-                    <div class="artist-name">
-                        <p th:text="${track.album.artists[0].name}"></p>
-                    </div>
-
-                    <span class="separator">|</span>
-
-                    <div class="album-name">
-                        <p th:text="${track.album.name}"></p>
+    <div class="table-songs">
+        <div th:each="track, index : ${tracks}">
+            <a th:href="@{/tracks/{id}(id=${track.id})}" class="song-container">
+                <p th:text="'#' + ${index.index + 1}" class="number"></p>
+                <img th:src="${track.album.images[2].url}" alt="Album Cover" class="cover">
+                <div class="song-data">
+                    <p th:text="${track.name}" class="song-name"></p>
+                    <div class="artist-album">
+                        <p th:text="${track.album.artists[0].name}" class="artist-name"></p>
+                        <span class="separator">|</span>
+                        <p th:text="${track.album.name}" class="album-name"></p>
                     </div>
                 </div>
-
-            </div>
+                <div class="arrow"></div>
+            </a>
         </div>
-
-        <div class="line"></div>
-
     </div>
-</div>
-    <div id="footer"></div>
+
+
+    <div th:replace="fragments/footer :: footer"></div>
 
     <!-- Modal -->
     <div id="imageModal" class="modal">
@@ -82,7 +73,6 @@
         </div>
     </div>
 
-    <script src="../static/script/headerANDfooter.js"></script>
     <script src="../static/script/shareButton.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {

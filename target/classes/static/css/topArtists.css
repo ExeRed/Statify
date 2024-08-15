@@ -67,16 +67,27 @@ body {
 .artist-container {
     display: flex;
     align-items: center;
+    height: 60px;
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
     color: white;
+    text-decoration: none;
+    position: relative;
+    transition: background-color 0.3s ease;
 }
 
 .table-artists {
-    margin-top: 60px;
+    margin: 60px 20px 0;
 }
 
 
 .artist-name {
     margin-left: 70px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .number {
@@ -90,14 +101,18 @@ body {
     font-size: 18px;
 }
 
-.line {
-    border-bottom: 1px solid #535353;
-    width: 100%;
-    margin-bottom: 20px;
-    margin-top: 20px;
+.arrow {
+    position: absolute;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #cdcdcd;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
 }
-
-
 
 @media only screen and (max-width: 568px) {
     .form-time {
@@ -109,16 +124,16 @@ body {
 
     .number {
         width: 30px;
-        font-size: 24px;
-        margin-right: 30px;
+        font-size: 18px;
+        margin-right: 20px;
     }
 
     .artist-name {
         font-size: 24px;
+        margin-left: 40px;
     }
 
-    .line {
-        margin-bottom: 10px;
+    .table-artists {
         margin-top: 10px;
     }
 
@@ -127,8 +142,8 @@ body {
     }
 
     .container1 {
-        margin-top: 0px;
-        margin-left: 0px;
+        margin-top: 0;
+        margin-left: 0;
         flex-direction: column;
     }
 

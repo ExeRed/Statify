@@ -3,7 +3,9 @@ package com.statify.controller;
 import com.statify.imageGenerator.TopArtistsImageGenerator;
 import com.statify.model.Artist;
 import com.statify.model.ArtistResponse;
+import com.statify.model.Track;
 import com.statify.model.User;
+import com.statify.service.ArtistService;
 import com.statify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -18,17 +20,23 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class SpotifyArtistController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ArtistService artistService;
 
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
@@ -73,8 +81,32 @@ public class SpotifyArtistController {
         model.addAttribute("base64EncodedImage", base64EncodedImage);
         model.addAttribute("selectedOption", timePeriod);
         model.addAttribute("artists", artists);
+        model.addAttribute("loggedIn", true);
 
         return "topArtists";
 
+    }
+
+
+    @GetMapping("/artists/{id}")
+    public String getArtist(@PathVariable("id") String id,
+                           OAuth2AuthenticationToken authentication, Model model) {
+
+        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                authentication.getAuthorizedClientRegistrationId(),
+                authentication.getName());
+
+        String jwt = client.getAccessToken().getTokenValue();
+
+        Artist artist = artistService.getArtist(jwt, id);
+
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        String formattedFollowers = numberFormat.format(artist.getFollowers().getTotal());
+
+        artist.setFormattedFollowers(formattedFollowers);
+        model.addAttribute("artist", artist);
+        model.addAttribute("loggedIn", true);
+
+        return "artist";
     }
 }

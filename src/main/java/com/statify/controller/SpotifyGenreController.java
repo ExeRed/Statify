@@ -56,6 +56,7 @@ public class SpotifyGenreController {
 
         model.addAttribute("selectedOption", timePeriod);
         model.addAttribute("topGenresList", topGenresList);
+        model.addAttribute("loggedIn", true);
 
         return "topGenres";
 
