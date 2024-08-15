@@ -4,26 +4,17 @@ import com.statify.imageGenerator.TopTracksImageGenerator;
 import com.statify.model.Track;
 import com.statify.model.TrackResponse;
 import com.statify.model.User;
+import com.statify.service.TrackService;
 import com.statify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
-
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +23,9 @@ public class SpotifyTrackController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TrackService trackService;
 
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
@@ -77,7 +71,26 @@ public class SpotifyTrackController {
         model.addAttribute("base64EncodedImage", base64EncodedImage);
         model.addAttribute("selectedOption", timePeriod);
         model.addAttribute("tracks", songs);
+        model.addAttribute("loggedIn", true);
         return "topTracks";
+    }
+
+    @GetMapping("/tracks/{id}")
+    public String getTrack(@PathVariable("id") String id,
+                            OAuth2AuthenticationToken authentication, Model model) {
+
+        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                authentication.getAuthorizedClientRegistrationId(),
+                authentication.getName());
+
+        String jwt = client.getAccessToken().getTokenValue();
+
+        Track track = trackService.getTrack(jwt, id);
+
+        model.addAttribute("track", track);
+        model.addAttribute("loggedIn", true);
+
+        return "track";
     }
 
 

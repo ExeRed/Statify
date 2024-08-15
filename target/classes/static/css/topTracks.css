@@ -60,59 +60,101 @@ body {
     color: #cdcdcd;
 }
 
+.table-songs {
+    font-family: Arial, sans-serif;
+    margin: 60px 20px 0;
+}
+
 .song-container {
     display: flex;
     align-items: center;
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
     color: white;
+    text-decoration: none;
+    position: relative;
+    transition: background-color 0.3s ease;
 }
 
-.table-songs {
-    margin-top: 60px;
+.song-container:hover {
+    background-color: #333333;
 }
 
+.cover {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.song-data {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 40px; /* Leave space for the arrow */
+    max-width: calc(100% - 150px); /* Ensure text fits within the container */
+}
+
+.song-name,
+.artist-name,
+.album-name {
+    margin: 0;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 .song-name {
-    margin-bottom: 0;
-    font-size: 24px;
-    width: fit-content;
-    display: flex;
-    hyphens: auto;
+    font-size: 18px;
+    margin-bottom: 5px;
 }
 
 .artist-album {
     display: flex;
     align-items: center;
-    margin: 0;
     color: #cdcdcd;
 }
 
-.number {
-    margin-left: 15px;
-    margin-right: 25px;
-    width: 25px;
-    font-size: 18px;
-}
-
-.song-data {
-    margin-left: 70px;
-    margin-bottom: 20px
-}
-
 .separator {
-    margin-left: 10px; /* Отступы слева и справа от разделителя */
-    margin-right: 10px;
+    margin: 0 10px;
 }
 
-.artist-name, .album-name {
-    margin: 0; /* Убрать отступы по умолчанию */
-    font-size: 18px;
+.arrow {
+    position: absolute;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #cdcdcd;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.number {
+    margin-right: 15px;
+    font-size: 16px;
+    color: #cdcdcd;
+    font-weight: bold;
 }
 
 .line {
     border-bottom: 1px solid #535353;
     width: 100%;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin: 10px 0;
+}
+
+
+
+.cover-link {
+    display: block; /* Сделать ссылку блочным элементом для обертывания изображения */
+    cursor: pointer; /* Изменить курсор на указатель при наведении */
 }
 
 body.loading {
@@ -162,13 +204,7 @@ body.loading {
     }
 }
 
-
-
 @media only screen and (max-width: 568px) {
-    .line {
-        margin-bottom: 10px;
-        margin-top: 10px;
-    }
 
     .form-time {
         font-size: 24px;
@@ -177,36 +213,12 @@ body.loading {
         text-align: center;
     }
 
-    .number {
-        width: 30px;
-        font-size: 24px;
-        margin-right: 30px;
-    }
-
-    .song-name {
-        font-size: 24px;
-    }
-
-    .top-tracks {
-        text-align: center;
-    }
-
-    .text {
-        font-size: 20px;
-        margin-right: 10px;
-    }
-
-    .song-data {
-        margin-left: 50px;
-        margin-right: 20px;
-    }
-
     .album-name, .separator {
         display: none;
     }
 
     .table-songs {
-        margin-top: 30px;
+        margin-top: 10px;
     }
 
     .actions {
@@ -214,12 +226,16 @@ body.loading {
     }
 
     .container1 {
-        margin-top: 0px;
-        margin-left: 0px;
+        margin-top: 0;
+        margin-left: 0;
         flex-direction: column;
     }
 
     .download-btn {
         display: none;
+    }
+
+    .top-tracks {
+        text-align: center;
     }
 }

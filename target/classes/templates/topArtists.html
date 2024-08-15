@@ -12,7 +12,7 @@
 </head>
 <body>
 
-  <div id="header"></div>
+    <div th:replace="fragments/header :: header"></div>
 
   <div class="container1">
       <div class="top-artists">
@@ -21,7 +21,7 @@
       </div>
 
       <div class="actions">
-          <form action="/topTrack" method="get" class="time-form">
+          <form action="/topArtist" method="get" class="time-form">
               <select name="timePeriod" onchange="this.form.submit()" class="form-time">
                   <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
                   <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
@@ -38,18 +38,18 @@
 
   <div class="table-artists">
     <div th:each="artist, index : ${artists}">
-      <div class="artist-container">
-        <p th:text="'#' + ${index.index + 1}" class="number"></p>
-        <img th:src="${artist.images[2].url}" alt="Artists Cover" class="cover">
+        <a th:href="@{/artists/{id}(id=${artist.id})}" class="artist-container">
 
-        <p th:text="${artist.name}" class="artist-name"></p>
-      </div>
+            <p th:text="'#' + ${index.index + 1}" class="number"></p>
+            <img th:src="${artist.images[2].url}" alt="Artists Cover" class="cover">
+            <p th:text="${artist.name}" class="artist-name"></p>
 
-      <div class="line"></div>
+            <div class="arrow"></div>
+        </a>
 
     </div>
   </div>
-  <div id="footer"></div>
+    <div th:replace="fragments/footer :: footer"></div>
 
   <!-- Modal -->
   <div id="imageModal" class="modal">
@@ -61,7 +61,6 @@
       </div>
   </div>
 
-  <script src="../static/script/headerANDfooter.js"></script>
   <script src="../static/script/shareButton.js"></script>
 </body>
 </html>

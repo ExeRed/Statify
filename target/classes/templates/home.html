@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
   <body>
-  <div id="header"></div>
+  <div th:replace="fragments/header :: header"></div>
 
   <div th:unless="${loggedIn}">
     <div class="container1">
@@ -71,6 +71,7 @@
           <img th:src="${artist.images[0].url}" alt="Artist Photo">
         </div>
         <div class="artist-name" th:text="${artist.name}"></div>
+        </a>
       </div>
     </div>
 
@@ -81,27 +82,33 @@
     </div>
     <div class="topTracks">
       <div th:each="track : ${tracks}" class="track">
-        <div class="track-image">
-          <img th:src="${track.album.images[0].url}" alt="Track Image">
-        </div>
-        <div class="track-name" th:text="${track.name}"></div>
-        <div class="track-artist" th:text="${track.artists[0].name}"></div>
+        <a th:href="@{/tracks/{id}(id=${track.id})}">
+          <div class="track-image">
+            <img th:src="${track.album.images[0].url}" alt="Track Image">
+          </div>
+          <div class="track-name" th:text="${track.name}"></div>
+          <div class="track-artist" th:text="${track.artists[0].name}"></div>
+        </a>
       </div>
     </div>
+
 
     <div class="recently-played-text">
       <p>Recently Played Tracks</p>
     </div>
     <div class="recently-played-songs">
-      <div th:each="playedTrack : ${recentlyPlayed}" class="song">
-        <div class="song-image">
-          <img th:src="${playedTrack.track.album.images[0].url}" alt="Song Image">
-        </div>
-        <div class="song-info">
-          <div class="song-name" th:text="${playedTrack.track.name}"></div>
-          <div class="song-artist" th:text="${playedTrack.track.artists[0].name}"></div>
-        </div>
+      <div th:each="playedTrack : ${recentlyPlayed}">
+        <a th:href="@{/tracks/{id}(id=${playedTrack.track.id})}" class="song">
+          <div class="song-image">
+            <img th:src="${playedTrack.track.album.images[0].url}" alt="Song Image">
+          </div>
+          <div class="song-info">
+            <div class="song-name" th:text="${playedTrack.track.name}"></div>
+            <div class="song-artist" th:text="${playedTrack.track.artists[0].name}"></div>
+          </div>
+        </a>
       </div>
+
     </div>
 
 
@@ -112,11 +119,10 @@
 
 
 
-  <div id="footer"></div>
-
+  <div th:replace="fragments/footer :: footer"></div>
 
   <script src="../static/script/higlight_text.js"></script>
-  <script src="../static/script/headerANDfooter.js"></script>
+
 
   </body>
 </html>

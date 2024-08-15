@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Track Details</title>
+  <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="../static/css/track.css">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <h1>Track Details</h1>
+    <div th:if="${track != null}" class="track-details">
+      <div class="track-image">
+        <img th:src="${track.album.images[0].url}" alt="Track Image">
+      </div>
+      <div class="track-info">
+        <h2 class="track-name" th:text="${track.name}"></h2>
+        <p class="track-artist" th:text="'Artist: ' + ${track.artists[0].name}"></p>
+        <p class="track-album" th:text="'Album: ' + ${track.album.name}"></p>
+        <p class="track-popularity" th:text="'Popularity: ' + (${track.popularity} / 10)"></p>
+        <p class="track-duration"
+           th:text="'Duration: ' + ${#numbers.formatInteger(track.duration_ms / 60000, 0)} + 'm ' + ${#numbers.formatInteger((track.duration_ms % 60000) / 1000, 0)} + 's'">
+        </p>
+
+        <div class="track-url">
+          <a th:href="${track.external_urls.spotify}" target="_blank">
+            <img src="../static/images/Spotify_Icon_RGB_Black.png" alt="Spotify Logo" class="spotify-logo">
+            Listen on Spotify
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

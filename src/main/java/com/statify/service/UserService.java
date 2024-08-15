@@ -125,7 +125,6 @@ public class UserService {
         headers.set("Authorization", "Bearer " + jwt);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-
         ResponseEntity<PlayedTrackResponse> response = restTemplate.exchange(
                 "https://api.spotify.com/v1/me/player/recently-played?limit=10",
                 HttpMethod.GET,

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Artist Details</title>
+  <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="../static/css/artist.css">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <h1>Artist Details</h1>
+    <div th:if="${artist != null}" class="artist-details">
+      <div class="artist-image">
+        <img th:src="${artist.images[0].url}" alt="Artist Image">
+      </div>
+      <div class="artist-info">
+        <h2 class="artist-name" th:text="${artist.name}"></h2>
+        <p class="artist-popularity" th:text="'Popularity: ' + (${artist.popularity} / 10)"></p>
+        <p class="artist-followers" th:text="'Followers: ' + ${artist.formattedFollowers}"></p>
+        <p class="artist-genres">
+          <span class="genres-title">Genres:</span>
+        <ul class="genres-list">
+          <li th:each="genre : ${artist.getAllGenres()}" th:text="${genre}" class="genre-item"></li>
+        </ul>
+        </p>
+        <div class="artist-url">
+          <a th:href="${artist.external_urls.spotify}" target="_blank">
+            <img src="../static/images/Spotify_Icon_RGB_Black.png" alt="Spotify Logo" class="spotify-logo">
+            Listen on Spotify
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
