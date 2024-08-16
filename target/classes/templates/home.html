@@ -32,8 +32,35 @@
 
   <div th:if="${loggedIn}">
     <div class="intro">
-      <p class="greeting" th:text="'Hey, ' + ${userName}"></p>
+      <div class="user-info">
+        <div class="username" th:text="${currentUser.display_name}"></div>
+        <div class="user-id" th:text="'@' + ${currentUser.id}"></div>
+        <div class="track-url">
+          <a th:href="${currentUser.external_urls.spotify}" target="_blank">
+            <img src="../static/images/Spotify_Icon_RGB_White.png" alt="Spotify Logo" class="spotify-logo">
+            Open on Spotify
+          </a>
+        </div>
+      </div>
+
+      <a class="currently-playing-a" th:href="@{/tracks/{id}(id=${currentlyPlaying.id})}">
+        <div class="currently-playing" th:if="${currentlyPlaying != null}">
+            <div  class="song-image">
+              <img th:src="${currentlyPlaying.album.images[0].url}" alt="Track Image" class="song-image">
+            </div>
+            <div class="playing-info">
+              <div class="song-name" th:text="${currentlyPlaying.name}"></div>
+              <div class="song-artist" th:text="${currentlyPlaying.artists[0].name}"></div>
+            </div>
+            <div class="sound-wave">
+              <div class="bars"></div>
+              <div class="bars"></div>
+              <div class="bars"></div>
+            </div>
+        </div>
+      </a>
     </div>
+
 
     <div class="actions">
       <form action="/" method="get" class="time-form">
@@ -67,10 +94,11 @@
     </div>
     <div class="topArtists">
       <div th:each="artist : ${artists}" class="artist">
-        <div class="artists-photo">
-          <img th:src="${artist.images[0].url}" alt="Artist Photo">
-        </div>
-        <div class="artist-name" th:text="${artist.name}"></div>
+        <a th:href="@{/artists/{id}(id=${artist.id})}">
+          <div class="artists-photo">
+            <img th:src="${artist.images[0].url}" alt="Artist Photo">
+          </div>
+          <div class="artist-name" th:text="${artist.name}"></div>
         </a>
       </div>
     </div>

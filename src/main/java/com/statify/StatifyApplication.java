@@ -15,8 +15,8 @@ public class StatifyApplication {
     public static void main(String[] args) throws TelegramApiException, IOException {
 
         SpringApplication.run(StatifyApplication.class, args);
-     //   TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-      //  botsApi.registerBot(new StatifyBot());
+        TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+        botsApi.registerBot(new StatifyBot());
     }
 
 }
