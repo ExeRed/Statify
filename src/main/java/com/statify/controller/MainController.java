@@ -40,7 +40,6 @@ public class MainController {
 
             // Получение имени пользователя
             User currentUser = userService.getCurrentUser(jwt);
-            String userName = currentUser.getDisplay_name();
 
             List<Track> songs = new ArrayList<>();
             List<Artist> artists = new ArrayList<>();
@@ -50,6 +49,7 @@ public class MainController {
             ArtistResponse artistResponse = userService.getTopArtists(jwt, timePeriod);
             PlayedTrackResponse recentlyPlayedResponse = userService.getRecentlyPlayed(jwt);
             List<PlayedTrack> recentlyPlayed = recentlyPlayedResponse.getItems();
+            TrackResponse currentlyPlayingTrack = userService.getCurrentlyPlayingTrack(jwt);
 
             if (trackResponse != null && trackResponse.getItems() != null) {
                 songs.addAll(trackResponse.getItems());
@@ -63,13 +63,16 @@ public class MainController {
                 recentlyPlayed.addAll(recentlyPlayedResponse.getItems());
             }
 
+            if (currentlyPlayingTrack != null && currentlyPlayingTrack.getItem() != null) {
+                model.addAttribute("currentlyPlaying", currentlyPlayingTrack.getItem());
+            }
 
             model.addAttribute("recentlyPlayed", recentlyPlayed);
             model.addAttribute("tracks", songs);
             model.addAttribute("artists", artists);
             model.addAttribute("loggedIn", true);
             model.addAttribute("topGenres", topGenresList);
-            model.addAttribute("userName", userName);
+            model.addAttribute("currentUser", currentUser);
             model.addAttribute("selectedOption", timePeriod);
         }
 

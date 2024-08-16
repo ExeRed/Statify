@@ -6,6 +6,16 @@ public class TrackResponse {
 
     private List<Track> items;
 
+    private Track item;
+
+    public Track getItem() {
+        return item;
+    }
+
+    public void setItem(Track item) {
+        this.item = item;
+    }
+
     public List<Track> getItems() {
         return items;
     }

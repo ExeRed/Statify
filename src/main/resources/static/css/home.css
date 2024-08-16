@@ -12,7 +12,22 @@ body {
 
 .intro {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    margin: 20px 20px 0px;
+}
+
+.track-url a {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.spotify-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
 }
 
 .hero {
@@ -46,22 +61,31 @@ body {
     width: 60%;
 }
 
-.greeting {
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-id {
+    font-size: 16px;
+    color: white;
+}
+
+.username {
     font-size: 28px;
     font-weight: bolder;
-    text-align: center;
 }
 
 .time-form {
     flex-grow: 1;
     max-width: 100%;
-    margin-right: 20px;
 }
 
 .form-time {
     width: 20%;
-    background-color: #282828;
     color: #cdcdcd;
+    background-color: #282828;
     height: 40px;
     font-size: 16px;
     appearance: none;
@@ -195,7 +219,7 @@ body {
     gap: 15px; /* Расстояние между жанрами */
 }
 
-.genre-item {
+.genre-item{
     padding: 8px 15px; /* Внутренние отступы для каждого жанра */
     background-color: #3c3c3c; /* Фон каждого жанра */
     border-radius: 5px; /* Округленные углы каждого жанра */
@@ -235,6 +259,9 @@ body {
     font-size: 18px;
     font-weight: bold;
     color: white;
+    overflow: hidden; /* Скрывает текст, если он не помещается */
+    text-overflow: ellipsis; /* Показывает многоточие */
+    white-space: nowrap; /* Не переносит текст на новую строку */
 }
 
 .song-artist {
@@ -242,6 +269,70 @@ body {
     color: #cdcdcd;
 }
 
+/* Основной контейнер для текущего трека */
+.currently-playing {
+    display: flex;
+    max-width: 300px;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #3c3c3c;
+    padding: 8px 15px;
+    box-sizing: border-box; /* Включить padding и border в ширину и высоту */
+    flex-shrink: 0; /* Запрещаем сжиматься элементам, чтобы они не уменьшались */
+}
+
+.currently-playing-a {
+    display: flex;
+    align-self: center;
+}
+
+.playing-info {
+    padding-left: 10px;
+    overflow: hidden; /* Скрывает текст, если он не помещается */
+    text-overflow: ellipsis; /* Показывает многоточие */
+    white-space: nowrap; /* Не переносит текст на новую строку */
+}
+
+/* Основные стили для контейнера звуковой волны */
+.sound-wave {
+    display: flex;
+    align-items: flex-end;
+    margin-left: 10px;
+    margin-right: 10px;
+    gap: 5px;
+}
+
+/* Основные стили для отдельных баров */
+.bars {
+    width: 5px; /* Ширина баров */
+    height: 15px; /* Начальная высота */
+    background-color: #4CAF50; /* Цвет баров */
+    animation: pulse 1s infinite; /* Анимация для баров */
+}
+
+/* Индивидуальные стили для каждого бара, чтобы создать эффект пульсации */
+.bars:nth-child(2) {
+    animation-delay: 0.2s; /* Задержка для второго бара */
+}
+
+.bars:nth-child(3) {
+    animation-delay: 0.4s; /* Задержка для третьего бара */
+}
+
+/* Определение анимации */
+@keyframes pulse {
+    0% {
+        height: 15px; /* Начальная высота */
+    }
+    50% {
+        height: 30px; /* Максимальная высота */
+    }
+    100% {
+        height: 15px; /* Возврат к начальной высоте */
+    }
+}
 
 
 
@@ -250,8 +341,21 @@ body {
         flex-direction: column;
     }
 
+    .intro {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .user-info {
+        align-items: center;
+    }
+
     .phone_screens {
         width: 100%;
+    }
+
+    .currently-playing {
+        align-self: center;
     }
 
     .actions {
@@ -269,3 +373,4 @@ body {
 
     }
 }
+

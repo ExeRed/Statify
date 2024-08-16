@@ -36,6 +36,25 @@ public class UserService {
     }
 
 
+    public TrackResponse getCurrentlyPlayingTrack(String jwt) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + jwt);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<TrackResponse> response = restTemplate.exchange(
+                    "https://api.spotify.com/v1/me/player/currently-playing",
+                    HttpMethod.GET,
+                    entity,
+                    TrackResponse.class
+            );
+            return response.getBody();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
     public TrackResponse getTopTracks(String accessToken, String timePeriod) {
         RestTemplate restTemplate = new RestTemplate();
