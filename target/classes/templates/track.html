@@ -19,7 +19,15 @@
       </div>
       <div class="track-info">
         <h2 class="track-name" th:text="${track.name}"></h2>
-        <p class="track-artist" th:text="'Artist: ' + ${track.artists[0].name}"></p>
+
+        <p class="track-artist">Artists:
+        <ul class="artist-list">
+          <li th:each="artist : ${track.getArtists()}">
+            <a th:href="@{/artists/{id}(id=${artist.id})}" th:text="${artist.name}"></a>
+          </li>
+        </ul>
+        </p>
+
         <p class="track-album" th:text="'Album: ' + ${track.album.name}"></p>
         <p class="track-popularity" th:text="'Popularity: ' + (${track.popularity} / 10)"></p>
         <p class="track-duration"

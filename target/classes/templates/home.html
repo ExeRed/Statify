@@ -43,8 +43,8 @@
         </div>
       </div>
 
-      <a class="currently-playing-a" th:href="@{/tracks/{id}(id=${currentlyPlaying.id})}">
-        <div class="currently-playing" th:if="${currentlyPlaying != null}">
+      <a class="currently-playing-a" th:href="@{/tracks/{id}(id=${currentlyPlaying.id})}"  th:if="${currentlyPlaying != null}">
+        <div class="currently-playing">
             <div  class="song-image">
               <img th:src="${currentlyPlaying.album.images[0].url}" alt="Track Image" class="song-image">
             </div>
@@ -63,13 +63,7 @@
 
 
     <div class="actions">
-      <form action="/" method="get" class="time-form">
-        <select name="timePeriod" onchange="this.form.submit()" class="form-time">
-          <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
-          <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
-          <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
-        </select>
-      </form>
+      <div th:replace="fragments/time :: time"></div>
 
    <!--   <div class="share-section">
         <button type="button" class="share-btn" onclick="openModal()"></button>
@@ -132,7 +126,7 @@
           </div>
           <div class="song-info">
             <div class="song-name" th:text="${playedTrack.track.name}"></div>
-            <div class="song-artist" th:text="${playedTrack.track.artists[0].name}"></div>
+            <div class="song-artist" th:each="artist : ${playedTrack.track.getArtists()}" th:text="${artist.name} + '&nbsp;'"></div>
           </div>
         </a>
       </div>

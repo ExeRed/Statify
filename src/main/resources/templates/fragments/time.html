@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html th:fragment="time"  lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>time</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../static/css/time.css">
+    <link rel="icon" type="image/png" href="../../static/images/statify-logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div>
+    <div class="custom-dropdown">
+      <!-- Устанавливаем выбранное значение с помощью Thymeleaf -->
+      <div class="dropdown-header" onclick="toggleDropdown()">
+        <span th:text="${selectedOption == 'short_term' ? '4 weeks' : (selectedOption == 'medium_term' ? '6 months' : 'lifetime')}"></span>
+        <span class="arrow-period">▼</span>
+      </div>
+      <ul class="dropdown-list" id="dropdownList">
+        <li class="dropdown-item" data-value="short_term">4 weeks</li>
+        <li class="dropdown-item" data-value="medium_term">6 months</li>
+        <li class="dropdown-item" data-value="long_term">lifetime</li>
+      </ul>
+    </div>
+
+    <form id="hiddenForm" action="/topTrack" method="get" style="display: none;">
+      <input type="hidden" name="timePeriod" id="selectedTimePeriod" th:value="${selectedOption}">
+    </form>
+  </div>
+
+  <script src="../../static/script/timeSelection.js"></script>
+
+</body>
+</html>

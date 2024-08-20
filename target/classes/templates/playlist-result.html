@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Playlist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/css/playlist-result.css">
+    <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="content">
+        <h1>Your Playlist is created</h1>
+        <h2>Go and check out it</h2>
+
+        <img th:src="${playlist.images[0].url}" class="playlist-cover">
+        <div th:text="${playlist.name}" class="playlist-name"></div>
+
+        <div class="playlist-url">
+            <a th:href="'https://open.spotify.com/playlist/' + ${playlistId}" target="_blank">
+                <img src="../static/images/Spotify_Icon_RGB_Black.png" alt="Spotify Logo" class="spotify-logo">
+                Listen on Spotify
+            </a>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

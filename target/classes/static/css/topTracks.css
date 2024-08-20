@@ -22,27 +22,9 @@ body {
     flex-wrap: wrap; /* Flex-контейнер может переносить элементы */
     justify-content: space-between;
     align-items: center; /* Центрируем элементы вертикально */
-    padding: 10px; /* Отступы для внутреннего контента */
+    gap: 30px;
+    margin: 0 20px;
 }
-
-.time-form {
-    flex-grow: 1;
-    max-width: 100%;
-    margin-right: 20px;
-}
-
-.form-time {
-    width: 100%;
-    background-color: #282828;
-    color: #cdcdcd;
-    height: 40px;
-    font-size: 16px;
-    appearance: none;
-    padding: 5px;
-    border-radius: 5px;
-    border: none;
-}
-
 
 .top-tracks {
     text-align: left;
@@ -150,8 +132,6 @@ body {
     margin: 10px 0;
 }
 
-
-
 .cover-link {
     display: block; /* Сделать ссылку блочным элементом для обертывания изображения */
     cursor: pointer; /* Изменить курсор на указатель при наведении */
@@ -223,6 +203,8 @@ body.loading {
 
     .actions {
         width: 70%;
+        flex-direction: column;
+        align-items: center;
     }
 
     .container1 {

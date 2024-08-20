@@ -1,0 +1,34 @@
+.share-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    gap: 20px; /* Space between buttons */
+}
+
+.create-playlist-btn,
+.share-btn {
+    display: flex;
+    align-items: center;
+    background-color: #3c3c3c; /* Gray background color */
+    border: none;
+    cursor: pointer;
+    padding: 8px 15px; /* Внутренние отступы для каждого жанра */
+    border-radius: 10px;
+    font-size: 14px; /* Font size for the button text */
+    color: #cdcdcd; /* Text color */
+    text-align: center;
+    width: auto; /* Width adjusts to content */
+
+}
+
+.create-playlist-btn .playlist-icon,
+.share-icon {
+    width: 18px; /* Icon width */
+    height: 18px; /* Icon height */
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.create-playlist-btn .button-text {
+    vertical-align: middle; /* Align text vertically with the icon */
+}
