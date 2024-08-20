@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <a class="currently-playing-a" th:href="@{/tracks/{id}(id=${currentlyPlaying.id})}"  th:if="${currentlyPlaying != null}">
+      <a class="currently-playing-a" th:href="@{/tracks/{id}(id=${currentlyPlaying.id})}" th:if="${currentlyPlaying != null}">
         <div class="currently-playing">
             <div  class="song-image">
               <img th:src="${currentlyPlaying.album.images[0].url}" alt="Track Image" class="song-image">
