@@ -1,0 +1,54 @@
+html {
+    background: #121212;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 1110px;
+    color: white;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.playlist-url {
+    margin-top: 15px;
+}
+
+.playlist-url a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: #1db954;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.playlist-url a:hover {
+    background-color: #1ed760;
+    transform: scale(1.05);
+}
+
+.spotify-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.playlist-cover {
+    width: 300px;
+    height: 300px;
+}
+
+.playlist-name {
+    font-size: 16px;
+}

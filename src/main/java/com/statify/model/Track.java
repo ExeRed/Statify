@@ -3,6 +3,9 @@ package com.statify.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -15,11 +18,12 @@ public class Track {
     private int popularity;
     private int duration_ms;
     private ExternalUrls external_urls;
+    private String uri;
 
     public Track() {
     }
 
-    public Track(String id, String name, List<Artist> artists, Album album, int popularity, int duration_ms, ExternalUrls external_urls) {
+    public Track(String id, String name, List<Artist> artists, Album album, int popularity, int duration_ms, ExternalUrls external_urls, String uri) {
         this.id = id;
         this.name = name;
         this.artists = artists;
@@ -27,6 +31,7 @@ public class Track {
         this.popularity = popularity;
         this.duration_ms = duration_ms;
         this.external_urls = external_urls;
+        this.uri = uri;
     }
 
     @JsonProperty("name")
@@ -88,6 +93,26 @@ public class Track {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public List<Artist> getAllArtists() {
+        List<Artist> allArtists = new ArrayList<>();
+        if (artists != null) {
+            for (Artist artist : artists) {
+                if (artist != null && artist.getName() != null) {
+                    allArtists.addAll((Collection<? extends Artist>) artist);
+                }
+            }
+        }
+        return allArtists;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     @Override

@@ -5,6 +5,7 @@
     <title>Top Tracks</title>
     <link rel="stylesheet" type="text/css" href="../static/css/topTracks.css">
     <link rel="stylesheet" type="text/css" href="../static/css/imageModel.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/share-playlist.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -27,17 +28,25 @@
         </div>
 
         <div class="actions">
-            <form action="/topTrack" method="get" class="time-form">
-                <select name="timePeriod" onchange="this.form.submit()" class="form-time">
-                    <option value="short_term" th:selected="${selectedOption == 'short_term'}">4 weeks</option>
-                    <option value="medium_term" th:selected="${selectedOption == 'medium_term'}">6 months</option>
-                    <option value="long_term" th:selected="${selectedOption == 'long_term'}">lifetime</option>
-                </select>
-            </form>
+            <div th:replace="fragments/time :: time"></div>
 
             <div class="share-section">
-                <button type="button" class="share-btn" onclick="openModal()"></button>
+                <form action="/createPlaylist" method="post" class="create-playlist-form">
+                    <div th:each="track : ${tracks}">
+                        <input type="hidden" name="trackUris" th:value="${track.uri}" />
+                    </div>
+                    <button type="submit" class="create-playlist-btn">
+                        <img src="/static/images/playlist-button.svg" alt="Save Playlist" class="playlist-icon" />
+                        <span class="button-text">Save as a playlist</span>
+                    </button>
+                </form>
+
+                <button type="button" class="share-btn" onclick="openModal()">
+                    <img src="/static/images/share-icon.svg" alt="Share" class="share-icon" />
+                    <span class="button-text">Share</span>
+                </button>
             </div>
+
         </div>
 
     </div>
@@ -50,8 +59,8 @@
                 <div class="song-data">
                     <p th:text="${track.name}" class="song-name"></p>
                     <div class="artist-album">
-                        <p th:text="${track.album.artists[0].name}" class="artist-name"></p>
-                        <span class="separator">|</span>
+                        <p th:each="artist : ${track.getArtists()}" th:text="${artist.name} + '&nbsp;'" class="artist-name"></p>
+                        <span class="separator">| </span>
                         <p th:text="${track.album.name}" class="album-name"></p>
                     </div>
                 </div>
@@ -75,6 +84,8 @@
 
     <script src="../static/script/shareButton.js"></script>
     <script>
+
+
         document.addEventListener("DOMContentLoaded", function() {
             var loader = document.getElementById("loader");
 

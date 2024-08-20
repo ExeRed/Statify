@@ -50,6 +50,42 @@ h1 {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
 }
 
+.track-artist {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+/* Стили для списка артистов */
+.artist-list {
+    display: flex;
+    flex-wrap: wrap; /* Если артистов много, переносит их на новую строку */
+    list-style-type: none; /* Убирает маркеры списка */
+    padding: 0;
+    margin: 0;
+    gap: 10px; /* Расстояние между элементами */
+}
+
+/* Стили для элементов списка */
+.artist-list li {
+    margin: 0;
+}
+
+/* Стили для ссылок на артистов */
+.artist-list li a {
+    color: #f0f0f0;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.artist-list li a:hover {
+    color: #1ed760; /* Цвет при наведении */
+    text-decoration: underline; /* Добавляет подчеркивание при наведении */
+}
+
+
 /* Стили для информации о треке */
 .track-info {
     display: flex;

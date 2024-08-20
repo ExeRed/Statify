@@ -1,11 +1,3 @@
-.share-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 30px;
-}
-
-
 .image-container {
     margin: 20px 0;
 }
@@ -68,16 +60,6 @@
     background-color: #218838;
 }
 
-.share-btn {
-    background: url('/static/images/share-icon.svg') no-repeat center center;
-    background-size: contain;
-    width: 24px;
-    height: 24px;
-    border: none;
-    cursor: pointer;
-    margin-right: 100px;
-    margin-left: 20px;
-}
 
 .share {
     display: none;
