@@ -27,7 +27,7 @@
 
 .modal-content {
     max-width: 80%;
-    height: auto;
+    max-height: 80%;
 }
 
 .close {

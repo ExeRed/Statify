@@ -22,25 +22,8 @@ body {
     flex-wrap: wrap; /* Flex-контейнер может переносить элементы */
     justify-content: space-between;
     align-items: center; /* Центрируем элементы вертикально */
-    padding: 10px; /* Отступы для внутреннего контента */
-}
-
-.time-form {
-    flex-grow: 1;
-    max-width: 100%;
-    margin-right: 20px;
-}
-
-.form-time {
-    width: 100%;
-    background-color: #282828;
-    color: #cdcdcd;
-    height: 40px;
-    font-size: 16px;
-    appearance: none;
-    padding: 5px;
-    border-radius: 5px;
-    border: none;
+    gap: 30px;
+    margin: 0 20px;
 }
 
 .top-genres {
@@ -90,11 +73,11 @@ body {
 }
 
 @media only screen and (max-width: 568px) {
-    .form-time {
-        font-size: 24px;
-        margin-right: 10px;
-        width: 100px;
-        text-align: center;
+
+    .container1 {
+        margin-top: 0;
+        margin-left: 0;
+        flex-direction: column;
     }
 
     .number {
@@ -105,6 +88,10 @@ body {
 
     .artist-name {
         font-size: 24px;
+    }
+
+    .top-genres {
+        text-align: center;
     }
 
 }

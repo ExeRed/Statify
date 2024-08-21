@@ -5,7 +5,9 @@ import com.statify.model.Track;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -20,12 +22,18 @@ public class TopTracksImageGenerator {
     public String generateBase64Image(String userName, List<Track> topTracks, String timePeriod, String format) {
         // Create a new BufferedImage object
         BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        Image image_logo = null;
+        try {
+            image_logo = ImageIO.read(new File("src/main/resources/static/images/Spotify_Icon_RGB_White.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Create a Graphics2D object for drawing on the image
         Graphics2D graphics = image.createGraphics();
 
         // Set font and colors
-        Font titleFont = new Font("Inter", Font.PLAIN, 72);
+        Font titleFont = new Font("Inter", Font.BOLD, 72);
         Font trackFont = new Font("Inter", Font.BOLD, 56);
         Font artistFont = new Font("Inter", Font.PLAIN, 48);
         Font usernameFont = new Font("Inter", Font.BOLD, 96);
@@ -37,6 +45,7 @@ public class TopTracksImageGenerator {
         graphics.setFont(titleFont);
         graphics.setColor(whiteColor);
         graphics.drawString("Top Tracks" , 611, 120);
+        graphics.drawImage(image_logo, 1050, 45, 85, 85, null);
 
         // Draw username
         graphics.setFont(usernameFont);
@@ -93,9 +102,9 @@ public class TopTracksImageGenerator {
         }
 
         graphics.drawImage(logoImage, 95, y + 40, 150, 86, null);
-        graphics.setFont(trackFont);
+        graphics.setFont(artistFont);
         graphics.setColor(whiteColor);
-        graphics.drawString("t.me/statify_sbot/statify", 290, y + 101);
+        graphics.drawString("https://statify-468bada3215e.herokuapp.com", 290, y + 101);
 
         // Dispose of the Graphics2D object
         graphics.dispose();
