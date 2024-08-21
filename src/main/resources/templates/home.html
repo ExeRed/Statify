@@ -6,11 +6,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../static/css/home.css">
   <link rel="stylesheet" type="text/css" href="../static/css/imageModel.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/time.css">
   <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-  <body>
+<body>
   <div th:replace="fragments/header :: header"></div>
 
   <div th:unless="${loggedIn}">
@@ -63,88 +64,104 @@
 
 
     <div class="actions">
-      <div th:replace="fragments/time :: time"></div>
-
-   <!--   <div class="share-section">
-        <button type="button" class="share-btn" onclick="openModal()"></button>
-      </div> -->
-    </div>
-
-    <div class="top-genres-text">
-      <p>Top Genres</p>
-      <a class="more-btn" href="/topGenre">more</a>
-    </div>
-
-    <div class="topGenres">
-      <div class="genres-list">
-        <div th:each="genre : ${topGenres}" th:text="${genre}" class="genre-item"></div>
-      </div>
-    </div>
-
-
-    <div class="top-artist-text">
-      <p>Top Artists</p>
-      <a class="more-btn" href="/topArtist">more</a>
-    </div>
-    <div class="topArtists">
-      <div th:each="artist : ${artists}" class="artist">
-        <a th:href="@{/artists/{id}(id=${artist.id})}">
-          <div class="artists-photo">
-            <img th:src="${artist.images[0].url}" alt="Artist Photo">
+        <div>
+          <div class="custom-dropdown">
+            <div class="dropdown-header" onclick="toggleDropdown()">
+              <span th:text="${selectedOption == 'short_term' ? '4 weeks' : (selectedOption == 'medium_term' ? '6 months' : 'lifetime')}"></span>
+              <span class="arrow-period">▼</span>
+            </div>
+            <ul class="dropdown-list" id="dropdownList">
+              <li class="dropdown-item" data-value="short_term">4 weeks</li>
+              <li class="dropdown-item" data-value="medium_term">6 months</li>
+              <li class="dropdown-item" data-value="long_term">lifetime</li>
+            </ul>
           </div>
-          <div class="artist-name" th:text="${artist.name}"></div>
-        </a>
-      </div>
-    </div>
+
+          <form id="hiddenForm" action="/" method="get" style="display: none;">
+            <input type="hidden" name="timePeriod" id="selectedTimePeriod" th:value="${selectedOption}">
+          </form>
+        </div>
+
+      <!--   <div class="share-section">
+           <button type="button" class="share-btn" onclick="openModal()"></button>
+         </div> -->
+       </div>
+
+       <div class="top-genres-text">
+         <p>Top Genres</p>
+         <a class="more-btn" href="/topGenre">more</a>
+       </div>
+
+       <div class="topGenres">
+         <div class="genres-list">
+           <div th:each="genre : ${topGenres}" th:text="${genre}" class="genre-item"></div>
+         </div>
+       </div>
 
 
-    <div class="top-track-text">
-      <p>Top Tracks</p>
-      <a class="more-btn" href="/topTrack">more</a>
-    </div>
-    <div class="topTracks">
-      <div th:each="track : ${tracks}" class="track">
-        <a th:href="@{/tracks/{id}(id=${track.id})}">
-          <div class="track-image">
-            <img th:src="${track.album.images[0].url}" alt="Track Image">
-          </div>
-          <div class="track-name" th:text="${track.name}"></div>
-          <div class="track-artist" th:text="${track.artists[0].name}"></div>
-        </a>
-      </div>
-    </div>
+       <div class="top-artist-text">
+         <p>Top Artists</p>
+         <a class="more-btn" href="/topArtist">more</a>
+       </div>
+       <div class="topArtists">
+         <div th:each="artist : ${artists}" class="artist">
+           <a th:href="@{/artists/{id}(id=${artist.id})}">
+             <div class="artists-photo">
+               <img th:src="${artist.images[0].url}" alt="Artist Photo">
+             </div>
+             <div class="artist-name" th:text="${artist.name}"></div>
+           </a>
+         </div>
+       </div>
 
 
-    <div class="recently-played-text">
-      <p>Recently Played Tracks</p>
-    </div>
-    <div class="recently-played-songs">
-      <div th:each="playedTrack : ${recentlyPlayed}">
-        <a th:href="@{/tracks/{id}(id=${playedTrack.track.id})}" class="song">
-          <div class="song-image">
-            <img th:src="${playedTrack.track.album.images[0].url}" alt="Song Image">
-          </div>
-          <div class="song-info">
-            <div class="song-name" th:text="${playedTrack.track.name}"></div>
-            <div class="song-artist" th:each="artist : ${playedTrack.track.getArtists()}" th:text="${artist.name} + '&nbsp;'"></div>
-          </div>
-        </a>
-      </div>
-
-    </div>
+       <div class="top-track-text">
+         <p>Top Tracks</p>
+         <a class="more-btn" href="/topTrack">more</a>
+       </div>
+       <div class="topTracks">
+         <div th:each="track : ${tracks}" class="track">
+           <a th:href="@{/tracks/{id}(id=${track.id})}">
+             <div class="track-image">
+               <img th:src="${track.album.images[0].url}" alt="Track Image">
+             </div>
+             <div class="track-name" th:text="${track.name}"></div>
+             <div class="track-artist" th:text="${track.artists[0].name}"></div>
+           </a>
+         </div>
+       </div>
 
 
+       <div class="recently-played-text">
+         <p>Recently Played Tracks</p>
+       </div>
+       <div class="recently-played-songs">
+         <div th:each="playedTrack : ${recentlyPlayed}">
+           <a th:href="@{/tracks/{id}(id=${playedTrack.track.id})}" class="song">
+             <div class="song-image">
+               <img th:src="${playedTrack.track.album.images[0].url}" alt="Song Image">
+             </div>
+             <div class="song-info">
+               <div class="song-name" th:text="${playedTrack.track.name}"></div>
+               <div class="song-artist" th:each="artist : ${playedTrack.track.getArtists()}" th:text="${artist.name} + '&nbsp;'"></div>
+             </div>
+           </a>
+         </div>
 
-  </div>
+       </div>
+
+
+
+     </div>
 
 
 
 
 
-  <div th:replace="fragments/footer :: footer"></div>
+     <div th:replace="fragments/footer :: footer"></div>
 
-  <script src="../static/script/higlight_text.js"></script>
+     <script src="../static/script/higlight_text.js"></script>
+     <script src="../static/script/timeSelection.js"></script>
 
-
-  </body>
-</html>
+     </body>
+   </html>

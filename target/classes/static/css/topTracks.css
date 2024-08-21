@@ -186,13 +186,6 @@ body.loading {
 
 @media only screen and (max-width: 568px) {
 
-    .form-time {
-        font-size: 24px;
-        margin-right: 10px;
-        width: 100px;
-        text-align: center;
-    }
-
     .album-name, .separator {
         display: none;
     }
@@ -202,9 +195,11 @@ body.loading {
     }
 
     .actions {
-        width: 70%;
+        width: 85%;
         flex-direction: column;
         align-items: center;
+        gap: 15px;
+        margin-bottom: 10px;
     }
 
     .container1 {
