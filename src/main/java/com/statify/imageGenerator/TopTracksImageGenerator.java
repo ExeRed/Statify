@@ -45,7 +45,7 @@ public class TopTracksImageGenerator {
         graphics.setFont(titleFont);
         graphics.setColor(whiteColor);
         graphics.drawString("Top Tracks" , 611, 120);
-        graphics.drawImage(image_logo, 1050, 45, 85, 85, null);
+        graphics.drawImage(image_logo, 1080, 45, 85, 85, null);
 
         // Draw username
         graphics.setFont(usernameFont);
@@ -102,9 +102,9 @@ public class TopTracksImageGenerator {
         }
 
         graphics.drawImage(logoImage, 95, y + 40, 150, 86, null);
-        graphics.setFont(artistFont);
+        graphics.setFont(titleFont);
         graphics.setColor(whiteColor);
-        graphics.drawString("https://statify-468bada3215e.herokuapp.com", 290, y + 101);
+        graphics.drawString("statify.live", 290, y + 101);
 
         // Dispose of the Graphics2D object
         graphics.dispose();

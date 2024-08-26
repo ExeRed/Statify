@@ -1,51 +1,100 @@
 html {
-    font-size: 10px;
+    font-size: 16px;
     background: #121212;
     color: #FFFFFF;
     font-family: 'Inter', sans-serif;
+    max-width: 1110px;
+    margin: auto;
 }
 
-.footer {
-    max-width: 120rem;
-    height: 14rem;
-    margin: 30px auto 0;
-
-}
-
-.footlogo {
-    width: 115px;
-    height: 83px;
-}
-
-.text11 {
-    text-align: center;
-}
-
-.footernav {
+/* Ensure footer stays at the bottom */
+.footer-container {
+    margin: 80px 20px 0;
+    padding-top: 10px;
+    color: #cdcdcd;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-right: 7rem;
-    margin-left: 7rem;
-    font-size: 14px;
+    border-top: 1px solid #333;
+    align-items: flex-start;
 }
 
-@media only screen and (max-width: 568px) {
-    .footer {
-        height: auto;
-        padding: 1rem;
+.gray {
+    color: #cdcdcd;
+    font-size: 8px;
+}
+
+.contact-text {
+    color: #cdcdcd;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.footer-logo img {
+    width: 60px;
+}
+
+.footer-logo a {
+    text-decoration: none;
+}
+
+.footer-copyrights {
+    margin-right: 40px;
+    margin-left: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.footer-copyrights p {
+    margin-top: 0;
+    margin-bottom: 5px;
+    max-width: 400px;
+}
+
+.footer-links {
+    text-align: left;
+}
+
+.footer-links p {
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links a {
+    color: #1db954;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 0;
+    font-size: 12px;
+    color: #999;
+}
+
+/* Ensure footer stays at the bottom of the page */
+footer {
+    width: 100%;
+    margin-top: auto;
+}
+
+.footer-container, .footer-bottom {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+    .footer-copyrights {
+        margin: 0 15px;
     }
 
-    .footernav {
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        margin: 0;
-        text-align: left;
+    .gray {
+        font-size: 6px;
     }
 
-    .footlogo {
-        height: 50px;
-        width: 69px;
+    .contact-text {
+        font-size: 12px;
     }
 }
