@@ -4,6 +4,7 @@ import com.statify.imageGenerator.TopTracksImageGenerator;
 import com.statify.model.Track;
 import com.statify.model.TrackResponse;
 import com.statify.model.User;
+import com.statify.service.SpotifyTokenService;
 import com.statify.service.TrackService;
 import com.statify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,24 +31,39 @@ public class SpotifyTrackController {
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
-    @GetMapping("/topTrack")
-    public String topTracks(@RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
+    @Autowired
+    private SpotifyTokenService spotifyTokenService;
+
+    @GetMapping({"/topTrack", "/{userId:[a-zA-Z0-9]+}/topTrack"})
+    public String topTracks(@PathVariable(required = false) String userId,
+                            @RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
                             OAuth2AuthenticationToken authentication, Model model) {
 
-        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
-                authentication.getAuthorizedClientRegistrationId(),
-                authentication.getName());
+        String accessToken;
+        User currentUser;
+        boolean isOwnProfile;
 
-        String jwt = client.getAccessToken().getTokenValue();
+        // If userId is null, it means we are on the user's own profile
+        if (userId == null) {
+            // Handle the case for the logged-in user
+            OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                    authentication.getAuthorizedClientRegistrationId(),
+                    authentication.getName());
+            accessToken = client.getAccessToken().getTokenValue();
+            currentUser = userService.getCurrentUser(accessToken);
+            isOwnProfile = true;
+        } else {
+            // Handle the case for another user's profile
+            accessToken = spotifyTokenService.refreshAccessToken(userId);
+            currentUser = userService.getCurrentUser(accessToken);
+            isOwnProfile = false;
+        }
 
-        // Получение имени пользователя
-        User currentUser = userService.getCurrentUser(jwt);
         String userName = currentUser.getDisplay_name();
-
         List<Track> songs = new ArrayList<>();
 
-        TrackResponse trackResponse = userService.getTopTracks(jwt, timePeriod);
-
+        // Fetch top tracks
+        TrackResponse trackResponse = userService.getTopTracks(accessToken, timePeriod);
         if (trackResponse != null && trackResponse.getItems() != null) {
             songs.addAll(trackResponse.getItems());
         }
@@ -55,7 +71,6 @@ public class SpotifyTrackController {
         // Generate image
         TopTracksImageGenerator imageGenerator = new TopTracksImageGenerator();
         String base64EncodedImage;
-
         if (timePeriod.equals("long_term")) {
             model.addAttribute("time", "of all time");
             base64EncodedImage = imageGenerator.generateBase64Image(userName, songs, "all time", "png");
@@ -67,13 +82,17 @@ public class SpotifyTrackController {
             base64EncodedImage = imageGenerator.generateBase64Image(userName, songs, "last 4 weeks", "png");
         }
 
-        // Update model with Base64 encoded image
+        // Update model with data
         model.addAttribute("base64EncodedImage", base64EncodedImage);
         model.addAttribute("selectedOption", timePeriod);
         model.addAttribute("tracks", songs);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("isOwnProfile", isOwnProfile);
         model.addAttribute("loggedIn", true);
+
         return "topTracks";
     }
+
 
     @GetMapping("/tracks/{id}")
     public String getTrack(@PathVariable("id") String id,
@@ -92,6 +111,7 @@ public class SpotifyTrackController {
 
         return "track";
     }
+
 
 
 }

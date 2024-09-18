@@ -32,7 +32,10 @@
                     </ul>
                 </div>
 
-                <form id="hiddenForm" action="/topGenre" method="get" style="display: none;">
+                <form id="hiddenForm"
+                      th:action="${isOwnProfile} ? '/topGenre' : '/' + ${currentUser.id} + '/topGenre'"
+                      method="get"
+                      style="display: none;">
                     <input type="hidden" name="timePeriod" id="selectedTimePeriod" th:value="${selectedOption}">
                 </form>
             </div>

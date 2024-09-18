@@ -5,10 +5,13 @@ public class User {
     private String id;
     private ExternalUrls external_urls;
 
-    public User(String display_name, String id, ExternalUrls external_urls) {
+    private String email;
+
+    public User(String display_name, String id, ExternalUrls external_urls, String email) {
         this.display_name = display_name;
         this.id = id;
         this.external_urls = external_urls;
+        this.email = email;
     }
 
     public User() {
@@ -36,5 +39,13 @@ public class User {
 
     public void setExternal_urls(ExternalUrls external_urls) {
         this.external_urls = external_urls;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

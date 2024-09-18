@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-
+import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -18,58 +19,59 @@ public class TrackService {
     private static final Logger logger = LoggerFactory.getLogger(TrackService.class);
 
     public Track getTrack(String accessToken, String id) {
-        logger.info("Fetching track with ID: {}", id);
-        if (id == null || id.length() != 22) { // Example validation length, adjust as needed
-            logger.error("Invalid track ID: {}", id);
-            return null;
-        }
-
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<Track> response = null;
         try {
-            response = restTemplate.exchange(
+            ResponseEntity<Track> response = restTemplate.exchange(
                     "https://api.spotify.com/v1/tracks/" + id,
                     HttpMethod.GET,
                     entity,
                     Track.class
             );
+            return response.getBody();
         } catch (HttpClientErrorException e) {
-            String errorMessage = String.format("HTTP Status Code: %d, Status Text: %s, Response Body: %s",
-                    e.getStatusCode().value(),
-                    e.getStatusText(),
-                    e.getResponseBodyAsString());
-
-            logger.error("Request failed with error: {}", errorMessage);
-
-            // Handle specific status codes
-            switch (e.getStatusCode()) {
-                case BAD_REQUEST:
-                    logger.error("Bad Request: Check the request parameters or payload.");
-                    break;
-                case UNAUTHORIZED:
-                    logger.error("Unauthorized: Check the authentication details.");
-                    break;
-                case FORBIDDEN:
-                    logger.error("Forbidden: You do not have permission to access this resource.");
-                    break;
-                case NOT_FOUND:
-                    logger.error("Not Found: The requested resource could not be found.");
-                    break;
-                default:
-                    logger.error("Unexpected error: {}", e.getMessage());
-                    break;
-            }
-            return null;
+            logger.error("HTTP error occurred: Status Code: {}, Response Body: {}",
+                    e.getStatusCode().value(), e.getResponseBodyAsString());
         } catch (Exception e) {
-            logger.error("An unexpected error occurred: {}", e.getMessage());
-            return null;
+            logger.error("Unexpected error occurred: {}", e.getMessage());
         }
 
-        return response != null ? response.getBody() : null;
+        return null;
     }
+
+    public List<Track> getTracks(String accessToken, List<String> ids) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + accessToken);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        // Составляем строку из ID треков для параметра ids
+        String idsString = String.join(",", ids);
+
+        try {
+            ResponseEntity<TrackResponse> response = restTemplate.exchange(
+                    "https://api.spotify.com/v1/tracks?ids=" + idsString,
+                    HttpMethod.GET,
+                    entity,
+                    TrackResponse.class
+            );
+
+            // Получаем список треков из ответа
+            List<Track> tracks = response.getBody().getTracks();
+
+            return tracks;
+        } catch (HttpClientErrorException e) {
+            logger.error("HTTP error occurred: Status Code: {}, Response Body: {}",
+                    e.getStatusCode().value(), e.getResponseBodyAsString());
+        } catch (Exception e) {
+            logger.error("Unexpected error occurred: {}", e.getMessage());
+        }
+
+        return null;
+    }
+
 
 }

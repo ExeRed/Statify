@@ -6,6 +6,7 @@ import com.statify.model.ArtistResponse;
 import com.statify.model.Track;
 import com.statify.model.User;
 import com.statify.service.ArtistService;
+import com.statify.service.SpotifyTokenService;
 import com.statify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -40,30 +41,44 @@ public class SpotifyArtistController {
 
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
+    @Autowired
+    private SpotifyTokenService spotifyTokenService;
 
-    @GetMapping("/topArtist")
-    public String topTracks(@RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
-                            OAuth2AuthenticationToken authentication, Model model) {
+    @GetMapping({"/topArtist", "/{userId:[a-zA-Z0-9]+}/topArtist"})
+    public String topArtists(@PathVariable(required = false) String userId,
+                             @RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
+                             OAuth2AuthenticationToken authentication, Model model) {
 
-        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
-                authentication.getAuthorizedClientRegistrationId(),
-                authentication.getName());
+        String accessToken;
+        User currentUser;
+        boolean isOwnProfile;
 
-        String jwt = client.getAccessToken().getTokenValue();
+        // Check if viewing the own profile or another user's profile
+        if (userId == null) {
+            // Own profile: Get the access token of the authenticated user
+            OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                    authentication.getAuthorizedClientRegistrationId(),
+                    authentication.getName());
+            accessToken = client.getAccessToken().getTokenValue();
+            currentUser = userService.getCurrentUser(accessToken);
+            isOwnProfile = true;
+        } else {
+            // Another user's profile: Refresh access token using userId
+            accessToken = spotifyTokenService.refreshAccessToken(userId);
+            currentUser = userService.getCurrentUser(accessToken);
+            isOwnProfile = false;
+        }
 
-
+        String userName = currentUser.getDisplay_name();
         List<Artist> artists = new ArrayList<>();
 
-        ArtistResponse artistResponse = userService.getTopArtists(jwt, timePeriod);
-
-        // Получение имени пользователя
-        User currentUser = userService.getCurrentUser(jwt);
-        String userName = currentUser.getDisplay_name();
-
+        // Fetch top artists for the given time period
+        ArtistResponse artistResponse = userService.getTopArtists(accessToken, timePeriod);
         if (artistResponse != null && artistResponse.getItems() != null) {
             artists.addAll(artistResponse.getItems());
         }
 
+        // Generate image for the top artists
         TopArtistsImageGenerator imageGenerator = new TopArtistsImageGenerator();
         String base64EncodedImage;
 
@@ -78,14 +93,17 @@ public class SpotifyArtistController {
             base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 4 weeks", "png");
         }
 
+        // Update model with attributes
         model.addAttribute("base64EncodedImage", base64EncodedImage);
         model.addAttribute("selectedOption", timePeriod);
         model.addAttribute("artists", artists);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("isOwnProfile", isOwnProfile);
         model.addAttribute("loggedIn", true);
 
         return "topArtists";
-
     }
+
 
 
     @GetMapping("/artists/{id}")

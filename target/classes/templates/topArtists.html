@@ -36,9 +36,13 @@
                   </ul>
               </div>
 
-              <form id="hiddenForm" action="/topArtist" method="get" style="display: none;">
+              <form id="hiddenForm"
+                    th:action="${isOwnProfile} ? '/topArtist' : '/' + ${currentUser.id} + '/topArtist'"
+                    method="get"
+                    style="display: none;">
                   <input type="hidden" name="timePeriod" id="selectedTimePeriod" th:value="${selectedOption}">
               </form>
+
           </div>
 
           <button type="button" class="share-btn" onclick="openModal()">
@@ -59,7 +63,6 @@
 
             <div class="arrow"></div>
         </a>
-
     </div>
   </div>
     <div th:replace="fragments/footer :: footer"></div>

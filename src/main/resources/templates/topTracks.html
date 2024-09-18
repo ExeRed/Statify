@@ -42,7 +42,10 @@
                     </ul>
                 </div>
 
-                <form id="hiddenForm" action="/topTrack" method="get" style="display: none;">
+                <form id="hiddenForm"
+                      th:action="${isOwnProfile} ? '/topTrack' : '/' + ${currentUser.id} + '/topTrack'"
+                      method="get"
+                      style="display: none;">
                     <input type="hidden" name="timePeriod" id="selectedTimePeriod" th:value="${selectedOption}">
                 </form>
             </div>
