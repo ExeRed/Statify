@@ -36,7 +36,7 @@ public class CustomOAuth2AuthorizationRequestResolver implements OAuth2Authoriza
         }
 
         Map<String, Object> additionalParameters = new HashMap<>(authorizationRequest.getAdditionalParameters());
-        additionalParameters.put("show_dialog", "false");
+        additionalParameters.put("show_dialog", "true");
 
         return OAuth2AuthorizationRequest.from(authorizationRequest)
                 .additionalParameters(additionalParameters)

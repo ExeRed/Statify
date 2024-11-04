@@ -36,6 +36,10 @@ public class SpotifyUserDB {
     @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SubscriptionDB> followers; // Список подписчиков
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private PrivacySettingsDB privacySettings;
+
+
     // Конструкторы, геттеры и сеттеры
     public SpotifyUserDB() {}
 
@@ -100,5 +104,13 @@ public class SpotifyUserDB {
 
     public void setFollowers(List<SubscriptionDB> followers) {
         this.followers = followers;
+    }
+
+    public PrivacySettingsDB getPrivacySettings() {
+        return privacySettings;
+    }
+
+    public void setPrivacySettings(PrivacySettingsDB privacySettings) {
+        this.privacySettings = privacySettings;
     }
 }

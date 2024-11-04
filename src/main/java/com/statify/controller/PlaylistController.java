@@ -51,6 +51,7 @@ public class PlaylistController {
 
         model.addAttribute("playlist", playlist);
         model.addAttribute("playlistId", playlistId);
+        model.addAttribute("loggedIn", true);
         return "playlist-result";
     }
 }

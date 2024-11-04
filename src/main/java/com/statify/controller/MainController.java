@@ -1,11 +1,13 @@
 package com.statify.controller;
 
 import com.statify.model.*;
+import com.statify.service.PrivacySettingsService;
 import com.statify.service.SpotifyTokenService;
 import com.statify.service.TrackService;
 import com.statify.serviceDB.SpotifyUserService;
 import com.statify.service.UserService;
 import com.statify.serviceDB.SubscriptionService;
+import com.statify.table.PrivacySettingsDB;
 import com.statify.table.SpotifyUserDB;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,12 +39,14 @@ public class MainController {
     @Autowired
     private SpotifyTokenService spotifyTokenService;
 
-
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
     @Autowired
     private SubscriptionService subscriptionService;
+
+    @Autowired
+    private PrivacySettingsService privacySettingsService;
 
     private static final Logger logger = LoggerFactory.getLogger(TrackService.class);
     @GetMapping({"/", "/{userId:[a-zA-Z0-9]+}"})
@@ -53,6 +57,7 @@ public class MainController {
         String accessToken;
         User currentUser;
         boolean isOwnProfile = false;
+        SpotifyUserDB user;
 
         if (userId == null) {
             // If userId is null, we're dealing with the authenticated user's profile
@@ -67,17 +72,11 @@ public class MainController {
                 Instant expiresAtInstant = client.getAccessToken().getExpiresAt();
                 LocalDateTime expiresAt = LocalDateTime.ofInstant(expiresAtInstant, ZoneOffset.UTC);
 
-                logger.info("Saving tokens for user {}: accessToken={}, refreshToken={}, expiresAt={}",
-                        currentUser.getId(), accessToken, refreshToken, expiresAt);
-
                 SpotifyUserDB userEntity = spotifyUserService.findOrCreateUser(currentUser);
                 spotifyUserService.updateUser(userEntity);
                 spotifyTokenService.saveTokens(currentUser.getId(), accessToken, refreshToken, expiresAt);
 
-
-                SpotifyUserDB user = spotifyUserService.getUser(currentUser.getId());
-                model.addAttribute("followers", subscriptionService.getFollowers(user));
-                model.addAttribute("following", subscriptionService.getFollowing(user));
+                user = spotifyUserService.getUser(currentUser.getId());
 
                 isOwnProfile = true;
             } else {
@@ -96,48 +95,56 @@ public class MainController {
 
             User user2 = userService.getCurrentUser(accessToken2);
             SpotifyUserDB currentUserReal = spotifyUserService.getUser(user2.getId());
-            SpotifyUserDB user = spotifyUserService.getUser(currentUser.getId());
+            user = spotifyUserService.getUser(currentUser.getId());
             if (currentUserReal != user) {
                 model.addAttribute("isFollowing", subscriptionService.isAlreadyFollowing(currentUserReal, user));
             }
 
-            System.out.println(subscriptionService.isAlreadyFollowing(currentUserReal, user));
-
-            // Списки подписчиков и подписок
-            model.addAttribute("followers", subscriptionService.getFollowers(user));
-            model.addAttribute("following", subscriptionService.getFollowing(user));
         }
 
         // Fetch data for the profile
-        populateModelWithProfileData(accessToken, timePeriod, model, currentUser, isOwnProfile);
+        PrivacySettingsDB privacySettingsDB = privacySettingsService.getPrivacySettingsByUser(user);
+        populateModelWithProfileData(accessToken, timePeriod, model, currentUser, isOwnProfile, privacySettingsDB);
 
         return "home"; // Return the same view for both "/" and "/{userId}"
     }
 
     // Helper method to populate model with user data
-    private void populateModelWithProfileData(String accessToken, String timePeriod, Model model, User currentUser, boolean isOwnProfile) {
+    private void populateModelWithProfileData(String accessToken, String timePeriod, Model model,
+                                              User currentUser, boolean isOwnProfile, PrivacySettingsDB privacySettingsDB) {
         List<Track> songs = new ArrayList<>();
         List<Artist> artists = new ArrayList<>();
         List<String> topGenresList = userService.getTopGenres(accessToken, timePeriod);
+        List<PlayedTrack> recentlyPlayed = new ArrayList<>();
 
-        TrackResponse trackResponse = userService.getTopTracks(accessToken, timePeriod);
-        ArtistResponse artistResponse = userService.getTopArtists(accessToken, timePeriod);
-        PlayedTrackResponse recentlyPlayedResponse = userService.getRecentlyPlayed(accessToken);
-        List<PlayedTrack> recentlyPlayed = recentlyPlayedResponse.getItems();
+        // Populate lists if responses are not null and settings are true
+        if (privacySettingsDB.isShowTopTracks() || isOwnProfile) {
+            TrackResponse trackResponse = userService.getTopTracks(accessToken, timePeriod);
+
+            if (trackResponse != null && trackResponse.getItems() != null) {
+                songs.addAll(trackResponse.getItems());
+            }
+        }
+
+        if (privacySettingsDB.isShowTopArtists() || isOwnProfile) {
+            ArtistResponse artistResponse = userService.getTopArtists(accessToken, timePeriod);
+
+            if (artistResponse != null && artistResponse.getItems() != null) {
+                artists.addAll(artistResponse.getItems());
+            }
+        }
+
+        if (privacySettingsDB.isShowRecentlyPlayed() || isOwnProfile) {
+            PlayedTrackResponse recentlyPlayedResponse = userService.getRecentlyPlayed(accessToken);
+            recentlyPlayed = recentlyPlayedResponse.getItems();
+
+            if (recentlyPlayedResponse.getItems() != null) {
+                recentlyPlayed.addAll(recentlyPlayedResponse.getItems());
+            }
+        }
+
         TrackResponse currentlyPlayingTrack = userService.getCurrentlyPlayingTrack(accessToken);
 
-        // Populate lists if responses are not null
-        if (trackResponse != null && trackResponse.getItems() != null) {
-            songs.addAll(trackResponse.getItems());
-        }
-
-        if (artistResponse != null && artistResponse.getItems() != null) {
-            artists.addAll(artistResponse.getItems());
-        }
-
-        if (recentlyPlayedResponse.getItems() != null) {
-            recentlyPlayed.addAll(recentlyPlayedResponse.getItems());
-        }
 
         // Add currently playing track to the model if available
         if (currentlyPlayingTrack != null && currentlyPlayingTrack.getItem() != null) {
@@ -145,6 +152,14 @@ public class MainController {
         }
 
 
+        // Списки подписчиков и подписок
+        SpotifyUserDB user = spotifyUserService.getUser(currentUser.getId());
+        if (privacySettingsDB.isShowFollowers() || isOwnProfile) {
+            model.addAttribute("followers", subscriptionService.getFollowers(user));
+        }
+        if (privacySettingsDB.isShowFollowing() || isOwnProfile) {
+            model.addAttribute("following", subscriptionService.getFollowing(user));
+        }
 
         // Populate the model with all data
         model.addAttribute("recentlyPlayed", recentlyPlayed);

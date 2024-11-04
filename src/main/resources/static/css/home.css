@@ -273,19 +273,6 @@ body {
     color: #4CAF50;
 }
 
-
-/* Мобильная адаптивность */
-@media screen and (max-width: 768px) {
-    .modal-content-followers {
-        margin: auto auto 0;
-
-        width: 100%;
-        height: 75%;
-        border-radius: 0;
-    }
-}
-
-
 .time-form {
     flex-grow: 1;
     max-width: 100%;
@@ -546,6 +533,14 @@ body {
 
 
 @media only screen and (max-width: 768px) {
+    .modal-content-followers {
+        margin: auto auto 0;
+
+        width: 100%;
+        height: 75%;
+        border-radius: 0;
+    }
+
     .container1 {
         flex-direction: column;
     }
@@ -582,4 +577,58 @@ body {
 
     }
 }
+
+
+
+#searchTab {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+#searchForm {
+    display: flex;
+    align-items: center;
+}
+
+#searchQuery {
+    width: 300px;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.3s ease;
+    outline: none;
+    height: 35px;
+}
+
+#searchQuery:focus {
+    border-color: #1DB954;
+}
+
+#searchButton {
+    margin-left: 10px; /* Отступ между полем поиска и кнопкой */
+    padding: 10px 20px;
+    background-color: #1DB954;
+    color: white;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#searchButton:hover {
+    background-color: #17a348;
+}
+
+#searchButton:active {
+    background-color: #158f3e;
+}
+
+#searchButton:focus {
+    outline: none;
+}
+
 
