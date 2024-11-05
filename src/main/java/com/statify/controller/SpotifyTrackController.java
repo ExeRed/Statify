@@ -1,12 +1,17 @@
 package com.statify.controller;
 
+import ch.qos.logback.core.db.ConnectionSourceBase;
 import com.statify.imageGenerator.TopTracksImageGenerator;
 import com.statify.model.Track;
 import com.statify.model.TrackResponse;
 import com.statify.model.User;
+import com.statify.service.PrivacySettingsService;
 import com.statify.service.SpotifyTokenService;
 import com.statify.service.TrackService;
 import com.statify.service.UserService;
+import com.statify.serviceDB.SpotifyUserService;
+import com.statify.table.PrivacySettingsDB;
+import com.statify.table.SpotifyUserDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -34,6 +39,12 @@ public class SpotifyTrackController {
     @Autowired
     private SpotifyTokenService spotifyTokenService;
 
+    @Autowired
+    private PrivacySettingsService privacySettingsService;
+
+    @Autowired
+    private SpotifyUserService spotifyUserService;
+
     @GetMapping({"/topTrack", "/{userId:[a-zA-Z0-9]+}/topTrack"})
     public String topTracks(@PathVariable(required = false) String userId,
                             @RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
@@ -42,6 +53,7 @@ public class SpotifyTrackController {
         String accessToken;
         User currentUser;
         boolean isOwnProfile;
+        SpotifyUserDB user;
 
         // If userId is null, it means we are on the user's own profile
         if (userId == null) {
@@ -59,13 +71,20 @@ public class SpotifyTrackController {
             isOwnProfile = false;
         }
 
+
+        user = spotifyUserService.getUser(currentUser.getId());
+        PrivacySettingsDB privacySettingsDB = privacySettingsService.getPrivacySettingsByUser(user);
+
         String userName = currentUser.getDisplay_name();
         List<Track> songs = new ArrayList<>();
 
         // Fetch top tracks
-        TrackResponse trackResponse = userService.getTopTracks(accessToken, timePeriod);
-        if (trackResponse != null && trackResponse.getItems() != null) {
-            songs.addAll(trackResponse.getItems());
+        if (privacySettingsDB.isShowTopTracks() || isOwnProfile) {
+            TrackResponse trackResponse = userService.getTopTracks(accessToken, timePeriod);
+
+            if (trackResponse != null && trackResponse.getItems() != null) {
+                songs.addAll(trackResponse.getItems());
+            }
         }
 
         // Generate image

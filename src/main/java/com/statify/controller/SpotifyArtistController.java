@@ -6,8 +6,12 @@ import com.statify.model.ArtistResponse;
 import com.statify.model.Track;
 import com.statify.model.User;
 import com.statify.service.ArtistService;
+import com.statify.service.PrivacySettingsService;
 import com.statify.service.SpotifyTokenService;
 import com.statify.service.UserService;
+import com.statify.serviceDB.SpotifyUserService;
+import com.statify.table.PrivacySettingsDB;
+import com.statify.table.SpotifyUserDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -44,6 +48,12 @@ public class SpotifyArtistController {
     @Autowired
     private SpotifyTokenService spotifyTokenService;
 
+    @Autowired
+    private PrivacySettingsService privacySettingsService;
+
+    @Autowired
+    private SpotifyUserService spotifyUserService;
+
     @GetMapping({"/topArtist", "/{userId:[a-zA-Z0-9]+}/topArtist"})
     public String topArtists(@PathVariable(required = false) String userId,
                              @RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
@@ -52,6 +62,7 @@ public class SpotifyArtistController {
         String accessToken;
         User currentUser;
         boolean isOwnProfile;
+        SpotifyUserDB user;
 
         // Check if viewing the own profile or another user's profile
         if (userId == null) {
@@ -69,13 +80,19 @@ public class SpotifyArtistController {
             isOwnProfile = false;
         }
 
+        user = spotifyUserService.getUser(currentUser.getId());
+        PrivacySettingsDB privacySettingsDB = privacySettingsService.getPrivacySettingsByUser(user);
+
         String userName = currentUser.getDisplay_name();
         List<Artist> artists = new ArrayList<>();
 
         // Fetch top artists for the given time period
-        ArtistResponse artistResponse = userService.getTopArtists(accessToken, timePeriod);
-        if (artistResponse != null && artistResponse.getItems() != null) {
-            artists.addAll(artistResponse.getItems());
+        if (privacySettingsDB.isShowTopArtists() || isOwnProfile) {
+            ArtistResponse artistResponse = userService.getTopArtists(accessToken, timePeriod);
+
+            if (artistResponse != null && artistResponse.getItems() != null) {
+                artists.addAll(artistResponse.getItems());
+            }
         }
 
         // Generate image for the top artists
