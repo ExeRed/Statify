@@ -13,13 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div id="loader" class="loader">
-        <div class="note note1"></div>
-        <div class="note note2"></div>
-        <div class="note note3"></div>
-    </div>
-
-
+    <div th:replace="fragments/loader :: loader"></div>
     <div th:replace="fragments/header :: header"></div>
 
     <div class="container1">
@@ -53,7 +47,7 @@
             <div class="share-section">
                 <form action="/createPlaylist" method="post" class="create-playlist-form">
                     <div th:each="track : ${tracks}">
-                        <input type="hidden" name="trackUris" th:value="${track.ur}" />
+                        <input type="hidden" name="trackUris" th:value="${track.uri}" />
                     </div>
                     <button type="submit" class="create-playlist-btn">
                         <img src="/static/images/playlist-button.svg" alt="Save Playlist" class="playlist-icon" />

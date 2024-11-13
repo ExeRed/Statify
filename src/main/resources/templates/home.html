@@ -7,11 +7,14 @@
   <link rel="stylesheet" type="text/css" href="../static/css/home.css">
   <link rel="stylesheet" type="text/css" href="../static/css/imageModel.css">
   <link rel="stylesheet" type="text/css" href="../static/css/time.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/share-playlist.css">
   <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    <div th:replace="fragments/loader :: loader"></div>
+
   <div th:replace="fragments/header :: header"></div>
 
   <div th:unless="${loggedIn}">
@@ -47,7 +50,7 @@
 
           <!-- Счетчик подписчиков и подписок -->
           <div class="followers-info">
-             <span class="link" th:if="${followers != null}" onclick="openModal('followers')">
+             <span class="link" th:if="${followers != null}" onclick="openFollowersModal('followers')">
                 <span th:text="${followers.size()}"></span><br>
                 <span>Followers</span>
             </span>
@@ -55,7 +58,7 @@
               <div th:if="${followers != null}" ><span>| <br>|</span></div>
 
 
-              <span class="link" th:if="${following != null}" onclick="openModal('following')">
+              <span class="link" th:if="${following != null}" onclick="openFollowersModal('following')">
                     <span th:text="${following.size()}"></span><br>
                     <span>Following</span>
                 </span>
@@ -80,7 +83,7 @@
 
 
               <div th:if="${isOwnProfile}">
-                  <button class="btn-following" onclick="openModal('search')">Add a Friend</button>
+                  <button class="btn-following" onclick="openFollowersModal('search')">Add a Friend</button>
               </div>
 
 
@@ -178,9 +181,12 @@
 
         </div>
 
-      <!--   <div class="share-section">
-           <button type="button" class="share-btn" onclick="openModal()"></button>
-         </div> -->
+        <div class="share-section">
+            <button type="button" class="share-btn" onclick="openModal()">
+                <img src="/static/images/share-icon.svg" alt="Share" class="share-icon" />
+                <span class="button-text">Share</span>
+            </button>
+        </div>
        </div>
 
        <div class="top-genres-text">
@@ -254,6 +260,18 @@
 
 
      </div>
+
+  <!-- Modal -->
+  <div id="imageModal" class="modal">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="div-content">
+          <img class="modal-content" id="topTracksImage" th:src="'data:image/png;base64,' + ${base64EncodedImage}" />
+          <a id="downloadLink" class="download-btn" th:href="'data:image/png;base64,' + ${base64EncodedImage}" download="top_tracks.png">Download</a>
+          <button class="share" onclick="shareImage()">Share or Download</button>
+      </div>
+  </div>
+
+    <script src="../static/script/shareButton.js"></script>
 
 
      <div th:replace="fragments/footer :: footer"></div>

@@ -1,4 +1,4 @@
-function openModal(tab) {
+function openFollowersModal(tab) {
     document.getElementById("followersFollowingModal").style.display = "flex";
     if (tab === 'followers') {
         document.getElementById("defaultOpen").click();

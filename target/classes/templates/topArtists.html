@@ -15,8 +15,10 @@
 <body>
 
     <div th:replace="fragments/header :: header"></div>
+    <div th:replace="fragments/loader :: loader"></div>
 
-  <div class="container1">
+
+    <div class="container1">
       <div class="top-artists">
           <p>Top Artists</p>
           <p th:text="'Your top artists ' + ${time}"></p>
