@@ -37,15 +37,15 @@
   <div th:if="${loggedIn}">
     <div class="intro">
       <div class="user-info" th:if="${currentUser != null}">
-          <div class="username-url">
-              <div class="username" th:text="${currentUser.display_name}"></div>
-              <div class="track-url">
+
+          <a class="username" th:href="${currentUser.external_urls.spotify}" th:text="${currentUser.display_name}"></a>
+
+        <!--      <div class="track-url">
                   <a th:href="${currentUser.external_urls.spotify}" target="_blank">
                       <img src="../static/images/Spotify_Icon_RGB_White.png" alt="Spotify Logo" class="spotify-logo">
                       Spotify
                   </a>
-              </div>
-          </div>
+              </div> -->
         <div class="user-id" th:text="'@' + ${currentUser.id}"></div>
 
           <!-- Счетчик подписчиков и подписок -->
@@ -252,6 +252,10 @@
                       <div class="song-info">
                           <div class="song-name" th:text="${playedTrack.track.name}"></div>
                           <div class="song-artist" th:each="artist : ${playedTrack.track.artists}" th:text="${artist.name} + '&nbsp;'"></div>
+                      </div>
+                      <div class="time-ago">
+                          <img src="/static/images/time-ago.svg"/>
+                          <div class="played-time" th:text="${playedTrack.timeAgo}"></div>
                       </div>
                   </a>
               </div>

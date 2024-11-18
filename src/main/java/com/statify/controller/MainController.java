@@ -138,7 +138,6 @@ public class MainController {
 
         if (privacySettingsDB.isShowRecentlyPlayed() || isOwnProfile) {
             PlayedTrackResponse recentlyPlayedResponse = userService.getRecentlyPlayed(accessToken);
-            recentlyPlayed = recentlyPlayedResponse.getItems();
 
             if (recentlyPlayedResponse.getItems() != null) {
                 recentlyPlayed.addAll(recentlyPlayedResponse.getItems());

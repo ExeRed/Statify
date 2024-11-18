@@ -72,12 +72,6 @@ body {
     gap: 10px;
 }
 
-.username-url {
-    display: flex;
-    justify-content: space-between;
-}
-
-
 .user-id {
     font-size: 16px;
     color: white;
@@ -87,6 +81,7 @@ body {
     font-size: 28px;
     font-weight: bolder;
     padding-right: 20px;
+    color: #1ed760;
 }
 
 .followers-info {
@@ -438,7 +433,8 @@ body {
     overflow: hidden;
     background: #1f1f1f;
     margin: 0 20px;
-    padding: 5px;
+    padding: 5px 5px 0 10px;
+    position: relative;
 }
 
 .song-image img {
@@ -448,21 +444,51 @@ body {
 }
 
 .song-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding-left: 15px;
+    flex-grow: 1; /* Заставляет .song-info занимать всё доступное пространство */
+    max-width: calc(100% - 115px);
 }
+
+.time-ago {
+    position: absolute; /* Размещаем относительно родителя (.song) */
+    top: 50%; /* Центрируем вертикально */
+    right: 10px; /* Отступ от правого края */
+    transform: translateY(-50%); /* Для точного выравнивания по центру */
+    text-align: center; /* Выравниваем содержимое по центру */
+}
+
+.time-ago img {
+    display: block; /* Сбрасываем inline-стиль, чтобы центрировалось по тексту */
+    margin: 0 auto; /* Центрируем картинку по горизонтали */
+    width: 20px; /* Размер иконки (измените, если нужно) */
+    height: 20px;
+}
+
+.time-ago .played-time {
+    margin-top: 5px; /* Отступ между текстом и изображением */
+    color: #FFFFFF;
+    font-size: 14px; /* Размер текста */
+}
+
 
 .song-name {
     font-size: 18px;
     font-weight: bold;
     color: white;
-    overflow: hidden; /* Скрывает текст, если он не помещается */
-    text-overflow: ellipsis; /* Показывает многоточие */
-    white-space: nowrap; /* Не переносит текст на новую строку */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .song-artist {
     font-size: 14px;
     color: #cdcdcd;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* Основной контейнер для текущего трека */
@@ -551,7 +577,10 @@ body {
     }
 
     .user-info {
-        margin-left: 0;
+        align-items: center; /* Центрировать по горизонтали */
+        justify-content: center; /* Центрировать по вертикали */
+        text-align: center; /* Центрировать текст внутри */
+        margin: 0 auto; /* Для центрирования по горизонтали */
     }
 
     .phone_screens {
@@ -574,6 +603,10 @@ body {
     .time-form {
         width: 90%;
 
+    }
+
+    .recently-played-songs {
+        gap:10px;
     }
 }
 

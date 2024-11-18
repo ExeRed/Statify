@@ -31,7 +31,7 @@
                 </form>
             </div>
 
-            <ul class="nav__menu">
+            <ul th:if="${loggedIn}" class="nav__menu">
                 <li class="nav__item">
                     <a onclick="window.location.href='/topTrack'" class="nav__link">Songs</a>
                 </li>
@@ -53,7 +53,7 @@
                 </div>
             </ul>
         </div>
-        <div class="hamb">
+        <div th:if="${loggedIn}" class="hamb">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
