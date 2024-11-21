@@ -12,6 +12,8 @@
 </head>
 <body>
     <div th:replace="fragments/header :: header"></div>
+    <div th:replace="fragments/loader :: loader"></div>
+
     <div class="container1">
         <div class="top-genres">
             <p>Top Genres</p>
@@ -32,7 +34,10 @@
                     </ul>
                 </div>
 
-                <form id="hiddenForm" action="/topGenre" method="get" style="display: none;">
+                <form id="hiddenForm"
+                      th:action="${isOwnProfile} ? '/topGenre' : '/' + ${currentUser.id} + '/topGenre'"
+                      method="get"
+                      style="display: none;">
                     <input type="hidden" name="timePeriod" id="selectedTimePeriod" th:value="${selectedOption}">
                 </form>
             </div>

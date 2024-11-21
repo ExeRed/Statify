@@ -31,15 +31,18 @@
                 </form>
             </div>
 
-            <ul class="nav__menu">
+            <ul th:if="${loggedIn}" class="nav__menu">
                 <li class="nav__item">
-                    <a onclick="window.location.href='/topTrack'" class="nav__link">Top Songs</a>
+                    <a onclick="window.location.href='/topTrack'" class="nav__link">Songs</a>
                 </li>
                 <li class="nav__item">
-                    <a onclick="window.location.href='/topArtist'" class="nav__link">Top Artists</a>
+                    <a onclick="window.location.href='/topArtist'" class="nav__link">Artists</a>
                 </li>
                 <li class="nav__item">
-                    <a onclick="window.location.href='/topGenre'" class="nav__link">Top Genres</a>
+                    <a onclick="window.location.href='/topGenre'" class="nav__link">Genres</a>
+                </li>
+                <li class="nav__item">
+                    <a onclick="window.location.href='/settings'" class="nav__link">Settings</a>
                 </li>
                 <div th:if="${loggedIn}" class="btn logout">
                     <form th:action="@{/logout}" method="post">
@@ -50,7 +53,7 @@
                 </div>
             </ul>
         </div>
-        <div class="hamb">
+        <div th:if="${loggedIn}" class="hamb">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>

@@ -13,13 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div id="loader" class="loader">
-        <div class="note note1"></div>
-        <div class="note note2"></div>
-        <div class="note note3"></div>
-    </div>
-
-
+    <div th:replace="fragments/loader :: loader"></div>
     <div th:replace="fragments/header :: header"></div>
 
     <div class="container1">
@@ -42,7 +36,10 @@
                     </ul>
                 </div>
 
-                <form id="hiddenForm" action="/topTrack" method="get" style="display: none;">
+                <form id="hiddenForm"
+                      th:action="${isOwnProfile} ? '/topTrack' : '/' + ${currentUser.id} + '/topTrack'"
+                      method="get"
+                      style="display: none;">
                     <input type="hidden" name="timePeriod" id="selectedTimePeriod" th:value="${selectedOption}">
                 </form>
             </div>
@@ -58,7 +55,7 @@
                     </button>
                 </form>
 
-                <button type="button" class="share-btn" onclick="openModal()">
+                <button th:if="${isOwnProfile}" type="button" class="share-btn" onclick="openModal()">
                     <img src="/static/images/share-icon.svg" alt="Share" class="share-icon" />
                     <span class="button-text">Share</span>
                 </button>

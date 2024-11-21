@@ -1,0 +1,95 @@
+html {
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    margin: auto;
+    max-width: 1110px;
+    color: white;
+    background: #121212;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1DB954;
+}
+
+.privacy-settings-container {
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #cdcdcd;
+}
+
+.form-toggle {
+    width: 30px;
+    height: 18px;
+    appearance: none;
+    background-color: #282828;
+    border-radius: 10px;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-toggle:checked {
+    background-color: #1DB954;
+}
+
+.form-toggle::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.form-toggle:checked::before {
+    transform: translateX(12px);
+}
+
+button[type="submit"] {
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #17a348;
+}
+
+@media (max-width: 600px) {
+    .form-group {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+}

@@ -6,7 +6,12 @@ import com.statify.model.ArtistResponse;
 import com.statify.model.Track;
 import com.statify.model.User;
 import com.statify.service.ArtistService;
+import com.statify.service.PrivacySettingsService;
+import com.statify.service.SpotifyTokenService;
 import com.statify.service.UserService;
+import com.statify.serviceDB.SpotifyUserService;
+import com.statify.table.PrivacySettingsDB;
+import com.statify.table.SpotifyUserDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -40,52 +45,84 @@ public class SpotifyArtistController {
 
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
+    @Autowired
+    private SpotifyTokenService spotifyTokenService;
 
-    @GetMapping("/topArtist")
-    public String topTracks(@RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
-                            OAuth2AuthenticationToken authentication, Model model) {
+    @Autowired
+    private PrivacySettingsService privacySettingsService;
 
-        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
-                authentication.getAuthorizedClientRegistrationId(),
-                authentication.getName());
+    @Autowired
+    private SpotifyUserService spotifyUserService;
 
-        String jwt = client.getAccessToken().getTokenValue();
+    @GetMapping({"/topArtist", "/{userId:[a-zA-Z0-9]+}/topArtist"})
+    public String topArtists(@PathVariable(required = false) String userId,
+                             @RequestParam(value = "timePeriod", defaultValue = "short_term") String timePeriod,
+                             OAuth2AuthenticationToken authentication, Model model) {
 
+        String accessToken;
+        User currentUser;
+        boolean isOwnProfile;
+        SpotifyUserDB user;
 
-        List<Artist> artists = new ArrayList<>();
-
-        ArtistResponse artistResponse = userService.getTopArtists(jwt, timePeriod);
-
-        // Получение имени пользователя
-        User currentUser = userService.getCurrentUser(jwt);
-        String userName = currentUser.getDisplay_name();
-
-        if (artistResponse != null && artistResponse.getItems() != null) {
-            artists.addAll(artistResponse.getItems());
+        // Check if viewing the own profile or another user's profile
+        if (userId == null) {
+            // Own profile: Get the access token of the authenticated user
+            OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                    authentication.getAuthorizedClientRegistrationId(),
+                    authentication.getName());
+            accessToken = client.getAccessToken().getTokenValue();
+            currentUser = userService.getCurrentUser(accessToken);
+            isOwnProfile = true;
+        } else {
+            // Another user's profile: Refresh access token using userId
+            accessToken = spotifyTokenService.refreshAccessToken(userId);
+            currentUser = userService.getCurrentUser(accessToken);
+            isOwnProfile = false;
         }
 
+        user = spotifyUserService.getUser(currentUser.getId());
+        PrivacySettingsDB privacySettingsDB = privacySettingsService.getPrivacySettingsByUser(user);
+
+        String userName = currentUser.getDisplay_name();
+        List<Artist> artists = new ArrayList<>();
+
+        // Fetch top artists for the given time period
+        if (privacySettingsDB.isShowTopArtists() || isOwnProfile) {
+            ArtistResponse artistResponse = userService.getTopArtists(accessToken, timePeriod);
+
+            if (artistResponse != null && artistResponse.getItems() != null) {
+                artists.addAll(artistResponse.getItems());
+            }
+        }
+
+        // Generate image for the top artists
         TopArtistsImageGenerator imageGenerator = new TopArtistsImageGenerator();
         String base64EncodedImage;
 
-        if (timePeriod.equals("long_term")) {
-            model.addAttribute("time", "of all time");
-            base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "all time", "png");
-        } else if (timePeriod.equals("medium_term")) {
-            model.addAttribute("time", "from last 6 months");
-            base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 6 months", "png");
-        } else {
-            model.addAttribute("time", "from last 4 weeks");
-            base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 4 weeks", "png");
+        if (isOwnProfile) {
+            if (timePeriod.equals("long_term")) {
+                model.addAttribute("time", "of all time");
+                base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "all time", "png");
+            } else if (timePeriod.equals("medium_term")) {
+                model.addAttribute("time", "from last 6 months");
+                base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 6 months", "png");
+            } else {
+                model.addAttribute("time", "from last 4 weeks");
+                base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 4 weeks", "png");
+            }
+            model.addAttribute("base64EncodedImage", base64EncodedImage);
         }
 
-        model.addAttribute("base64EncodedImage", base64EncodedImage);
+        // Update model with attributes
         model.addAttribute("selectedOption", timePeriod);
         model.addAttribute("artists", artists);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("isOwnProfile", isOwnProfile);
         model.addAttribute("loggedIn", true);
 
         return "topArtists";
-
     }
+
 
 
     @GetMapping("/artists/{id}")

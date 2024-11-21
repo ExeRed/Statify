@@ -16,10 +16,10 @@
     padding: 8px 15px; /* Внутренние отступы для каждого жанра */
     border-radius: 10px;
     font-size: 14px; /* Font size for the button text */
-    color: #cdcdcd; /* Text color */
+    color: #FFFFFF; /* Text color */
     text-align: center;
     width: auto; /* Width adjusts to content */
-
+    font-weight: normal;
 }
 
 .create-playlist-btn .playlist-icon,

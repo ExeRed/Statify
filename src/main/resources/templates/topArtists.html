@@ -15,8 +15,10 @@
 <body>
 
     <div th:replace="fragments/header :: header"></div>
+    <div th:replace="fragments/loader :: loader"></div>
 
-  <div class="container1">
+
+    <div class="container1">
       <div class="top-artists">
           <p>Top Artists</p>
           <p th:text="'Your top artists ' + ${time}"></p>
@@ -36,12 +38,16 @@
                   </ul>
               </div>
 
-              <form id="hiddenForm" action="/topArtist" method="get" style="display: none;">
+              <form id="hiddenForm"
+                    th:action="${isOwnProfile} ? '/topArtist' : '/' + ${currentUser.id} + '/topArtist'"
+                    method="get"
+                    style="display: none;">
                   <input type="hidden" name="timePeriod" id="selectedTimePeriod" th:value="${selectedOption}">
               </form>
+
           </div>
 
-          <button type="button" class="share-btn" onclick="openModal()">
+          <button th:if="${isOwnProfile}" type="button" class="share-btn" onclick="openModal()">
               <img src="/static/images/share-icon.svg" alt="Share" class="share-icon" />
               <span class="button-text">Share</span>
           </button>
@@ -59,7 +65,6 @@
 
             <div class="arrow"></div>
         </a>
-
     </div>
   </div>
     <div th:replace="fragments/footer :: footer"></div>

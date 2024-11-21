@@ -5,6 +5,7 @@ import java.util.List;
 public class TrackResponse {
 
     private List<Track> items;
+    private List<Track> tracks;
 
     private Track item;
 
@@ -22,6 +23,14 @@ public class TrackResponse {
 
     public void setItems(List<Track> items) {
         this.items = items;
+    }
+
+    public List<Track> getTracks() {
+        return tracks;
+    }
+
+    public void setTracks(List<Track> tracks) {
+        this.tracks = tracks;
     }
 
 }

@@ -51,8 +51,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static ClientRegistration getSpotifyClientRegistration() {
         return ClientRegistration.withRegistrationId("spotify")
-                .clientId("a0afdb6374de488da6dfdd578b2b150e")
-                .clientSecret("53500a989aba491faff04a9706bed7cf")
+                .clientId("f9e2e07d692d4ee4a1caa1343269537a")
+                .clientSecret("6d671a1c563e4a64ad46d2a6138c3c65")
                 .scope("user-read-private", "user-read-email", "user-top-read", "user-read-recently-played", "user-read-currently-playing", "playlist-modify-public", "playlist-modify-private")
                 .authorizationUri("https://accounts.spotify.com/authorize")
                 .tokenUri("https://accounts.spotify.com/api/token")

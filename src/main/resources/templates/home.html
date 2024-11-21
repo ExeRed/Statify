@@ -7,11 +7,14 @@
   <link rel="stylesheet" type="text/css" href="../static/css/home.css">
   <link rel="stylesheet" type="text/css" href="../static/css/imageModel.css">
   <link rel="stylesheet" type="text/css" href="../static/css/time.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/share-playlist.css">
   <link rel="icon" type="image/png" href="../static/images/statify-logo.png">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    <div th:replace="fragments/loader :: loader"></div>
+
   <div th:replace="fragments/header :: header"></div>
 
   <div th:unless="${loggedIn}">
@@ -33,16 +36,117 @@
 
   <div th:if="${loggedIn}">
     <div class="intro">
-      <div class="user-info">
-        <div class="username" th:text="${currentUser.display_name}"></div>
+      <div class="user-info" th:if="${currentUser != null}">
+
+          <a class="username" th:href="${currentUser.external_urls.spotify}" th:text="${currentUser.display_name}"></a>
+
+        <!--      <div class="track-url">
+                  <a th:href="${currentUser.external_urls.spotify}" target="_blank">
+                      <img src="../static/images/Spotify_Icon_RGB_White.png" alt="Spotify Logo" class="spotify-logo">
+                      Spotify
+                  </a>
+              </div> -->
         <div class="user-id" th:text="'@' + ${currentUser.id}"></div>
-        <div class="track-url">
-          <a th:href="${currentUser.external_urls.spotify}" target="_blank">
-            <img src="../static/images/Spotify_Icon_RGB_White.png" alt="Spotify Logo" class="spotify-logo">
-            Open on Spotify
-          </a>
+
+          <!-- Счетчик подписчиков и подписок -->
+          <div class="followers-info">
+             <span class="link" th:if="${followers != null}" onclick="openFollowersModal('followers')">
+                <span th:text="${followers.size()}"></span><br>
+                <span>Followers</span>
+            </span>
+
+              <div th:if="${followers != null}" ><span>| <br>|</span></div>
+
+
+              <span class="link" th:if="${following != null}" onclick="openFollowersModal('following')">
+                    <span th:text="${following.size()}"></span><br>
+                    <span>Following</span>
+                </span>
+
+              <div th:if="${following != null}" ><span>| <br>|</span></div>
+
+              <div th:if="${!isOwnProfile && isFollowing != null}">
+                  <!-- Кнопка подписки -->
+                  <button type="button" class="btn-follow"
+                          th:attr="data-user-id=${currentUser.id}"
+                          th:if="${!isFollowing}"
+                          onclick="followUser(this)">Follow</button>
+
+                  <!-- Кнопка после подписки -->
+                  <button type="button" class="btn-following"
+                          th:attr="data-user-id=${currentUser.id}"
+                          th:if="${isFollowing}"
+                          onclick="unfollowUser(this)">Following</button>
+              </div>
+
+
+
+
+              <div th:if="${isOwnProfile}">
+                  <button class="btn-following" onclick="openFollowersModal('search')">Add a Friend</button>
+              </div>
+
+
+          </div>
+
+          <!-- Модальное окно для подписчиков, подписок и поиска -->
+          <div id="followersFollowingModal" class="modal-followers" onclick="closeModalOutside(event)">
+              <div class="modal-content-followers" onclick="event.stopPropagation()">
+                  <div class="modal-header">
+                      <span th:text="${currentUser.display_name}" class="modal-username"></span>
+                      <span class="close" onclick="toggleModal()">&times;</span>
+                  </div>
+
+                  <div class="tab-wrapper">
+                      <div class="tab-container">
+                          <div class="tab">
+                              <button class="tablinks" onclick="switchTab(event, 'followersTab')" id="defaultOpen">Followers</button>
+                              <button class="tablinks" onclick="switchTab(event, 'followingTab')">Following</button>
+                              <button class="tablinks" onclick="switchTab(event, 'searchTab')">Search</button>
+                          </div>
+                      </div>
+
+                      <!-- Контент для вкладки с подписчиками -->
+                      <div id="followersTab" class="tabcontent">
+                          <ul>
+                              <li th:each="follower : ${followers}">
+                                  <a th:href="@{/{id}(id=${follower.follower.id})}" th:text="${follower.follower.username}"></a>
+                              </li>
+                          </ul>
+                      </div>
+
+                      <!-- Контент для вкладки с подписками -->
+                      <div id="followingTab" class="tabcontent">
+                          <ul>
+                              <li th:each="following : ${following}">
+                                  <a th:href="@{/{id}(id=${following.followed.id})}" th:text="${following.followed.username}"></a>
+                              </li>
+                          </ul>
+                      </div>
+
+
+                      <!-- Поле поиска пользователей -->
+                      <div id="searchTab" class="tabcontent">
+                          <form id="searchForm">
+                              <input type="text" id="searchQuery" name="query" placeholder="Search by ID or username" required>
+                              <button type="submit" id="searchButton">Search</button>
+                          </form>
+
+                          <!-- Контейнер для отображения результатов поиска -->
+                          <div id="searchResultsContainer">
+                              <ul id="searchResults" th:fragment="searchResultsFragment">
+                                  <!-- Результаты поиска будут динамически обновляться здесь -->
+                              </ul>
+                          </div>
+                      </div>
+
+
+                  </div>
+              </div>
+          </div>
+
         </div>
-      </div>
+
 
       <a class="currently-playing-a" th:href="@{/tracks/{id}(id=${currentlyPlaying.id})}" th:if="${currentlyPlaying != null}">
         <div class="currently-playing">
@@ -77,89 +181,113 @@
             </ul>
           </div>
 
-          <form id="hiddenForm" action="/" method="get" style="display: none;">
-            <input type="hidden" name="timePeriod" id="selectedTimePeriod" th:value="${selectedOption}">
-          </form>
+            <form id="hiddenForm" th:action="${isOwnProfile ? '/' : '/'+currentUser.id}" method="get" style="display: none;">
+                <input type="hidden" name="timePeriod" id="selectedTimePeriod" th:value="${selectedOption}">
+            </form>
+
         </div>
 
-      <!--   <div class="share-section">
-           <button type="button" class="share-btn" onclick="openModal()"></button>
-         </div> -->
+        <div class="share-section" th:if="${isOwnProfile}">
+            <button type="button" class="share-btn" onclick="openModal()">
+                <img src="/static/images/share-icon.svg" alt="Share" class="share-icon" />
+                <span class="button-text">Share</span>
+            </button>
+        </div>
        </div>
 
        <div class="top-genres-text">
          <p>Top Genres</p>
-         <a class="more-btn" href="/topGenre">more</a>
+           <a class="more-btn" th:href="${isOwnProfile ? '/topGenre' : '/'+currentUser.id+'/topGenre'}">more</a>
        </div>
 
        <div class="topGenres">
-         <div class="genres-list">
+         <div class="genres-list" th:if="${topGenres != null}">
            <div th:each="genre : ${topGenres}" th:text="${genre}" class="genre-item"></div>
          </div>
        </div>
 
+      <div th:if="${artists != null and !artists.isEmpty()}" >
+          <div class="top-artist-text">
+             <p>Top Artists</p>
+              <a class="more-btn" th:href="${isOwnProfile ? '/topArtist' : '/'+currentUser.id+'/topArtist'}">more</a>
+          </div>
+          <div class="topArtists">
+              <div th:each="artist : ${artists}" class="artist">
+                  <a th:href="@{/artists/{id}(id=${artist.id})}">
+                      <div class="artists-photo">
+                          <img th:src="${artist.images[0]?.url}" alt="Artist Photo" class="artist-photo" th:if="${artist.images[0]?.url != null}" />
+                          <img src="../static/images/default-artist-image.png" alt="Default Artist Image" class="artist-photo" th:unless="${artist.images[0]?.url != null}" />
+                      </div>
+                      <div class="artist-name" th:text="${artist.name}"></div>
+                  </a>
+              </div>
+          </div>
+      </div>
 
-       <div class="top-artist-text">
-         <p>Top Artists</p>
-         <a class="more-btn" href="/topArtist">more</a>
-       </div>
-       <div class="topArtists">
-         <div th:each="artist : ${artists}" class="artist">
-           <a th:href="@{/artists/{id}(id=${artist.id})}">
-             <div class="artists-photo">
-               <img th:src="${artist.images[0].url}" alt="Artist Photo">
-             </div>
-             <div class="artist-name" th:text="${artist.name}"></div>
-           </a>
-         </div>
-       </div>
+      <div th:if="${tracks != null and !tracks.isEmpty()}">
+          <div class="top-track-text">
+             <p>Top Tracks</p>
+               <a class="more-btn" th:href="${isOwnProfile ? '/topTrack' : '/'+currentUser.id+'/topTrack'}">more</a>
+          </div>
+          <div class="topTracks">
+              <div th:each="track : ${tracks}" class="track">
+                  <a th:href="@{/tracks/{id}(id=${track.id})}">
+                      <div class="track-image">
+                          <img th:src="${track.album.images[0]?.url}" alt="Track Image" class="track-image" th:if="${track.album.images[0]?.url != null}" />
+                          <img src="../static/images/default-track-image.png" alt="Default Track Image" class="track-image" th:unless="${track.album.images[0]?.url != null}" />
+                      </div>
+                      <div class="track-name" th:text="${track.name}"></div>
+                      <div class="track-artist" th:text="${track.artists[0].name}"></div>
+                  </a>
+              </div>
+          </div>
+      </div>
 
 
-       <div class="top-track-text">
-         <p>Top Tracks</p>
-         <a class="more-btn" href="/topTrack">more</a>
-       </div>
-       <div class="topTracks">
-         <div th:each="track : ${tracks}" class="track">
-           <a th:href="@{/tracks/{id}(id=${track.id})}">
-             <div class="track-image">
-               <img th:src="${track.album.images[0].url}" alt="Track Image">
-             </div>
-             <div class="track-name" th:text="${track.name}"></div>
-             <div class="track-artist" th:text="${track.artists[0].name}"></div>
-           </a>
-         </div>
-       </div>
-
-
-       <div class="recently-played-text">
-         <p>Recently Played Tracks</p>
-       </div>
-       <div class="recently-played-songs">
-         <div th:each="playedTrack : ${recentlyPlayed}">
-           <a th:href="@{/tracks/{id}(id=${playedTrack.track.id})}" class="song">
-             <div class="song-image">
-               <img th:src="${playedTrack.track.album.images[0].url}" alt="Song Image">
-             </div>
-             <div class="song-info">
-               <div class="song-name" th:text="${playedTrack.track.name}"></div>
-               <div class="song-artist" th:each="artist : ${playedTrack.track.getArtists()}" th:text="${artist.name} + '&nbsp;'"></div>
-             </div>
-           </a>
-         </div>
-
-       </div>
-
+      <div th:if="${recentlyPlayed != null and !recentlyPlayed.isEmpty()}">
+          <div class="recently-played-text">
+             <p>Recently Played Tracks</p>
+          </div>
+          <div class="recently-played-songs">
+              <div th:each="playedTrack : ${recentlyPlayed}">
+                  <a th:href="@{/tracks/{id}(id=${playedTrack.track.id})}" class="song">
+                      <div class="song-image">
+                          <img th:src="${playedTrack.track.album.images[0]?.url}" alt="Song Image" class="song-image" th:if="${playedTrack.track.album.images[0]?.url != null}" />
+                          <img src="../static/images/default-track-image.png" alt="Default Song Image" class="song-image" th:unless="${playedTrack.track.album.images[0]?.url != null}" />
+                      </div>
+                      <div class="song-info">
+                          <div class="song-name" th:text="${playedTrack.track.name}"></div>
+                          <div class="song-artist" th:each="artist : ${playedTrack.track.artists}" th:text="${artist.name} + '&nbsp;'"></div>
+                      </div>
+                      <div class="time-ago">
+                          <img src="/static/images/time-ago.svg"/>
+                          <div class="played-time" th:text="${playedTrack.timeAgo}"></div>
+                      </div>
+                  </a>
+              </div>
+          </div>
+      </div>
 
 
      </div>
 
+  <!-- Modal -->
+  <div id="imageModal" class="modal">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="div-content">
+          <img class="modal-content" id="topTracksImage" th:src="'data:image/png;base64,' + ${base64EncodedImage}" />
+          <a id="downloadLink" class="download-btn" th:href="'data:image/png;base64,' + ${base64EncodedImage}" download="top_tracks.png">Download</a>
+          <button class="share" onclick="shareImage()">Share or Download</button>
+      </div>
+  </div>
 
-
+    <script src="../static/script/shareButton.js"></script>
 
 
      <div th:replace="fragments/footer :: footer"></div>
 
+
+     <script src="../static/script/followers_modal.js"></script>
      <script src="../static/script/higlight_text.js"></script>
      <script src="../static/script/timeSelection.js"></script>
 

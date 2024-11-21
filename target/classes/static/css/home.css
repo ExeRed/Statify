@@ -1,7 +1,6 @@
 html {
     background: #121212;
     font-family: 'Inter', sans-serif;
-
 }
 
 body {
@@ -18,10 +17,15 @@ body {
 
 .track-url a {
     display: flex;
-    align-items: center;
     color: white;
+    align-items: center;
     font-weight: bold;
     font-size: 16px;
+}
+
+.track-url {
+    display: flex;
+    align-items: center;
 }
 
 .spotify-logo {
@@ -75,6 +79,194 @@ body {
 .username {
     font-size: 28px;
     font-weight: bolder;
+    padding-right: 20px;
+    color: #1ed760;
+}
+
+.followers-info {
+    display: flex;
+    gap: 20px;
+    align-self: center;
+}
+
+.link {
+    color: white;
+}
+
+/* Стили для кнопки Follow */
+.btn-follow {
+    background-color: #1DB954; /* Зеленый цвет, как у Spotify */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Стили при наведении для кнопки Follow */
+.btn-follow:hover {
+    background-color: #1aa34a; /* Темнее при наведении */
+}
+
+/* Стили для кнопки Following */
+.btn-following {
+    background-color: transparent; /* Белая кнопка с текстом */
+    color: white;
+    border: 2px solid white;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+/* Стили при наведении для кнопки Following */
+.btn-following:hover {
+    background-color: #ffffff20; /* Лёгкий белый фон при наведении */
+}
+
+/* Общие стили */
+.modal-followers {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.25);
+
+}
+
+.modal-content-followers {
+    background-color: #121212;
+    margin: auto;
+    border-radius: 15px;
+    padding: 0;
+    width: 100%;
+    max-width: 400px; /* Окно ограничено на десктопе */
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    align-self: flex-end;
+}
+
+/* Шапка модального окна */
+.modal-header {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding: 15px 0;
+    background-color: #121212;
+}
+
+/* Имя пользователя по центру */
+.modal-username {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    flex-grow: 1;
+}
+
+/* Кнопка закрытия в правом верхнем углу */
+.close {
+    color: #aaa;
+    font-size: 18px;
+    position: absolute;
+    right: 20px;
+    top: 0;
+    cursor: pointer;
+    line-height: 18px;
+}
+
+/* Общий контейнер с закругленными углами и границей */
+.tab-wrapper {
+    margin: 0 15px;
+    border: 1px solid #ddd;
+    border-radius: 15px; /* Закругленные углы */
+    overflow: hidden; /* Обрезаем края контента */
+    background-color: #121212;
+}
+
+/* Стили для вкладок */
+.tab-container {
+    display: flex;
+    justify-content: center;
+    background-color: #121212;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd; /* Линии по бокам */
+    border-left: 1px solid #ddd; /* Линии по бокам */
+}
+
+.tab {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.tab button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 0;
+    width: 50%;
+    font-size: 18px;
+    color: white;
+    transition: all 0.2s;
+}
+
+.tab button.active {
+    color: #4CAF50;
+    font-weight: bold;
+    border-bottom: 2px solid #4CAF50; /* Акцент на нижней границе вкладки */
+}
+
+.tab button:hover {
+    color: #4CAF50;
+}
+
+/* Контент для вкладок */
+.tabcontent {
+    display: none;
+    padding: 20px;
+    border-right: 1px solid #ddd; /* Линии по бокам */
+    border-left: 1px solid #ddd; /* Линии по бокам */
+    border-bottom: 1px solid #ddd; /* Нижняя граница */
+    background-color: #121212;
+    overflow-y: auto;
+}
+
+/* Стили списка подписчиков и подписок */
+.tabcontent ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tabcontent li {
+    margin: 10px 0;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+
+}
+
+.tabcontent li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.tabcontent li a:hover {
+    color: #4CAF50;
 }
 
 .time-form {
@@ -242,7 +434,8 @@ body {
     overflow: hidden;
     background: #1f1f1f;
     margin: 0 20px;
-    padding: 5px;
+    padding: 5px 5px 0 10px;
+    position: relative;
 }
 
 .song-image img {
@@ -252,21 +445,51 @@ body {
 }
 
 .song-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding-left: 15px;
+    flex-grow: 1; /* Заставляет .song-info занимать всё доступное пространство */
+    max-width: calc(100% - 115px);
 }
+
+.time-ago {
+    position: absolute; /* Размещаем относительно родителя (.song) */
+    top: 50%; /* Центрируем вертикально */
+    right: 10px; /* Отступ от правого края */
+    transform: translateY(-50%); /* Для точного выравнивания по центру */
+    text-align: center; /* Выравниваем содержимое по центру */
+}
+
+.time-ago img {
+    display: block; /* Сбрасываем inline-стиль, чтобы центрировалось по тексту */
+    margin: 0 auto; /* Центрируем картинку по горизонтали */
+    width: 20px; /* Размер иконки (измените, если нужно) */
+    height: 20px;
+}
+
+.time-ago .played-time {
+    margin-top: 5px; /* Отступ между текстом и изображением */
+    color: #FFFFFF;
+    font-size: 14px; /* Размер текста */
+}
+
 
 .song-name {
     font-size: 18px;
     font-weight: bold;
     color: white;
-    overflow: hidden; /* Скрывает текст, если он не помещается */
-    text-overflow: ellipsis; /* Показывает многоточие */
-    white-space: nowrap; /* Не переносит текст на новую строку */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .song-artist {
     font-size: 14px;
     color: #cdcdcd;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* Основной контейнер для текущего трека */
@@ -337,6 +560,14 @@ body {
 
 
 @media only screen and (max-width: 768px) {
+    .modal-content-followers {
+        margin: auto auto 0;
+
+        width: 100%;
+        height: 75%;
+        border-radius: 0;
+    }
+
     .container1 {
         flex-direction: column;
     }
@@ -347,7 +578,10 @@ body {
     }
 
     .user-info {
-        align-items: center;
+        align-items: center; /* Центрировать по горизонтали */
+        justify-content: center; /* Центрировать по вертикали */
+        text-align: center; /* Центрировать текст внутри */
+        margin: 0 auto; /* Для центрирования по горизонтали */
     }
 
     .phone_screens {
@@ -360,7 +594,6 @@ body {
 
     .actions {
         margin: 10px 30px 15px;
-        flex-direction: column;
     }
 
     .form-time {
@@ -372,5 +605,63 @@ body {
         width: 90%;
 
     }
+
+    .recently-played-songs {
+        gap:10px;
+    }
 }
+
+
+
+#searchTab {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+#searchForm {
+    display: flex;
+    align-items: center;
+}
+
+#searchQuery {
+    width: 300px;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.3s ease;
+    outline: none;
+    height: 35px;
+}
+
+#searchQuery:focus {
+    border-color: #1DB954;
+}
+
+#searchButton {
+    margin-left: 10px; /* Отступ между полем поиска и кнопкой */
+    padding: 10px 20px;
+    background-color: #1DB954;
+    color: white;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#searchButton:hover {
+    background-color: #17a348;
+}
+
+#searchButton:active {
+    background-color: #158f3e;
+}
+
+#searchButton:focus {
+    outline: none;
+}
+
 

@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+.error-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    color: #ffffff;
+    background-color: #121212;
+    font-family: 'Inter', sans-serif;
+}
+
+.error-page h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #f44336;
+}
+
+.error-page p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.back-home-btn {
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.back-home-btn:hover {
+    background-color: #1A9F4E;
+}

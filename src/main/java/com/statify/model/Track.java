@@ -117,7 +117,7 @@ public class Track {
 
     @Override
     public String toString() {
-        return "Track{" +
+        return "TrackDB{" +
                 "name='" + name + '\'' +
                 ", artists=" + artists +
                 ", album=" + album +

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<ul th:fragment="searchResultsFragment">
+    <th:block th:if="${searchResults != null and !searchResults.isEmpty()}">
+        <li th:each="user : ${searchResults}">
+            <a th:href="@{/{id}(id=${user.id})}" th:text="${user.username}"></a>
+        </li>
+    </th:block>
+    <li th:if="${searchResults == null or searchResults.isEmpty()}">
+        User not found
+    </li>
+</ul>
+</body>
+</html>
