@@ -20,103 +20,107 @@ public class TopArtistsImageGenerator {
     private static final int IMAGE_HEIGHT = 2450; // Adjust as needed
 
     public String generateBase64Image(String userName, List<Artist> artists, String timePeriod, String format) {
-        // Create a new BufferedImage object
-        BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        if (artists.size() > 10) {
+            // Create a new BufferedImage object
+            BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-        Image image_logo = null;
-        try {
-            image_logo = ImageIO.read(new File("src/main/resources/static/images/Spotify_Icon_RGB_White.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // Create a Graphics2D object for drawing on the image
-        Graphics2D graphics = image.createGraphics();
-
-        // Set font and colors
-        Font titleFont = new Font("Inter", Font.BOLD, 72);
-        Font artistFont = new Font("Inter", Font.BOLD, 56);
-        Font usernameFont = new Font("Inter", Font.BOLD, 96);
-        Font urlFont = new Font("Inter", Font.PLAIN, 48);
-        Color whiteColor = Color.WHITE;
-        Color grayColor = Color.decode("#CDCDCD");
-        Color statifyColor = Color.decode("#1DB954");
-
-        // Draw title
-        graphics.setFont(titleFont);
-        graphics.setColor(whiteColor);
-        graphics.drawString("Top Artists", 611, 120);
-        graphics.drawImage(image_logo, 1080, 45, 85, 85, null);
-
-        // Draw username
-        graphics.setFont(usernameFont);
-        graphics.setColor(statifyColor);
-        graphics.drawString(userName, 150, 247);
-
-        // Draw timePeriod
-        graphics.setFont(titleFont);
-        graphics.setColor(whiteColor);
-        graphics.drawString(timePeriod, 992, 247);
-
-        // Draw top 10 artists
-        int y = 340;
-        for (int i = 0; i < Math.min(artists.size(), 10); i++) {
-            Artist artist = artists.get(i);
-
-            // Draw artist number
-            graphics.setFont(artistFont);
-            graphics.setColor(whiteColor);
-            graphics.drawString("#" + (i + 1), 95, y + 95);
-
-            // Draw artist cover
+            Image image_logo = null;
             try {
-                URL url = new URL(artist.getImages().get(0).getUrl());
-                BufferedImage albumImage = ImageIO.read(url);
-                graphics.drawImage(albumImage, 230, y, 150, 150, null);
+                image_logo = ImageIO.read(new File("src/main/resources/static/images/Spotify_Icon_RGB_White.png"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            // Create a Graphics2D object for drawing on the image
+            Graphics2D graphics = image.createGraphics();
 
-            // Draw artist
-            graphics.setFont(artistFont);
+            // Set font and colors
+            Font titleFont = new Font("Inter", Font.BOLD, 72);
+            Font artistFont = new Font("Inter", Font.BOLD, 56);
+            Font usernameFont = new Font("Inter", Font.BOLD, 96);
+            Font urlFont = new Font("Inter", Font.PLAIN, 48);
+            Color whiteColor = Color.WHITE;
+            Color grayColor = Color.decode("#CDCDCD");
+            Color statifyColor = Color.decode("#1DB954");
+
+            // Draw title
+            graphics.setFont(titleFont);
             graphics.setColor(whiteColor);
-            graphics.drawString(artist.getName(), 410, y + 103);
+            graphics.drawString("Top Artists", 611, 120);
+            graphics.drawImage(image_logo, 1080, 45, 85, 85, null);
 
-            y += 190;
-        }
+            // Draw username
+            graphics.setFont(usernameFont);
+            graphics.setColor(statifyColor);
+            graphics.drawString(userName, 150, 247);
 
-        BufferedImage logoImage = null;
-        try (InputStream is = getClass().getResourceAsStream("/static/images/statify-logo.png")) {
-            if (is != null) {
-                logoImage = ImageIO.read(is);
-            } else {
-                throw new IOException("Image not found in resources");
+            // Draw timePeriod
+            graphics.setFont(titleFont);
+            graphics.setColor(whiteColor);
+            graphics.drawString(timePeriod, 992, 247);
+
+            // Draw top 10 artists
+            int y = 340;
+            for (int i = 0; i < Math.min(artists.size(), 10); i++) {
+                Artist artist = artists.get(i);
+
+                // Draw artist number
+                graphics.setFont(artistFont);
+                graphics.setColor(whiteColor);
+                graphics.drawString("#" + (i + 1), 95, y + 95);
+
+                // Draw artist cover
+                try {
+                    URL url = new URL(artist.getImages().get(0).getUrl());
+                    BufferedImage albumImage = ImageIO.read(url);
+                    graphics.drawImage(albumImage, 230, y, 150, 150, null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // Draw artist
+                graphics.setFont(artistFont);
+                graphics.setColor(whiteColor);
+                graphics.drawString(artist.getName(), 410, y + 103);
+
+                y += 190;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Handle image loading error
-        }
 
-        graphics.drawImage(logoImage, 95, y + 40, 150, 86, null);
-        graphics.setFont(titleFont);
-        graphics.setColor(whiteColor);
-        graphics.drawString("statify.live", 290, y + 101);
+            BufferedImage logoImage = null;
+            try (InputStream is = getClass().getResourceAsStream("/static/images/statify-logo.png")) {
+                if (is != null) {
+                    logoImage = ImageIO.read(is);
+                } else {
+                    throw new IOException("Image not found in resources");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle image loading error
+            }
 
-        // Dispose of the Graphics2D object
-        graphics.dispose();
+            graphics.drawImage(logoImage, 95, y + 40, 150, 86, null);
+            graphics.setFont(titleFont);
+            graphics.setColor(whiteColor);
+            graphics.drawString("statify.live", 290, y + 101);
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(image, format, baos);
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Handle image writing error
+            // Dispose of the Graphics2D object
+            graphics.dispose();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            try {
+                ImageIO.write(image, format, baos);
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle image writing error
+                return null;
+            }
+            byte[] imageBytes = baos.toByteArray();
+
+            // Encode byte array to Base64
+            String base64EncodedImage = Base64.getEncoder().encodeToString(imageBytes);
+
+            return base64EncodedImage;
+        } else {
             return null;
         }
-        byte[] imageBytes = baos.toByteArray();
-
-        // Encode byte array to Base64
-        String base64EncodedImage = Base64.getEncoder().encodeToString(imageBytes);
-
-        return base64EncodedImage;
     }
 }
