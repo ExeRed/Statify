@@ -44,13 +44,7 @@
                 <li class="nav__item">
                     <a onclick="window.location.href='/settings'" class="nav__link">Settings</a>
                 </li>
-                <div th:if="${loggedIn}" class="btn logout">
-                    <form th:action="@{/logout}" method="post">
-                        <button type="submit" class="logout-btn">
-                            Sign Out
-                        </button>
-                    </form>
-                </div>
+
             </ul>
         </div>
         <div th:if="${loggedIn}" class="hamb">

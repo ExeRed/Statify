@@ -106,14 +106,14 @@ public class MainController {
 
         // Fetch data for the profile
         PrivacySettingsDB privacySettingsDB = privacySettingsService.getPrivacySettingsByUser(user);
-        populateModelWithProfileData(accessToken, timePeriod, model, currentUser, isOwnProfile, privacySettingsDB);
+        populateModelWithProfileData(accessToken, timePeriod, model, currentUser, isOwnProfile, user, privacySettingsDB);
 
         return "home"; // Return the same view for both "/" and "/{userId}"
     }
 
     // Helper method to populate model with user data
     private void populateModelWithProfileData(String accessToken, String timePeriod, Model model,
-                                              User currentUser, boolean isOwnProfile, PrivacySettingsDB privacySettingsDB) {
+                                              User currentUser, boolean isOwnProfile, SpotifyUserDB user, PrivacySettingsDB privacySettingsDB) {
         List<Track> songs = new ArrayList<>();
         List<Artist> artists = new ArrayList<>();
         List<String> topGenresList = userService.getTopGenres(accessToken, timePeriod);
@@ -154,7 +154,6 @@ public class MainController {
 
 
         // Списки подписчиков и подписок
-        SpotifyUserDB user = spotifyUserService.getUser(currentUser.getId());
         if (privacySettingsDB.isShowFollowers() || isOwnProfile) {
             model.addAttribute("followers", subscriptionService.getFollowers(user));
         }
@@ -177,6 +176,7 @@ public class MainController {
         }
 
         // Populate the model with all data
+        model.addAttribute("customId", user.getCustomId());
         model.addAttribute("recentlyPlayed", recentlyPlayed);
         model.addAttribute("tracks", songs);
         model.addAttribute("artists", artists);

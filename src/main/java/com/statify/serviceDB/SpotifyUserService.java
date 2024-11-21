@@ -55,7 +55,7 @@ public class SpotifyUserService {
         List<SpotifyUserDB> byUsername = spotifyUserRepository.findByUsernameContainingIgnoreCase(query);
 
         // Попытка найти по точному ID
-        Optional<SpotifyUserDB> byId = spotifyUserRepository.findById(query);
+        Optional<SpotifyUserDB> byId = spotifyUserRepository.findByCustomId(query);
 
         // Объединение результатов без дубликатов
         Set<SpotifyUserDB> results = new LinkedHashSet<>(byUsername);

@@ -13,5 +13,5 @@ public interface SpotifyUserRepository extends JpaRepository<SpotifyUserDB, Stri
     List<SpotifyUserDB> findByUsernameContainingIgnoreCase(String query);
 
     // Поиск по ID (точное совпадение)
-    Optional<SpotifyUserDB> findById(String id);
+    Optional<SpotifyUserDB> findByCustomId(String id);
 }

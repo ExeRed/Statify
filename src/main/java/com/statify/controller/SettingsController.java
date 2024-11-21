@@ -1,6 +1,7 @@
 package com.statify.controller;
 
 import com.statify.model.User;
+import com.statify.repository.SpotifyUserRepository;
 import com.statify.service.UserService;
 import com.statify.serviceDB.SpotifyUserService;
 import com.statify.table.PrivacySettingsDB;
@@ -18,17 +19,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class PrivacySettingsController {
+public class SettingsController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
     @Autowired
     private PrivacySettingsRepository privacySettingsRepository;
     @Autowired
     private SpotifyUserService spotifyUserService;
+
+    @Autowired
+    private SpotifyUserRepository spotifyUserRepository;
 
     @GetMapping("/settings")
     public String getPrivacySettings(OAuth2AuthenticationToken authentication, Model model) {
@@ -40,6 +43,7 @@ public class PrivacySettingsController {
         SpotifyUserDB user = spotifyUserService.getUser(currentUser.getId());
 
         PrivacySettingsDB privacySettings = user.getPrivacySettings();
+        model.addAttribute("currentUsername", user.getCustomId()); // Передаём имя пользователя
         model.addAttribute("privacySettings", privacySettings);
         model.addAttribute("loggedIn", true);
         return "settings";
@@ -71,4 +75,25 @@ public class PrivacySettingsController {
         privacySettingsRepository.save(privacySettings);
         return "redirect:/settings";
     }
+
+    @PostMapping("/updateUsername")
+    public String updateUsername(
+            OAuth2AuthenticationToken authentication,
+            @RequestParam("username") String customId
+    ) {
+        OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
+                authentication.getAuthorizedClientRegistrationId(),
+                authentication.getName());
+        String accessToken = client.getAccessToken().getTokenValue();
+        User currentUser = userService.getCurrentUser(accessToken);
+        SpotifyUserDB user = spotifyUserService.getUser(currentUser.getId());
+
+        // Обновляем имя пользователя
+        user.setCustomId(customId);
+        spotifyUserRepository.save(user);
+
+        return "redirect:/settings"; // Перенаправление обратно на страницу настроек
+    }
+
+
 }

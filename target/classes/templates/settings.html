@@ -12,10 +12,33 @@
 
 
   <div class="container">
-    <div class="privacy-settings-container">
-      <h1>Privacy Settings</h1>
 
-      <form action="/updatePrivacySettings" method="post">
+    <div class="sub-container">
+      <h1>Custom Username</h1>
+      <p>Edit your username so friends can find you easily.</p>
+
+      <form action="/updateUsername" method="post" class="username-form">
+        <div class="username-editable">
+          <input
+                  type="text"
+                  id="usernameInput"
+                  name="username"
+                  class="username-input"
+                  th:value="${currentUsername}"
+                  readonly
+          />
+          <button type="button" id="editButton" class="edit-btn">Edit</button>
+          <button type="submit" id="saveButton" class="save-btn" style="display: none;">Save</button>
+        </div>
+      </form>
+    </div>
+
+
+    <div class="sub-container">
+      <h1>Privacy Settings</h1>
+      <p>Choose what others can see on your profile.</p>
+
+      <form class="form-privacy" action="/updatePrivacySettings" method="post">
         <div class="form-group">
           <label for="showFollowers">Show Followers</label>
           <input type="checkbox" class="form-toggle" id="showFollowers" name="showFollowers" value="true"
@@ -46,14 +69,29 @@
                  th:checked="${privacySettings.showRecentlyPlayed}">
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+        <button type="submit" class="save-btn">Save Changes</button>
       </form>
     </div>
+
+    <div class="sub-container">
+      <h1>Log out</h1>
+      <p>Sign out of your account.</p>
+
+      <div th:if="${loggedIn}" class="btn logout">
+        <form th:action="@{/logout}" method="post">
+          <button type="submit" class="logout-btn">
+            Sign Out
+          </button>
+        </form>
+      </div>
+    </div>
+
   </div>
 
 
-
   <div th:replace="fragments/footer :: footer"></div>
+
+  <script src="../static/script/username-settings.js"></script>
 
 </body>
 </html>
