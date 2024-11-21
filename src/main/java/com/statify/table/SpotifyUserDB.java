@@ -23,6 +23,9 @@ public class SpotifyUserDB {
     @Column(name = "last_updated", nullable = false)
     private LocalDateTime lastUpdated;
 
+    @Column(name = "custom_id", nullable = false)
+    private String customId;
+
     @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private SpotifyToken spotifyToken;
@@ -48,6 +51,7 @@ public class SpotifyUserDB {
         this.username = username;
         this.email = email;
         this.lastUpdated = LocalDateTime.now();
+        this.customId = id;
     }
 
     public String getId() {
@@ -90,6 +94,14 @@ public class SpotifyUserDB {
         this.spotifyToken = spotifyToken;
     }
 
+    public String getCustomId() {
+        return customId;
+    }
+
+    public void setCustomId(String customId) {
+        this.customId = customId;
+    }
+
     public List<SubscriptionDB> getFollowing() {
         return following;
     }
@@ -112,5 +124,15 @@ public class SpotifyUserDB {
 
     public void setPrivacySettings(PrivacySettingsDB privacySettings) {
         this.privacySettings = privacySettings;
+    }
+
+    @Override
+    public String toString() {
+        return "SpotifyUserDB{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", lastUpdated=" + lastUpdated +
+                '}';
     }
 }

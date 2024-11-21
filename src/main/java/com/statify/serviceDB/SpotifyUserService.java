@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SpotifyUserService {
@@ -48,21 +47,23 @@ public class SpotifyUserService {
 
 
     public List<SpotifyUserDB> searchUsers(String query) {
-        // Search for users by username (partial matches) and by exact ID
-        List<SpotifyUserDB> usersByUsername = spotifyUserRepository.findByUsernameContaining(query);
-        Optional<SpotifyUserDB> userById = spotifyUserRepository.findById(query);
+        if (query == null || query.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
 
-        // Prepare the result list
-        List<SpotifyUserDB> result = new ArrayList<>();
+        // Поиск по username с игнорированием регистра
+        List<SpotifyUserDB> byUsername = spotifyUserRepository.findByUsernameContainingIgnoreCase(query);
 
-        // If the user by ID exists, add it to the result
-        userById.ifPresent(result::add);
+        // Попытка найти по точному ID
+        Optional<SpotifyUserDB> byId = spotifyUserRepository.findById(query);
 
-        // Add all users that match the username query
-        result.addAll(usersByUsername);
+        // Объединение результатов без дубликатов
+        Set<SpotifyUserDB> results = new LinkedHashSet<>(byUsername);
+        byId.ifPresent(results::add);
 
-        return result;
+        return new ArrayList<>(results);
     }
+
 
 
 }

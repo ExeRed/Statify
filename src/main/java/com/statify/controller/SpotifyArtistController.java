@@ -99,19 +99,21 @@ public class SpotifyArtistController {
         TopArtistsImageGenerator imageGenerator = new TopArtistsImageGenerator();
         String base64EncodedImage;
 
-        if (timePeriod.equals("long_term")) {
-            model.addAttribute("time", "of all time");
-            base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "all time", "png");
-        } else if (timePeriod.equals("medium_term")) {
-            model.addAttribute("time", "from last 6 months");
-            base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 6 months", "png");
-        } else {
-            model.addAttribute("time", "from last 4 weeks");
-            base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 4 weeks", "png");
+        if (isOwnProfile) {
+            if (timePeriod.equals("long_term")) {
+                model.addAttribute("time", "of all time");
+                base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "all time", "png");
+            } else if (timePeriod.equals("medium_term")) {
+                model.addAttribute("time", "from last 6 months");
+                base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 6 months", "png");
+            } else {
+                model.addAttribute("time", "from last 4 weeks");
+                base64EncodedImage = imageGenerator.generateBase64Image(userName, artists, "last 4 weeks", "png");
+            }
+            model.addAttribute("base64EncodedImage", base64EncodedImage);
         }
 
         // Update model with attributes
-        model.addAttribute("base64EncodedImage", base64EncodedImage);
         model.addAttribute("selectedOption", timePeriod);
         model.addAttribute("artists", artists);
         model.addAttribute("currentUser", currentUser);

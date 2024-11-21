@@ -124,14 +124,20 @@
                           </ul>
                       </div>
 
+
                       <!-- Поле поиска пользователей -->
                       <div id="searchTab" class="tabcontent">
                           <form id="searchForm">
                               <input type="text" id="searchQuery" name="query" placeholder="Search by ID or username" required>
                               <button type="submit" id="searchButton">Search</button>
                           </form>
+
                           <!-- Контейнер для отображения результатов поиска -->
-                          <ul id="searchResults"></ul>
+                          <div id="searchResultsContainer">
+                              <ul id="searchResults" th:fragment="searchResultsFragment">
+                                  <!-- Результаты поиска будут динамически обновляться здесь -->
+                              </ul>
+                          </div>
                       </div>
 
 
@@ -181,7 +187,7 @@
 
         </div>
 
-        <div class="share-section">
+        <div class="share-section" th:if="${isOwnProfile}">
             <button type="button" class="share-btn" onclick="openModal()">
                 <img src="/static/images/share-icon.svg" alt="Share" class="share-icon" />
                 <span class="button-text">Share</span>

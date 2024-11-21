@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -64,15 +65,18 @@ public class SubscriptionController {
     }
 
 
-    // Поиск пользователей
     @GetMapping("/search")
-    @ResponseBody
-    public List<SpotifyUserDB> searchUsers(@RequestParam("query") String query) {
-        return spotifyUserService.searchUsers(query);
+    public String searchUsers(
+            @RequestParam(value = "query", required = false) String query,
+            Model model
+    ) {
+        // Если запрос пустой, возвращаем пустой список
+        List<SpotifyUserDB> searchResults = (query != null && !query.trim().isEmpty())
+                ? spotifyUserService.searchUsers(query)
+                : Collections.emptyList();
+
+        model.addAttribute("searchResults", searchResults);
+        return "fragments/search-results :: searchResultsFragment";
     }
-
-
-
-
 
 }

@@ -5,6 +5,7 @@ import com.statify.table.SpotifyUserDB;
 import com.statify.table.SubscriptionDB;
 import com.statify.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,11 +43,19 @@ public class SubscriptionService {
 
     // Получить список подписчиков
     public List<SubscriptionDB> getFollowers(SpotifyUserDB user) {
-        return subscriptionRepository.findByFollowed(user);
+        try {
+            return subscriptionRepository.findByFollowed(user);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     // Получить список, на кого подписан пользователь
     public List<SubscriptionDB> getFollowing(SpotifyUserDB user) {
-        return subscriptionRepository.findByFollower(user);
+        try {
+            return subscriptionRepository.findByFollower(user);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 }

@@ -1,7 +1,6 @@
 html {
     background: #121212;
     font-family: 'Inter', sans-serif;
-
 }
 
 body {
@@ -256,6 +255,8 @@ body {
     margin: 10px 0;
     padding: 10px;
     border-bottom: 1px solid #eee;
+    text-align: left;
+
 }
 
 .tabcontent li a {

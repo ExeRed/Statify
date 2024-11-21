@@ -162,18 +162,21 @@ public class MainController {
             model.addAttribute("following", subscriptionService.getFollowing(user));
         }
 
-        AllStatsImageGenerator imageGenerator = new AllStatsImageGenerator();
-        String base64EncodedImage;
-        if (timePeriod.equals("long_term")) {
-            base64EncodedImage = imageGenerator.generateBase64Image(user.getUsername(), artists, songs, topGenresList, "year", "png");
-        } else if (timePeriod.equals("medium_term")) {
-            base64EncodedImage = imageGenerator.generateBase64Image(user.getUsername(), artists, songs, topGenresList, "6 months", "png");
-        } else {
-            base64EncodedImage = imageGenerator.generateBase64Image(user.getUsername(), artists, songs, topGenresList, "month", "png");
+        if (isOwnProfile) {
+            AllStatsImageGenerator imageGenerator = new AllStatsImageGenerator();
+            String base64EncodedImage;
+            if (timePeriod.equals("long_term")) {
+                base64EncodedImage = imageGenerator.generateBase64Image(user.getUsername(), artists, songs, topGenresList, "year", "png");
+            } else if (timePeriod.equals("medium_term")) {
+                base64EncodedImage = imageGenerator.generateBase64Image(user.getUsername(), artists, songs, topGenresList, "6 months", "png");
+            } else {
+                base64EncodedImage = imageGenerator.generateBase64Image(user.getUsername(), artists, songs, topGenresList, "month", "png");
+            }
+            model.addAttribute("base64EncodedImage", base64EncodedImage);
+
         }
 
         // Populate the model with all data
-        model.addAttribute("base64EncodedImage", base64EncodedImage);
         model.addAttribute("recentlyPlayed", recentlyPlayed);
         model.addAttribute("tracks", songs);
         model.addAttribute("artists", artists);

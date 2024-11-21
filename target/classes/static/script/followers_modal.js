@@ -36,44 +36,34 @@ function closeModalOutside(event) {
 }
 
 
+// Функция для отправки запроса на сервер и отображения результатов
 //search
-$(document).ready(function() {
-    // При нажатии кнопки поиска или нажатии Enter
-    $('#searchForm').on('submit', function(event) {
-        event.preventDefault(); // Останавливаем стандартное поведение формы
+document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.getElementById('searchForm');
+    const searchQuery = document.getElementById('searchQuery');
+    const searchResults = document.getElementById('searchResults');
 
-        const query = $('#searchQuery').val(); // Получаем текст запроса
+    searchForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const query = searchQuery.value.trim();
 
-        if (query.trim() === '') {
-            $('#searchResults').empty(); // Если поле поиска пустое, очищаем результаты
+        if (query === '') {
+            searchResults.innerHTML = '';
             return;
         }
 
-        // Выполняем AJAX-запрос на сервер
-        $.ajax({
-            url: '/search', // URL контроллера для поиска
-            type: 'GET',
-            data: { query: query }, // Параметр запроса
-            success: function(data) {
-                $('#searchResults').empty(); // Очищаем предыдущие результаты
-
-                // Если результаты найдены, отображаем их
-                if (data.length > 0) {
-                    data.forEach(function(user) {
-                        const resultItem = `<li><a href="/${user.id}">${user.username}</a></li>`;
-                        $('#searchResults').append(resultItem);
-                    });
-                } else {
-                    $('#searchResults').append('<li>No users found</li>');
-                }
-            },
-            error: function() {
-                $('#searchResults').empty().append('<li>Error during search</li>');
-            }
-        });
+        fetch(`/search?query=${encodeURIComponent(query)}`)
+            .then(response => response.text())
+            .then(html => {
+                // Обновляем содержимое результатов поиска
+                searchResults.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Ошибка поиска:', error);
+                searchResults.innerHTML = '<li>Ошибка при поиске</li>';
+            });
     });
 });
-
 
 // Устанавливаем вкладку по умолчанию
 document.getElementById("defaultOpen").click();
