@@ -14,11 +14,11 @@ public class SpotifyToken {
     private Long id;
 
     @JsonIgnore
-    @Column(name = "access_token", nullable = false)
+    @Column(name = "access_token", nullable = false, columnDefinition = "TEXT")
     private String accessToken;
 
     @JsonIgnore
-    @Column(name = "refresh_token", nullable = false)
+    @Column(name = "refresh_token", columnDefinition = "TEXT")
     private String refreshToken;
 
     @JsonIgnore

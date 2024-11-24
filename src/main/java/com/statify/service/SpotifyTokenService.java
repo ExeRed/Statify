@@ -18,21 +18,30 @@ public class SpotifyTokenService {
 
     @Autowired
     private SpotifyTokenRepository spotifyTokenRepository;
-
     @Autowired
     private SpotifyUserRepository spotifyUserRepository;
 
+    @Autowired
+    private TokenEncryptor tokenEncryptor;
+
+
     public String refreshAccessToken(String userId) {
-        // Получаем refresh token из базы
+        // Получаем токены из базы данных (включая зашифрованные)
         SpotifyToken tokenInfo = spotifyTokenRepository.findByUserId(userId);
 
         if (tokenInfo == null) {
             throw new RuntimeException("No token found for user");
         }
 
+        // Дешифровываем токены, если они зашифрованы
+        tokenInfo.setAccessToken(tokenEncryptor.decrypt(tokenInfo.getAccessToken()));
+        if (tokenInfo.getRefreshToken() != null) {
+            tokenInfo.setRefreshToken(tokenEncryptor.decrypt(tokenInfo.getRefreshToken()));
+        }
+
         // Проверяем, истек ли токен
         if (tokenInfo.getExpiresAt().isAfter(LocalDateTime.now())) {
-            return tokenInfo.getAccessToken();
+            return tokenInfo.getAccessToken(); // Возвращаем текущий токен, если он еще не истек
         }
 
         // Параметры для запроса обновления токена
@@ -48,6 +57,7 @@ public class SpotifyTokenService {
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
 
         try {
+            // Отправляем запрос на обновление токена
             ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                     "https://accounts.spotify.com/api/token",
                     HttpMethod.POST,
@@ -59,9 +69,15 @@ public class SpotifyTokenService {
             String newAccessToken = (String) responseBody.get("access_token");
             int expiresIn = (int) responseBody.get("expires_in");
 
-            // Обновляем токен в базе данных
-            tokenInfo.setAccessToken(newAccessToken);
+            // Зашифровываем новый access token и refresh token перед сохранением
+            tokenInfo.setAccessToken(tokenEncryptor.encrypt(newAccessToken));
             tokenInfo.setExpiresAt(LocalDateTime.now().plusSeconds(expiresIn));
+
+            if (tokenInfo.getRefreshToken() != null) {
+                tokenInfo.setRefreshToken(tokenEncryptor.encrypt(tokenInfo.getRefreshToken()));
+            }
+
+            // Сохраняем обновленный токен в базе данных
             spotifyTokenRepository.save(tokenInfo);
 
             return newAccessToken;
@@ -70,26 +86,42 @@ public class SpotifyTokenService {
         }
     }
 
+
     public void saveTokens(String userId, String accessToken, String refreshToken, LocalDateTime expiresAt) {
         SpotifyUserDB user = spotifyUserRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Проверяем, есть ли уже сохранённые токены для этого пользователя
         SpotifyToken existingToken = spotifyTokenRepository.findByUserId(userId);
 
         if (existingToken == null) {
-            // Если токены ещё не сохранены, создаём новые
             existingToken = new SpotifyToken();
             existingToken.setUser(user);
         }
 
-        // Обновляем данные токенов
-        existingToken.setAccessToken(accessToken);
-        existingToken.setRefreshToken(refreshToken);
+        // Шифруем токены перед сохранением
+        existingToken.setAccessToken(tokenEncryptor.encrypt(accessToken));
+        existingToken.setRefreshToken(refreshToken != null ? tokenEncryptor.encrypt(refreshToken) : null);
         existingToken.setExpiresAt(expiresAt);
 
-        // Сохраняем или обновляем запись
         spotifyTokenRepository.save(existingToken);
     }
+
+    public SpotifyToken getDecryptedTokens(String userId) {
+        // Получаем токены из базы данных
+        SpotifyToken token = spotifyTokenRepository.findByUserId(userId);
+
+        if (token != null) {
+            // Дешифруем токены перед использованием
+            token.setAccessToken(tokenEncryptor.decrypt(token.getAccessToken()));
+
+            // Если есть refresh token, тоже расшифровываем
+            if (token.getRefreshToken() != null) {
+                token.setRefreshToken(tokenEncryptor.decrypt(token.getRefreshToken()));
+            }
+        }
+        return token;
+    }
+
+
 
 }
